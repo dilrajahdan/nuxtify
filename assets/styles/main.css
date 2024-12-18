@@ -1,0 +1,11 @@
+.max-w-lg {
+  max-width: 32rem;
+}
+
+.border-b {
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.rounded-lg {
+  border-radius: 12px;
+} 
