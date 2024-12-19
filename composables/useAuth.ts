@@ -18,7 +18,8 @@ export const useAuth = () => {
         options: {
           data: {
             full_name: fullName
-          }
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`
         }
       })
 
@@ -101,4 +102,4 @@ export const useAuth = () => {
     logout,
     resetPassword
   }
-} 
+}
