@@ -1,11 +1,41 @@
 <template>
-  <v-container class="fill-height">
-    <v-row justify="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-card class="pa-8">
-          <div class="text-center mb-8">
+  <div class="auth-container d-flex">
+    <!-- Left side - Register Form -->
+    <v-container class="fill-height form-container">
+      <v-row justify="center" align="center">
+        <v-col cols="12" sm="8" md="10" lg="8" xl="6">
+          <!-- Logo -->
+          <div class="mb-8">
+            <NuxtLink to="/" class="logo-link text-decoration-none">
+              <div class="d-flex align-center">
+                <img src="/logo.png" alt="Logo" height="32" class="mr-2" />
+                <span class="text-h5 font-weight-medium">Nuxtify</span>
+              </div>
+            </NuxtLink>
+          </div>
+
+          <!-- Progress Steps -->
+          <div class="d-flex align-center justify-space-between mb-12">
+            <div class="step-item">
+              <div class="step-number active">1</div>
+              <div class="step-label active">Register</div>
+            </div>
+            <v-divider class="mx-4"></v-divider>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-label">Confirm</div>
+            </div>
+            <v-divider class="mx-4"></v-divider>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-label">Build Funnel</div>
+            </div>
+          </div>
+
+          <!-- Register Form -->
+          <div class="mb-8">
             <h1 class="text-h4 font-weight-bold mb-2">
-              Create your free account
+              Create your free account in 30 seconds
             </h1>
             <p class="text-body-1 text-medium-emphasis">
               Join thousands of businesses who are easily acquiring qualified appointments, employees and leads every day.
@@ -20,6 +50,8 @@
               prepend-inner-icon="mdi-account"
               variant="outlined"
               class="mb-4"
+              density="comfortable"
+              bg-color="surface"
             />
 
             <v-text-field
@@ -29,6 +61,8 @@
               prepend-inner-icon="mdi-email"
               variant="outlined"
               class="mb-4"
+              density="comfortable"
+              bg-color="surface"
             />
 
             <v-text-field
@@ -40,19 +74,24 @@
               :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append-inner="showPassword = !showPassword"
               variant="outlined"
-              class="mb-4"
+              class="mb-6"
+              density="comfortable"
+              bg-color="surface"
             />
 
             <v-checkbox
               v-model="form.terms"
               :rules="[rules.required]"
-              class="mb-4"
+              class="mb-6"
+              density="comfortable"
             >
               <template #label>
-                By creating an account you accept our
-                <v-btn variant="text" to="/terms" class="px-1">terms & conditions</v-btn>
-                and our
-                <v-btn variant="text" to="/privacy" class="px-1">privacy policies</v-btn>
+                <span class="text-body-2">
+                  By creating an account you accept our
+                  <v-btn variant="text" to="/terms" class="px-1 text-primary text-decoration-underline">terms & conditions</v-btn>
+                  and our
+                  <v-btn variant="text" to="/privacy" class="px-1 text-primary text-decoration-underline">privacy policies</v-btn>
+                </span>
               </template>
             </v-checkbox>
 
@@ -62,7 +101,7 @@
               size="large"
               type="submit"
               :loading="loading"
-              class="mb-4"
+              class="mb-6"
             >
               Next step
             </v-btn>
@@ -72,10 +111,22 @@
               <v-btn variant="text" to="/auth/login" class="text-none px-2">Login</v-btn>
             </div>
           </v-form>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- Right side - Image -->
+    <div class="image-container d-none d-lg-flex">
+      <div class="image-overlay pa-16">
+        <div class="text-h4 font-weight-bold text-white mb-4">
+          Start Growing Your Business Today
+        </div>
+        <p class="text-body-1 text-white">
+          Join thousands of successful businesses using our platform to scale their operations and increase revenue.
+        </p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -110,4 +161,79 @@ useHead({
     }
   ]
 })
-</script> 
+</script>
+
+<style scoped>
+.auth-container {
+  min-height: 100vh;
+}
+
+.form-container {
+  flex: 1;
+  max-width: 800px;
+}
+
+.image-container {
+  flex: 1;
+  background: linear-gradient(rgba(0, 102, 255, 0.8), rgba(0, 102, 255, 0.8)),
+    url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.image-overlay {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.logo-link {
+  color: inherit;
+}
+
+.logo-link:hover {
+  opacity: 0.9;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #E5E7EB;
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.step-number.active {
+  background-color: #0066FF;
+  color: white;
+}
+
+.step-label {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.step-label.active {
+  color: #0066FF;
+  font-weight: 500;
+}
+
+/* Make dividers flex-grow */
+.v-divider {
+  flex-grow: 1;
+}
+</style> 
