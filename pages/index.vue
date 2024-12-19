@@ -50,13 +50,6 @@
                 alt="App Preview"
                 class="mt-8 mt-md-0 rounded-lg"
               />
-              <!-- Decorative elements -->
-              <div class="position-absolute" style="top: -10%; left: -15%; z-index: -1">
-                <v-img src="/decorative/shape1.png" width="240" />
-              </div>
-              <div class="position-absolute" style="bottom: -5%; right: -10%; z-index: -1">
-                <v-img src="/decorative/shape2.svg" width="200" />
-              </div>
             </div>
           </v-col>
         </v-row>
