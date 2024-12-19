@@ -1,29 +1,35 @@
 <template>
-  <div class="py-16">
-    <h1 class="text-h3 text-center font-weight-bold mb-16">
+  <div class="pb-32">
+    <h1 class="display-1 text-center font-weight-black mb-32 px-4">
       Everything You Need for Modern SaaS
     </h1>
     
-    <v-row>
-      <v-col v-for="(category, index) in features" :key="index" cols="12" class="mb-16">
-        <h2 class="text-h4 font-weight-bold mb-8">{{ category.title }}</h2>
-        <v-row>
-          <v-col v-for="feature in category.items" :key="feature.title" cols="12" md="4">
-            <v-card height="100%">
-              <v-card-item>
-                <v-icon :color="feature.color" size="32" class="mb-4">
-                  {{ feature.icon }}
-                </v-icon>
-                <v-card-title class="font-weight-bold">{{ feature.title }}</v-card-title>
-                <v-card-text class="text-medium-emphasis">
-                  {{ feature.description }}
-                </v-card-text>
-              </v-card-item>
-            </v-card>
+    <v-container>
+      <div v-for="(category, index) in features" :key="index" class="mb-32">
+        <h2 class="text-h2 font-weight-black mb-16 px-4">{{ category.title }}</h2>
+        <v-row class="gap-8">
+          <v-col 
+            v-for="feature in category.items" 
+            :key="feature.title" 
+            cols="12" 
+            md="4"
+          >
+            <div class="feature-card pa-8 rounded-lg">
+              <div class="mb-6">
+                <v-img 
+                  :src="feature.icon"
+                  width="48"
+                  height="48"
+                  class="feature-icon"
+                />
+              </div>
+              <h3 class="text-h5 font-weight-bold mb-2">{{ feature.title }}</h3>
+              <p class="text-body-1 text-medium-emphasis">{{ feature.description }}</p>
+            </div>
           </v-col>
         </v-row>
-      </v-col>
-    </v-row>
+      </div>
+    </v-container>
   </div>
 </template>
 
@@ -33,22 +39,19 @@ const features = [
     title: 'Core Features',
     items: [
       {
-        title: 'Vue 3 & Nuxt 3',
+        title: 'Vue 3 & Nuxt',
         description: 'Latest Vue and Nuxt with Composition API and auto-imports',
-        icon: 'mdi-vuejs',
-        color: 'success'
+        icon: 'https://placehold.co/48x48/e9ecef/495057?text=Vue',
       },
       {
         title: 'TypeScript',
         description: 'Basic type safety without complexity',
-        icon: 'mdi-language-typescript',
-        color: 'info'
+        icon: 'https://placehold.co/48x48/e9ecef/495057?text=TS',
       },
       {
         title: 'Vuetify 3',
         description: 'Modern UI components with material design',
-        icon: 'mdi-view-dashboard',
-        color: 'primary'
+        icon: 'https://placehold.co/48x48/e9ecef/495057?text=Vuetify',
       }
     ]
   },
@@ -58,50 +61,24 @@ const features = [
       {
         title: 'Supabase Integration',
         description: 'Built-in authentication and database management',
-        icon: 'mdi-database',
-        color: 'success'
+        icon: 'https://placehold.co/48x48/e9ecef/495057?text=Supabase',
       },
       {
         title: 'State Management',
         description: 'Pinia store with persistence and type safety',
-        icon: 'mdi-state-machine',
-        color: 'warning'
+        icon: 'https://placehold.co/48x48/e9ecef/495057?text=Pinia',
       },
       {
         title: 'API Integration',
         description: 'Type-safe API clients with proper error handling',
-        icon: 'mdi-api',
-        color: 'error'
-      }
-    ]
-  },
-  {
-    title: 'Developer Experience',
-    items: [
-      {
-        title: 'Testing Setup',
-        description: 'Vitest for unit tests and Cypress for E2E',
-        icon: 'mdi-test-tube',
-        color: 'success'
-      },
-      {
-        title: 'Performance',
-        description: 'Lazy loading, caching, and asset optimization',
-        icon: 'mdi-rocket-launch',
-        color: 'primary'
-      },
-      {
-        title: 'CI/CD',
-        description: 'Github Actions workflow for testing and deployment',
-        icon: 'mdi-git',
-        color: 'info'
+        icon: 'https://placehold.co/48x48/e9ecef/495057?text=API',
       }
     ]
   }
 ]
 
 useHead({
-  title: 'Features',
+  title: 'Features - Nuxtify',
   meta: [
     {
       name: 'description',
@@ -109,4 +86,28 @@ useHead({
     }
   ]
 })
-</script> 
+</script>
+
+<style scoped>
+.feature-card {
+  background: white;
+  border: 1px solid #E5E7EB;
+  transition: all 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.feature-icon {
+  filter: grayscale(1);
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.feature-card:hover .feature-icon {
+  filter: grayscale(0);
+  opacity: 1;
+}
+</style> 

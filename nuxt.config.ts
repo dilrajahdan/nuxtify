@@ -64,7 +64,8 @@ export default defineNuxtConfig({
   // CSS
   css: [
     'vuetify/styles',
-    '@mdi/font/css/materialdesignicons.css'
+    '@mdi/font/css/materialdesignicons.css',
+    '@/assets/styles/tokens.css'
   ],
 
   // Development tools

@@ -16,3 +16,13 @@
 
 <script setup lang="ts">
 </script>
+
+<style>
+:root {
+  --header-height: 64px;
+}
+
+.v-main {
+  padding-top: var(--header-height) !important;
+}
+</style>
