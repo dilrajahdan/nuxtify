@@ -3,7 +3,7 @@
     <div class="navigation-wrapper">
       <!-- Logo -->
       <img 
-        src="/logo.png"
+        src="/logo.webp"
         alt="Logo"
         class="navigation-logo"
       />
@@ -124,7 +124,8 @@ const handleLogout = async () => {
 }
 
 .navigation-wrapper {
-  background: linear-gradient(to right, #1a1a1a, #2d2d2d);
+  /* background: linear-gradient(to right, #1a1a1a, #2d2d2d); */
+  background: #090a0c;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 100px;
@@ -138,7 +139,8 @@ const handleLogout = async () => {
 }
 
 .navigation-logo {
-  width: 28px;
+  width: auto;
+  min-width: fit-content;
   height: 28px;
   margin: 0 24px;
   flex-shrink: 0;
