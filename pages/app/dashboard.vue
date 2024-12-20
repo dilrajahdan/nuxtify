@@ -1,208 +1,311 @@
 <template>
-  <div>
-    <!-- Page Header -->
-    <div class="d-flex justify-space-between align-center mb-6">
-      <div>
-        <h1 class="text-h4 font-weight-bold mb-2">Welcome back, {{ firstName }}!</h1>
-        <p class="text-body-1 text-medium-emphasis">Here's what's happening with your funnels today.</p>
-      </div>
-      <v-btn
-        color="primary"
-        prepend-icon="mdi-plus"
-        to="/app/funnels/new"
-      >
-        New Funnel
-      </v-btn>
-    </div>
-
-    <!-- Stats Cards -->
-    <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3">
-        <v-card>
-          <v-card-text>
-            <div class="text-overline mb-1">TOTAL VISITORS</div>
-            <div class="text-h4 mb-2">1,294</div>
-            <div class="d-flex align-center text-success">
-              <v-icon size="small" class="mr-1">mdi-arrow-up</v-icon>
-              <span class="text-body-2">12.5% vs last week</span>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card>
-          <v-card-text>
-            <div class="text-overline mb-1">CONVERSION RATE</div>
-            <div class="text-h4 mb-2">2.4%</div>
-            <div class="d-flex align-center text-error">
-              <v-icon size="small" class="mr-1">mdi-arrow-down</v-icon>
-              <span class="text-body-2">0.3% vs last week</span>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card>
-          <v-card-text>
-            <div class="text-overline mb-1">ACTIVE FUNNELS</div>
-            <div class="text-h4 mb-2">5</div>
-            <div class="d-flex align-center text-success">
-              <v-icon size="small" class="mr-1">mdi-arrow-up</v-icon>
-              <span class="text-body-2">2 new this week</span>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card>
-          <v-card-text>
-            <div class="text-overline mb-1">TOTAL LEADS</div>
-            <div class="text-h4 mb-2">31</div>
-            <div class="d-flex align-center text-success">
-              <v-icon size="small" class="mr-1">mdi-arrow-up</v-icon>
-              <span class="text-body-2">8 new this week</span>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <!-- Recent Activity -->
+  <v-container>
+    <!-- Statistics Section -->
     <v-card class="mb-6">
-      <v-card-title class="text-h6">
-        Recent Activity
-      </v-card-title>
+      <v-card-title class="text-h6">Statistics</v-card-title>
       <v-card-text>
-        <v-timeline density="compact" align="start">
-          <v-timeline-item
-            v-for="activity in recentActivity"
-            :key="activity.id"
-            :dot-color="activity.color"
-            size="small"
-          >
-            <div class="mb-2">
-              <div class="text-body-2 font-weight-medium">{{ activity.title }}</div>
-              <div class="text-caption text-medium-emphasis">{{ activity.time }}</div>
-            </div>
-          </v-timeline-item>
-        </v-timeline>
+        <v-row>
+          <!-- Time Filter -->
+          <v-col cols="12" class="d-flex justify-end mb-4">
+            <v-select
+              v-model="timeFilter"
+              :items="timeFilterOptions"
+              density="compact"
+              variant="outlined"
+              hide-details
+              style="max-width: 150px"
+            />
+          </v-col>
+
+          <!-- Stats Grid -->
+          <v-col cols="12" sm="6" md="3">
+            <div class="text-subtitle-1 text-medium-emphasis">New Leads</div>
+            <div class="text-h4 font-weight-bold">{{ stats.newLeads }}</div>
+          </v-col>
+
+          <v-col cols="12" sm="6" md="3">
+            <div class="text-subtitle-1 text-medium-emphasis">Replies Generated</div>
+            <div class="text-h4 font-weight-bold">{{ stats.repliesGenerated }}</div>
+          </v-col>
+
+          <v-col cols="12" sm="6" md="3">
+            <div class="text-subtitle-1 text-medium-emphasis">Emails You Sent</div>
+            <div class="text-h4 font-weight-bold">{{ stats.emailsSent }}</div>
+          </v-col>
+
+          <v-col cols="12" sm="6" md="3">
+            <div class="text-subtitle-1 text-medium-emphasis">Email Open Rate</div>
+            <div class="text-h4 font-weight-bold">{{ stats.openRate }}%</div>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
 
-    <!-- Quick Actions -->
-    <v-row>
-      <v-col cols="12" md="6">
-        <v-card>
-          <v-card-title class="text-h6">
-            Quick Actions
-          </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col v-for="action in quickActions" :key="action.title" cols="6">
-                <v-btn
-                  block
-                  :prepend-icon="action.icon"
-                  :to="action.to"
-                  variant="outlined"
-                  class="mb-3"
+    <!-- Approve Emails for New Leads -->
+    <v-card class="mb-6">
+      <v-card-title class="text-h6">Approve Emails for New Leads</v-card-title>
+      <v-card-text>
+        <v-list class="integration-list">
+          <v-list-item
+            v-for="lead in newLeads"
+            :key="lead.id"
+            :title="`${lead.name} | ${lead.discProfile}`"
+            :subtitle="lead.details"
+            class="integration-list-item mb-3"
+            rounded="lg"
+          >
+            <!-- Left side with icons -->
+            <template v-slot:prepend>
+              <div class="d-flex align-center">
+                <v-avatar 
+                  color="grey-lighten-4" 
+                  size="42"
+                  class="mr-3"
                 >
-                  {{ action.title }}
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" md="6">
-        <v-card>
-          <v-card-title class="text-h6">
-            Top Performing Funnel
-          </v-card-title>
-          <v-card-text>
-            <v-list lines="two">
-              <v-list-item
-                title="Sales Funnel 2.0"
-                subtitle="2,145 visitors • 3.2% conversion rate"
-                prepend-icon="mdi-trophy"
+                  <v-icon color="grey-darken-2">mdi-account</v-icon>
+                </v-avatar>
+                <v-avatar 
+                  color="grey-lighten-4" 
+                  size="42"
+                >
+                  <v-icon color="grey-darken-2">mdi-email-outline</v-icon>
+                </v-avatar>
+              </div>
+            </template>
+            
+            <!-- Right side with action button -->
+            <template v-slot:append>
+              <v-btn
+                color="black"
+                variant="flat"
+                class="integration-action-btn"
+                @click="viewLead(lead.id)"
               >
-                <template v-slot:append>
-                  <v-btn
-                    variant="text"
-                    color="primary"
-                    to="/app/funnels/1"
-                  >
-                    View Details
-                  </v-btn>
-                </template>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </div>
+                View Details
+              </v-btn>
+            </template>
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+    </v-card>
+
+    <!-- Approve Email Replies -->
+    <v-card class="mb-6">
+      <v-card-title class="text-h6">Approve Email Replies</v-card-title>
+      <v-card-text>
+        <v-list class="integration-list">
+          <v-list-item
+            v-for="reply in emailReplies"
+            :key="reply.id"
+            :title="`${reply.name} | ${reply.discProfile}`"
+            :subtitle="reply.details"
+            class="integration-list-item mb-3"
+            rounded="lg"
+          >
+            <template v-slot:prepend>
+              <div class="d-flex align-center">
+                <v-avatar 
+                  color="grey-lighten-4" 
+                  size="42"
+                  class="mr-3"
+                >
+                  <v-icon color="grey-darken-2">mdi-account</v-icon>
+                </v-avatar>
+                <v-avatar 
+                  color="grey-lighten-4" 
+                  size="42"
+                >
+                  <v-icon color="grey-darken-2">mdi-reply</v-icon>
+                </v-avatar>
+              </div>
+            </template>
+            
+            <template v-slot:append>
+              <v-btn
+                color="black"
+                variant="flat"
+                class="integration-action-btn"
+                @click="viewReply(reply.id)"
+              >
+                View Reply
+              </v-btn>
+            </template>
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+    </v-card>
+
+    <!-- Follow Up Email Opens -->
+    <v-card>
+      <v-card-title class="text-h6">Follow Up Email Opens</v-card-title>
+      <v-card-text>
+        <v-list class="integration-list">
+          <v-list-item
+            v-for="followUp in followUps"
+            :key="followUp.id"
+            :title="`${followUp.name} | ${followUp.discProfile}`"
+            :subtitle="followUp.details"
+            class="integration-list-item mb-3"
+            rounded="lg"
+          >
+            <template v-slot:prepend>
+              <div class="d-flex align-center">
+                <v-avatar 
+                  color="grey-lighten-4" 
+                  size="42"
+                  class="mr-3"
+                >
+                  <v-icon color="grey-darken-2">mdi-account</v-icon>
+                </v-avatar>
+                <v-avatar 
+                  color="grey-lighten-4" 
+                  size="42"
+                >
+                  <v-icon color="grey-darken-2">mdi-eye-outline</v-icon>
+                </v-avatar>
+              </div>
+            </template>
+            
+            <template v-slot:append>
+              <v-btn
+                color="black"
+                variant="flat"
+                class="integration-action-btn"
+                @click="viewFollowUp(followUp.id)"
+              >
+                Follow Up
+              </v-btn>
+            </template>
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
+
 definePageMeta({
   layout: 'app',
   middleware: ['auth']
 })
 
-const { user } = useAuth()
+// Time filter
+const timeFilter = ref('Last 7 Days')
+const timeFilterOptions = ['Last 7 Days', 'Last 30 Days', 'Last 90 Days', 'All Time']
 
-// Get first name for welcome message
-const firstName = computed(() => {
-  const fullName = user.value?.user_metadata?.full_name || ''
-  return fullName.split(' ')[0]
+// Mock statistics data
+const stats = ref({
+  newLeads: 150,
+  repliesGenerated: 89,
+  emailsSent: 500,
+  openRate: 78,
+  bounceRate: 3
 })
 
-// Mock data
-const recentActivity = [
+// Mock data for leads
+const newLeads = ref([
   {
     id: 1,
-    title: 'New lead captured from Sales Funnel 2.0',
-    time: '2 minutes ago',
-    color: 'success'
+    name: 'Dil Ahdan',
+    discProfile: 'DISC',
+    details: '$20k MRR, Security',
   },
   {
     id: 2,
-    title: 'Funnel "Product Launch" published',
-    time: '1 hour ago',
-    color: 'primary'
-  },
-  {
-    id: 3,
-    title: 'A/B Test completed for Landing Page',
-    time: '3 hours ago',
-    color: 'info'
+    name: 'Dil Ahdan',
+    discProfile: 'DISC',
+    details: '$20k MRR, Security',
   }
-]
+])
 
-const quickActions = [
+// Mock data for email replies
+const emailReplies = ref([
   {
-    title: 'Create Funnel',
-    icon: 'mdi-plus',
-    to: '/app/funnels/new'
+    id: 1,
+    name: 'Dil Ahdan',
+    discProfile: 'DISC',
+    details: '$20k MRR, Security',
   },
   {
-    title: 'View Analytics',
-    icon: 'mdi-chart-bar',
-    to: '/app/analytics'
-  },
-  {
-    title: 'Manage Templates',
-    icon: 'mdi-file-outline',
-    to: '/app/templates'
-  },
-  {
-    title: 'View Leads',
-    icon: 'mdi-account-group',
-    to: '/app/leads'
+    id: 2,
+    name: 'Dil Ahdan',
+    discProfile: 'DISC',
+    details: '$20k MRR, Security',
   }
-]
-</script> 
+])
+
+// Mock data for follow ups
+const followUps = ref([
+  {
+    id: 1,
+    name: 'Dil Ahdan',
+    discProfile: 'DISC',
+    details: '$20k MRR, Security',
+  },
+  {
+    id: 2,
+    name: 'Dil Ahdan',
+    discProfile: 'DISC',
+    details: '$20k MRR, Security',
+  }
+])
+
+// Navigation functions
+const viewLead = (id: number) => {
+  // Navigate to lead details
+  navigateTo(`/app/leads/${id}`)
+}
+
+const viewReply = (id: number) => {
+  // Navigate to reply details
+  navigateTo(`/app/replies/${id}`)
+}
+
+const viewFollowUp = (id: number) => {
+  // Navigate to follow up details
+  navigateTo(`/app/follow-ups/${id}`)
+}
+</script>
+
+<style scoped>
+.integration-list {
+  background: transparent;
+}
+
+.integration-list-item {
+  border: 1px solid #E2E8F0;
+  background: white;
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
+}
+
+.integration-list-item:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.integration-action-btn {
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  border-radius: 6px;
+  height: 40px;
+}
+
+:deep(.v-list-item__content) {
+  padding: 12px 0;
+}
+
+:deep(.v-list-item-title) {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+:deep(.v-list-item-subtitle) {
+  color: #64748B;
+  font-size: 0.875rem;
+}
+</style> 
