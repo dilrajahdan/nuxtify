@@ -12,6 +12,7 @@
         <v-radio-group
           v-model="form.mainChallenge"
           class="option-group"
+          hide-details
         >
           <v-radio
             v-for="option in challengeOptions"
@@ -20,6 +21,7 @@
             :label="option.label"
             color="primary"
             class="option-item mb-4"
+            
           />
         </v-radio-group>
 
@@ -615,8 +617,7 @@
           <p class="text-body-1 mb-6">
             Your personalized daily doses of motivation are about to hit your
             inbox. These aren't generic pep talks – they're tailored messages
-            designed specifically for your entrepreneurial journey. 
-            
+            designed specifically for your entrepreneurial journey.
           </p>
           <p class="text-body-1 mb-6">
             First message incoming... get ready to be inspired!
@@ -1073,26 +1074,36 @@ const handleSubmit = async () => {
 };
 
 const handleSuccessClose = () => {
-  // Reset form and navigation
-  form.value = {
-    mainChallenge: '',
-    mainChallengeOther: '',
-    businessStage: '',
-    businessType: '',
-    businessTypeOther: '',
-    discProfile: '',
-    discPrimary: '',
-    discSecondary: '',
-    discQuestions: {},
-    goal: '',
-    goalOther: '',
-    goalMeaning: '',
-    name: '',
-    email: '',
-  };
-  currentStep.value = 1;
-  isExpanded.value = false;
+  // First close the success dialog
   showSuccess.value = false;
+  
+  // Use nextTick to ensure the success dialog is closed before closing the main dialog
+  nextTick(() => {
+    // Then close the main dialog
+    isExpanded.value = false;
+    
+    // Reset form and navigation
+    form.value = {
+      mainChallenge: '',
+      mainChallengeOther: '',
+      businessStage: '',
+      businessType: '',
+      businessTypeOther: '',
+      discProfile: '',
+      discPrimary: '',
+      discSecondary: '',
+      discQuestions: {},
+      goal: '',
+      goalOther: '',
+      goalMeaning: '',
+      name: '',
+      email: '',
+    };
+    currentStep.value = 1;
+
+    // Optional: Scroll to top of page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 };
 
 // Placeholder for actual server submission
