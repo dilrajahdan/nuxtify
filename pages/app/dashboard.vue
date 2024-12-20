@@ -79,7 +79,7 @@
                 color="black"
                 variant="flat"
                 class="integration-action-btn"
-                @click="viewLead(lead.id)"
+                @click="viewLead(lead)"
               >
                 View Details
               </v-btn>
@@ -125,7 +125,7 @@
                 color="black"
                 variant="flat"
                 class="integration-action-btn"
-                @click="viewReply(reply.id)"
+                @click="viewReply(reply)"
               >
                 View Reply
               </v-btn>
@@ -171,7 +171,7 @@
                 color="black"
                 variant="flat"
                 class="integration-action-btn"
-                @click="viewFollowUp(followUp.id)"
+                @click="viewFollowUp(followUp)"
               >
                 Follow Up
               </v-btn>
@@ -180,11 +180,21 @@
         </v-list>
       </v-card-text>
     </v-card>
+
+    <!-- Email Composer Dialog -->
+    <EmailComposer
+      v-model="showEmailComposer"
+      :lead="selectedLead"
+      :type="emailComposerType"
+      @submit="handleEmailSubmit"
+    />
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import EmailComposer from '~/components/app/EmailComposer.vue'
+import type { Lead } from '~/types/lead'
 
 definePageMeta({
   layout: 'app',
@@ -204,8 +214,8 @@ const stats = ref({
   bounceRate: 3
 })
 
-// Mock data for leads
-const newLeads = ref([
+// Mock data for leads - add proper typing
+const newLeads = ref<Lead[]>([
   {
     id: 1,
     name: 'Dil Ahdan',
@@ -220,8 +230,8 @@ const newLeads = ref([
   }
 ])
 
-// Mock data for email replies
-const emailReplies = ref([
+// Mock data for email replies - add proper typing
+const emailReplies = ref<Lead[]>([
   {
     id: 1,
     name: 'Dil Ahdan',
@@ -236,8 +246,8 @@ const emailReplies = ref([
   }
 ])
 
-// Mock data for follow ups
-const followUps = ref([
+// Mock data for follow ups - add proper typing
+const followUps = ref<Lead[]>([
   {
     id: 1,
     name: 'Dil Ahdan',
@@ -251,21 +261,42 @@ const followUps = ref([
     details: '$20k MRR, Security',
   }
 ])
+
+// Add these refs after the existing refs
+const showEmailComposer = ref(false)
+const selectedLead = ref<Lead | undefined>(undefined)
+const emailComposerType = ref<'new' | 'reply' | 'view'>('new')
 
 // Navigation functions
-const viewLead = (id: number) => {
-  // Navigate to lead details
-  navigateTo(`/app/leads/${id}`)
+const viewLead = (lead: Lead) => {
+  selectedLead.value = lead
+  emailComposerType.value = 'new'
+  showEmailComposer.value = true
 }
 
-const viewReply = (id: number) => {
-  // Navigate to reply details
-  navigateTo(`/app/replies/${id}`)
+const viewReply = (lead: Lead) => {
+  selectedLead.value = lead
+  emailComposerType.value = 'reply'
+  showEmailComposer.value = true
 }
 
-const viewFollowUp = (id: number) => {
-  // Navigate to follow up details
-  navigateTo(`/app/follow-ups/${id}`)
+const viewFollowUp = (lead: Lead) => {
+  selectedLead.value = lead
+  emailComposerType.value = 'view'
+  showEmailComposer.value = true
+}
+
+// Add handler for email submission
+const handleEmailSubmit = async (emailData: any) => {
+  try {
+    // Here you would typically make an API call to save the email
+    console.log('Email data:', emailData)
+    // Show success message
+    // You might want to add a proper notification system
+  } catch (error) {
+    console.error('Failed to send email:', error)
+    // Show error message
+  }
 }
 </script>
 

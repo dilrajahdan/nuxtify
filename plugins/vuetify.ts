@@ -20,61 +20,58 @@ export default defineNuxtPlugin((nuxtApp) => {
             success: '#4CAF50',
             warning: '#FFC107',
             background: '#F9FAFB',
-            'on-surface-variant': '#94A3B8'
+            'on-surface-variant': '#94A3B8',
+            'grey-lighten': '#F8FAFC',
+            'border-color': '#E2E8F0'
           }
         }
       }
     },
     defaults: {
-      VBtn: {
+      VDialog: {
+        width: '800',
+        scrollable: true,
+        persistent: true,
+        class: 'v-dialog--email-composer'
+      },
+      VToolbar: {
+        color: 'white',
+        class: 'px-6 py-4',
+        flat: true,
+        density: 'comfortable'
+      },
+      VCard: {
         variant: 'flat',
-        color: 'primary',
-        class: 'text-body-1 font-weight-regular text-none rounded-lg',
-        elevation: 0,
-        height: '56px',
-        minWidth: '120px'
+        color: 'surface',
+        class: 'rounded-xl',
+        elevation: 0
       },
       VTextField: {
         variant: 'outlined',
         density: 'comfortable',
         color: 'primary',
-        bgColor: '#F8FAFC',
-        class: 'rounded-lg input-field',
-        hideDetails: 'auto',
-        persistentPlaceholder: true
+        bgColor: 'white',
+        class: 'rounded-lg',
+        hideDetails: 'auto'
       },
       VTextarea: {
         variant: 'outlined',
         density: 'comfortable',
         color: 'primary',
-        bgColor: '#F8FAFC',
-        class: 'rounded-lg input-field',
-        hideDetails: 'auto',
-        persistentPlaceholder: true
+        bgColor: 'white',
+        class: 'rounded-lg',
+        hideDetails: 'auto'
       },
-      VSelect: {
-        variant: 'outlined',
-        density: 'comfortable',
-        color: 'primary',
-        bgColor: '#F8FAFC',
-        class: 'rounded-lg input-field',
-        hideDetails: 'auto',
-        persistentPlaceholder: true
-      },
-      VCard: {
+      VBtn: {
         variant: 'flat',
-        color: 'surface',
-        class: 'pa-8 rounded-xl',
-        elevation: 0
+        class: 'text-none rounded-lg font-weight-medium',
+        elevation: 0,
+        height: '48px'
       },
-      VContainer: {
-        class: 'px-6 container-width'
-      },
-      VRow: {
-        class: 'mx-0 gap-y-8'
-      },
-      VCol: {
-        class: 'px-6'
+      VChip: {
+        variant: 'flat',
+        size: 'small',
+        class: 'font-weight-medium'
       }
     }
   })
