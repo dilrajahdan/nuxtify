@@ -3,6 +3,48 @@
     class="onboarding-form"
     :class="{ 'onboarding-form--expanded': isExpanded }"
   >
+    <!-- Success Dialog -->
+    <v-dialog
+      v-model="showSuccess"
+      persistent
+      max-width="600"
+    >
+      <v-card class="pa-6">
+        <v-card-title class="text-h5 font-weight-bold mb-4">
+          Thank You!
+        </v-card-title>
+        <v-card-text>
+          <p class="text-body-1 mb-6">
+            Your responses have been submitted successfully. We'll send your personalized action plan to your email shortly.
+          </p>
+          
+          <!-- Summary Section -->
+          <div class="summary-container">
+            <h3 class="text-h6 font-weight-medium mb-4">Your Profile Summary</h3>
+            <div class="summary-list">
+              <div 
+                v-for="(item, index) in formattedSummary" 
+                :key="index"
+                class="summary-item"
+              >
+                <div class="summary-label">{{ item.label }}:</div>
+                <div class="summary-value">{{ item.value }}</div>
+              </div>
+            </div>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="primary"
+            @click="handleSuccessClose"
+          >
+            Done
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <!-- Header - Only show when expanded -->
     <div 
       v-if="isExpanded"
@@ -251,6 +293,8 @@
                   variant="outlined"
                   hide-details
                   required
+                  class="mb-4"
+                  autocomplete="given-name"
                 />
                 <v-text-field
                   v-model="form.email"
@@ -258,6 +302,8 @@
                   variant="outlined"
                   hide-details
                   required
+                  type="email"
+                  autocomplete="email"
                 />
               </div>
             </div>
@@ -461,7 +507,7 @@
         <!-- Navigation -->
         <div class="navigation-buttons d-flex gap-4 mt-8">
           <v-btn
-            v-if="currentStep > 1 || form.mainChallenge"
+            v-if="isExpanded && currentStep > 1"
             variant="outlined"
             size="large"
             @click="previousStep"
@@ -479,11 +525,12 @@
             :loading="loading"
             :disabled="!canProgress"
             class="next-button"
+            v-if="shouldShowContinueButton"
           >
-            {{ isLastStep ? 'Complete' : 'Continue' }}
+            {{ continueButtonText }}
             <v-icon
               end
-              v-if="!isLastStep"
+              v-if="currentStep !== totalSteps"
               >mdi-arrow-right</v-icon
             >
           </v-btn>
@@ -673,7 +720,6 @@ const canProgress = computed(() => {
     case 8:
     case 9:
     case 10:
-    case 11:
       return !!form.value.discQuestions[`q${currentStep.value - 6}`];
     default:
       return true;
@@ -690,6 +736,17 @@ const handleContinue = () => {
   if (currentStep.value === 1 && !isExpanded.value) {
     isExpanded.value = true;
     currentStep.value++;
+  } else if (currentStep.value === 6 && form.value.discProfile === 'yes') {
+    // If user knows their DISC profile and has selected both primary and secondary
+    if (form.value.discPrimary && form.value.discSecondary) {
+      if (!loading.value) {
+        handleSubmit();
+      }
+    }
+  } else if (currentStep.value === totalSteps.value) {
+    if (!loading.value) {
+      handleSubmit();
+    }
   } else {
     nextStep();
   }
@@ -703,73 +760,111 @@ const handleClose = () => {
 };
 
 const nextStep = () => {
+  console.log('Starting nextStep with form data:', { ...form.value });
+  console.log('Current step:', currentStep.value);
+
+  // Store current form data
+  const currentFormData = { ...form.value };
+
   if (currentStep.value === 6) {
     if (form.value.discProfile === 'yes') {
-      if (form.value.discPrimary && form.value.discSecondary) {
-        currentStep.value = totalSteps.value; // Go to summary
-      }
+      // Don't advance to summary page, let handleContinue handle submission
+      return;
     } else {
+      console.log('Starting DISC assessment questions');
       currentStep.value++;
     }
   } else if (currentStep.value >= 7 && currentStep.value <= 10) {
     // If we're in DISC assessment questions
     const currentQuestionIndex = currentStep.value - 7;
+    console.log('Processing DISC question', currentQuestionIndex + 1);
+    console.log('Current answers:', form.value.discQuestions);
+
     if (form.value.discQuestions[`q${currentQuestionIndex + 1}`]) {
       if (currentStep.value === 10) {
-        // If it's the last question, calculate profile and go to summary
+        // If it's the last question, calculate profile and submit
+        console.log('Last DISC question answered, calculating profile');
         const result = calculateDiscProfile(form.value.discQuestions);
-        form.value.discPrimary = result.primary;
-        form.value.discSecondary = result.secondary;
-        currentStep.value = totalSteps.value;
+        console.log('Calculated DISC profile:', result);
+
+        // Update DISC-related fields while preserving other data
+        form.value = {
+          ...currentFormData,
+          discPrimary: result.primary,
+          discSecondary: result.secondary
+        };
+
+        console.log('Form data after DISC calculation:', { ...form.value });
+        // Submit the form instead of going to summary
+        handleSubmit();
       } else {
         currentStep.value++;
       }
     }
-  } else if (currentStep.value < totalSteps.value) {
-    currentStep.value++;
   } else {
-    handleSubmit();
+    currentStep.value++;
   }
+
+  // Restore form data after step change
+  form.value = { ...currentFormData, ...form.value };
+
+  console.log('Ending nextStep with form data:', { ...form.value });
 };
 
 const previousStep = () => {
-  if (!isExpanded.value && form.value.mainChallenge) {
-    // Clear the selection in initial state
-    form.value.mainChallenge = '';
-    form.value.mainChallengeOther = '';
-  } else if (currentStep.value > 1) {
+  if (currentStep.value > 1) {
     currentStep.value--;
   }
 };
 
+const showSuccess = ref(false);
+
 const handleSubmit = async () => {
   try {
     loading.value = true;
-    // Submit form logic here
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const submissionData = { ...form.value };
+    console.log('Submitting form data:', submissionData);
+    
+    await submitToServer(submissionData);
+    console.log('Form submitted successfully');
 
-    // Reset form after successful submission
-    form.value = {
-      mainChallenge: '',
-      mainChallengeOther: '',
-      businessStage: '',
-      businessType: '',
-      businessTypeOther: '',
-      discProfile: '',
-      discPrimary: '',
-      discSecondary: '',
-      discQuestions: {},
-      goal: '',
-      goalOther: '',
-      goalMeaning: '',
-      name: '',
-      email: '',
-    };
+    showSuccess.value = true;
+
   } catch (error) {
     console.error('Error submitting form:', error);
   } finally {
     loading.value = false;
   }
+};
+
+const handleSuccessClose = () => {
+  // Reset form and navigation
+  form.value = {
+    mainChallenge: '',
+    mainChallengeOther: '',
+    businessStage: '',
+    businessType: '',
+    businessTypeOther: '',
+    discProfile: '',
+    discPrimary: '',
+    discSecondary: '',
+    discQuestions: {},
+    goal: '',
+    goalOther: '',
+    goalMeaning: '',
+    name: '',
+    email: '',
+  };
+  currentStep.value = 1;
+  isExpanded.value = false;
+  showSuccess.value = false;
+};
+
+// Placeholder for actual server submission
+const submitToServer = async (data: OnboardingForm) => {
+  // Replace with actual API call
+  console.log('Submitting to server:', data);
+  return new Promise((resolve) => setTimeout(resolve, 1000));
 };
 
 // Update the DISC assessment questions array with all 10 questions
@@ -883,6 +978,122 @@ const handleDISCComplete = (result: DISCResult) => {
   }
   currentStep.value = totalSteps.value;
 };
+
+// Add watch to monitor form changes
+watch(form, (newValue) => {
+  console.log('Form data changed:', { ...newValue });
+}, { deep: true });
+
+// Add watch to monitor step changes
+watch(currentStep, (newValue, oldValue) => {
+  console.log(`Step changed from ${oldValue} to ${newValue}`);
+  console.log('Current form data:', { ...form.value });
+});
+
+// Add watch for form values to handle auto-advance
+const handleAutoAdvance = () => {
+  if (!isExpanded.value && currentStep.value === 1) {
+    // First step: expand and go to next step
+    isExpanded.value = true;
+    currentStep.value++;
+  } else if (canProgress.value && currentStep.value < totalSteps.value - 1) {
+    // Auto advance for radio selections, but stop before summary page
+    nextStep();
+  }
+};
+
+// Watch for changes in form values
+watch(() => form.value.mainChallenge, () => handleAutoAdvance());
+watch(() => form.value.businessStage, () => handleAutoAdvance());
+watch(() => form.value.businessType, () => handleAutoAdvance());
+watch(() => form.value.goal, () => handleAutoAdvance());
+watch(() => form.value.discProfile, () => handleAutoAdvance());
+watch(() => form.value.discPrimary, () => {
+  if (form.value.discSecondary) handleAutoAdvance();
+});
+watch(() => form.value.discSecondary, () => {
+  if (form.value.discPrimary) handleAutoAdvance();
+});
+watch(() => form.value.discQuestions, () => handleAutoAdvance(), { deep: true });
+
+// Update computed property for continue button visibility
+const shouldShowContinueButton = computed(() => {
+  // Always show the button
+  return true;
+});
+
+// Update the navigation buttons to only show for text inputs and summary
+
+// Update the button text in the template
+const continueButtonText = computed(() => {
+  if (currentStep.value === totalSteps.value) {
+    return 'Submit';
+  }
+  return 'Continue';
+});
+
+// Add a computed property for the formatted summary
+const formattedSummary = computed(() => {
+  const summary = [];
+  
+  // Main Challenge
+  const challengeLabel = challengeOptions.find(o => o.value === form.value.mainChallenge)?.label;
+  summary.push({
+    label: 'Main Challenge',
+    value: form.value.mainChallenge === 'other' 
+      ? `${challengeLabel} - ${form.value.mainChallengeOther}`
+      : challengeLabel
+  });
+
+  // Business Stage
+  summary.push({
+    label: 'Business Stage',
+    value: businessStageOptions.find(o => o.value === form.value.businessStage)?.label
+  });
+
+  // Business Type
+  const businessTypeLabel = businessTypeOptions.find(o => o.value === form.value.businessType)?.label;
+  summary.push({
+    label: 'Business Type',
+    value: form.value.businessType === 'other'
+      ? `${businessTypeLabel} - ${form.value.businessTypeOther}`
+      : businessTypeLabel
+  });
+
+  // Goal
+  const goalLabel = goalOptions.find(o => o.value === form.value.goal)?.label;
+  summary.push({
+    label: '12-Month Goal',
+    value: form.value.goal === 'other'
+      ? `${goalLabel} - ${form.value.goalOther}`
+      : goalLabel
+  });
+
+  // Goal Meaning
+  if (form.value.goalMeaning) {
+    summary.push({
+      label: 'Goal Impact',
+      value: form.value.goalMeaning
+    });
+  }
+
+  // DISC Profile
+  const discSummary = {
+    label: 'DISC Profile',
+    value: ''
+  };
+
+  if (form.value.discProfile === 'yes') {
+    discSummary.value = `Primary: ${form.value.discPrimary}, Secondary: ${form.value.discSecondary}`;
+  } else if (discProfile.value.primary && discProfile.value.secondary) {
+    discSummary.value = `Based on your answers - Primary: ${discProfile.value.primary}, Secondary: ${discProfile.value.secondary}`;
+  }
+  summary.push(discSummary);
+
+  return summary;
+});
+
+// Update the success dialog template
 </script>
 
 <style scoped>
@@ -1206,5 +1417,45 @@ const handleDISCComplete = (result: DISCResult) => {
 
 :deep(.header-card) {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.summary-container {
+  background: var(--v-surface-variant);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@media (min-width: 600px) {
+  .summary-item {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .summary-label {
+    min-width: 140px;
+    font-weight: 500;
+  }
+}
+
+.summary-label {
+  color: var(--v-medium-emphasis);
+  font-size: 0.875rem;
+}
+
+.summary-value {
+  font-size: 1rem;
+  font-weight: 500;
 }
 </style>
