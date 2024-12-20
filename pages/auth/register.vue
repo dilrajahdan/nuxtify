@@ -1,135 +1,115 @@
 <template>
-  <div class="auth-container d-flex">
-    <!-- Left side - Register Form -->
-    <v-container class="fill-height form-container">
-      <v-row justify="center" align="center">
-        <v-col cols="12" sm="8" md="10" lg="8" xl="6">
-          <!-- Logo -->
-          <div class="mb-8">
-            <NuxtLink to="/" class="logo-link text-decoration-none">
-              <div class="d-flex align-center">
-                <img src="/logo.png" alt="Logo" height="32" class="mr-2" />
-                <span class="text-h5 font-weight-medium">Nuxtify</span>
-              </div>
-            </NuxtLink>
+  <v-container class="fill-height">
+    <v-row justify="center">
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <!-- Progress Steps -->
+        <div class="d-flex align-center justify-space-between mb-12">
+          <div class="step-item">
+            <div class="step-number active">1</div>
+            <div class="step-label active">Register</div>
           </div>
-
-          <!-- Progress Steps -->
-          <div class="d-flex align-center justify-space-between mb-12">
-            <div class="step-item">
-              <div class="step-number active">1</div>
-              <div class="step-label active">Register</div>
-            </div>
-            <v-divider class="mx-4"></v-divider>
-            <div class="step-item">
-              <div class="step-number">2</div>
-              <div class="step-label">Confirm</div>
-            </div>
-            <v-divider class="mx-4"></v-divider>
-            <div class="step-item">
-              <div class="step-number">3</div>
-              <div class="step-label">Build Funnel</div>
-            </div>
+          <v-divider class="mx-4"></v-divider>
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-label">Confirm</div>
           </div>
-
-          <!-- Register Form -->
-          <div class="mb-8">
-            <h1 class="text-h4 font-weight-bold mb-2">
-              Create your free account in 30 seconds
-            </h1>
-            <p class="text-body-1 text-medium-emphasis">
-              Join thousands of businesses who are easily acquiring qualified appointments, employees and leads every day.
-            </p>
+          <v-divider class="mx-4"></v-divider>
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-label">Build Funnel</div>
           </div>
-
-          <v-form @submit.prevent="handleRegister">
-            <v-text-field
-              v-model="form.fullName"
-              label="First and last name"
-              :rules="[rules.required]"
-              prepend-inner-icon="mdi-account"
-              variant="outlined"
-              class="mb-4"
-              density="comfortable"
-              bg-color="surface"
-            />
-
-            <v-text-field
-              v-model="form.email"
-              label="Business email address"
-              :rules="[rules.required, rules.email]"
-              prepend-inner-icon="mdi-email"
-              variant="outlined"
-              class="mb-4"
-              density="comfortable"
-              bg-color="surface"
-            />
-
-            <v-text-field
-              v-model="form.password"
-              label="Password"
-              :rules="[rules.required, rules.password]"
-              prepend-inner-icon="mdi-lock"
-              :type="showPassword ? 'text' : 'password'"
-              :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              @click:append-inner="showPassword = !showPassword"
-              variant="outlined"
-              class="mb-6"
-              density="comfortable"
-              bg-color="surface"
-            />
-
-            <v-checkbox
-              v-model="form.terms"
-              :rules="[rules.required]"
-              class="mb-6"
-              density="comfortable"
-            >
-              <template #label>
-                <span class="text-body-2">
-                  By creating an account you accept our
-                  <v-btn variant="text" to="/terms" class="px-1 text-primary text-decoration-underline">terms & conditions</v-btn>
-                  and our
-                  <v-btn variant="text" to="/privacy" class="px-1 text-primary text-decoration-underline">privacy policies</v-btn>
-                </span>
-              </template>
-            </v-checkbox>
-
-            <v-btn
-              block
-              color="primary"
-              size="large"
-              type="submit"
-              :loading="loading"
-              class="mb-6"
-            >
-              Next step
-            </v-btn>
-
-            <div class="text-center">
-              <span class="text-body-2 text-medium-emphasis">Already have an account?</span>
-              <v-btn variant="text" to="/auth/login" class="text-none px-2">Login</v-btn>
-            </div>
-          </v-form>
-        </v-col>
-      </v-row>
-    </v-container>
-
-    <!-- Right side - Image -->
-    <div class="image-container d-none d-lg-flex">
-      <div class="image-overlay pa-16">
-        <div class="text-h4 font-weight-bold text-white mb-4">
-          Start Growing Your Business Today
         </div>
-        <p class="text-body-1 text-white">
-          Join thousands of successful businesses using our platform to scale their operations and increase revenue.
-        </p>
-      </div>
-    </div>
-  </div>
+
+        <!-- Title and Description -->
+        <div class="text-center mb-8">
+          <h1 class="text-h4 font-weight-bold mb-2">
+            Create your free account in 30 seconds
+          </h1>
+          <p class="text-body-1 text-medium-emphasis">
+            Join thousands of businesses who are easily acquiring qualified appointments, employees and leads every day.
+          </p>
+        </div>
+
+        <!-- Form Content -->
+        <v-form @submit.prevent="handleRegister">
+          <v-text-field
+            v-model="form.fullName"
+            label="First and last name"
+            :rules="[rules.required]"
+            prepend-inner-icon="mdi-account"
+            variant="outlined"
+            class="mb-4"
+            density="comfortable"
+            bg-color="surface"
+          />
+
+          <v-text-field
+            v-model="form.email"
+            label="Business email address"
+            :rules="[rules.required, rules.email]"
+            prepend-inner-icon="mdi-email"
+            variant="outlined"
+            class="mb-4"
+            density="comfortable"
+            bg-color="surface"
+          />
+
+          <v-text-field
+            v-model="form.password"
+            label="Password"
+            :rules="[rules.required, rules.password]"
+            prepend-inner-icon="mdi-lock"
+            :type="showPassword ? 'text' : 'password'"
+            :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append-inner="showPassword = !showPassword"
+            variant="outlined"
+            class="mb-6"
+            density="comfortable"
+            bg-color="surface"
+          />
+
+          <v-checkbox
+            v-model="form.terms"
+            :rules="[rules.required]"
+            class="mb-6"
+            density="comfortable"
+          >
+            <template #label>
+              <span class="text-body-2">
+                By creating an account you accept our
+                <v-btn variant="text" to="/terms" class="px-1 text-primary text-decoration-underline">terms & conditions</v-btn>
+                and our
+                <v-btn variant="text" to="/privacy" class="px-1 text-primary text-decoration-underline">privacy policies</v-btn>
+              </span>
+            </template>
+          </v-checkbox>
+
+          <v-btn
+            block
+            color="primary"
+            size="large"
+            type="submit"
+            :loading="loading"
+            class="mb-6"
+          >
+            Next step
+          </v-btn>
+
+          <div class="text-center">
+            <span class="text-body-2 text-medium-emphasis">Already have an account?</span>
+            <v-btn variant="text" to="/auth/login" class="text-none px-2">Login</v-btn>
+          </div>
+        </v-form>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'minimal'
+})
+
 const { register, loading } = useAuth()
 
 const form = reactive({
@@ -144,7 +124,10 @@ const showPassword = ref(false)
 const rules = {
   required: (v: any) => !!v || 'This field is required',
   email: (v: string) => /.+@.+\..+/.test(v) || 'Please enter a valid email',
-  password: (v: string) => v.length >= 8 || 'Password must be at least 8 characters'
+  password: (v: string | null) => {
+    if (!v) return 'Password is required'
+    return v.length >= 8 || 'Password must be at least 8 characters'
+  }
 }
 
 const handleRegister = async () => {

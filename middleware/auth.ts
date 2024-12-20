@@ -11,15 +11,20 @@ export default defineNuxtRouteMiddleware((to) => {
     '/'
   ]
 
-  // List of auth-only routes
-  const authRoutes = ['/auth/login', '/auth/register', '/auth/forgot-password']
+  // List of auth-only routes (pages that should redirect to dashboard if user is logged in)
+  const authOnlyRoutes = [
+    '/auth/login',
+    '/auth/register',
+    '/auth/forgot-password'
+  ]
+
+  // If user is authenticated and trying to access auth pages, redirect to dashboard
+  if (user.value && authOnlyRoutes.includes(to.path)) {
+    return navigateTo('/app/dashboard')
+  }
 
   // If route is public, allow access
   if (publicRoutes.includes(to.path)) {
-    // If user is authenticated and trying to access auth pages, redirect to dashboard
-    if (user.value && authRoutes.includes(to.path)) {
-      return navigateTo('/app/dashboard')
-    }
     return
   }
 

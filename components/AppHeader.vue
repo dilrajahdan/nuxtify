@@ -4,7 +4,7 @@
       <!-- Logo/Brand -->
       <NuxtLink to="/" class="logo-link text-decoration-none">
         <div class="d-flex align-center">
-          <img src="/logo.png" alt="Logo" height="24" class="mr-2" />
+          <img src="/logo.png" alt="Logo" height="32" class="mr-2" />
           <span class="text-body-1 font-weight-medium">Nuxtify</span>
         </div>
       </NuxtLink>
