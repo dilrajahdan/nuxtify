@@ -3,7 +3,7 @@
     <!-- Statistics Section -->
     <v-card class="mb-6">
       <v-card-title class="d-flex align-center justify-space-between">
-        <span class="text-subtitle-1 text-md-h6">Entrepreneur Statistics</span>
+        <span class="text-subtitle-1 text-md-h6">Statistics</span>
         <v-select
           v-model="timeFilter"
           :items="timeFilterOptions"
@@ -15,32 +15,36 @@
       </v-card-title>
       
       <v-card-text>
-        <v-row>
-          <v-col cols="12" sm="6" md="3">
+        <v-row class="stats-grid">
+          <!-- Total Entrepreneurs -->
+          <v-col cols="6" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
-              <div class="text-subtitle-1 text-medium-emphasis mb-2">Total Entrepreneurs</div>
-              <div class="text-h3 font-weight-bold">{{ stats.total }}</div>
+              <div class="stat-label text-medium-emphasis mb-2">Total Entrepreneurs</div>
+              <div class="stat-value font-weight-bold">{{ stats.total }}</div>
             </div>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <!-- Active Goals -->
+          <v-col cols="6" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
-              <div class="text-subtitle-1 text-medium-emphasis mb-2">Active Goals</div>
-              <div class="text-h3 font-weight-bold">{{ stats.activeGoals }}</div>
+              <div class="stat-label text-medium-emphasis mb-2">Active Goals</div>
+              <div class="stat-value font-weight-bold">{{ stats.activeGoals }}</div>
             </div>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <!-- Avg Response Time -->
+          <v-col cols="6" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
-              <div class="text-subtitle-1 text-medium-emphasis mb-2">Avg Response Time</div>
-              <div class="text-h3 font-weight-bold">{{ stats.avgResponseTime }}h</div>
+              <div class="stat-label text-medium-emphasis mb-2">Avg Response Time</div>
+              <div class="stat-value font-weight-bold">{{ stats.avgResponseTime }}h</div>
             </div>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <!-- Success Rate -->
+          <v-col cols="6" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
-              <div class="text-subtitle-1 text-medium-emphasis mb-2">Goal Success Rate</div>
-              <div class="text-h3 font-weight-bold">{{ stats.successRate }}%</div>
+              <div class="stat-label text-medium-emphasis mb-2">Goal Success Rate</div>
+              <div class="stat-value font-weight-bold">{{ stats.successRate }}%</div>
             </div>
           </v-col>
         </v-row>
@@ -297,10 +301,49 @@ const handleSendEmail = (entrepreneur: Lead) => {
 <style scoped>
 .stats-filter {
   max-width: 180px;
+  background-color: white;
 }
 
 .search-field {
   width: 280px;
+}
+
+.stat-label {
+  font-size: var(--text-sm);
+  line-height: 1.2;
+}
+
+.stat-value {
+  font-size: var(--text-3xl);
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .stat-value {
+    font-size: var(--text-2xl);
+  }
+  
+  .stat-label {
+    font-size: var(--text-xs);
+  }
+  
+  .stat-card {
+    padding: var(--space-3) !important;
+  }
+
+  .v-card-title {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 16px;
+  }
+
+  .search-field {
+    width: 100%;
+  }
+
+  .stats-filter {
+    max-width: 140px;
+  }
 }
 
 :deep(.v-table) {
@@ -318,30 +361,6 @@ const handleSendEmail = (entrepreneur: Lead) => {
 :deep(.v-table td) {
   font-size: 0.875rem;
   height: 72px;
-}
-
-.stat-card {
-  background-color: white;
-  border: 1px solid var(--v-border-color);
-}
-
-/* Responsive adjustments */
-@media (max-width: 960px) {
-  .search-field {
-    width: 200px;
-  }
-}
-
-@media (max-width: 600px) {
-  .v-card-title {
-    flex-direction: column;
-    align-items: stretch !important;
-    gap: 16px;
-  }
-
-  .search-field {
-    width: 100%;
-  }
 }
 
 .cursor-pointer {
