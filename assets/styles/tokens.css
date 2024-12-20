@@ -113,3 +113,37 @@
   background: var(--secondary) !important;
   filter: brightness(0.98);
 } 
+
+/* Stats Card */
+.stat-card {
+  background: linear-gradient(135deg, var(--v-primary-lighten-2) 0%, white 100%) !important;
+  border: 1px solid var(--v-primary-lighten-1) !important;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(79, 110, 247, 0.15);
+  border-color: var(--v-primary-base) !important;
+}
+
+/* Utility Classes */
+.gap-3 {
+  gap: 12px;
+}
+
+.default-transition {
+  transition: all 0.2s ease;
+}
+
+/* Media Queries */
+@media (min-width: 960px) {
+  .integration-action-btn {
+    height: 44px !important;
+    padding: 0 24px !important;
+  }
+} 

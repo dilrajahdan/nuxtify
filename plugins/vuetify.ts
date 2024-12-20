@@ -13,6 +13,11 @@ export default defineNuxtPlugin((nuxtApp) => {
         light: {
           colors: {
             primary: '#4F6EF7',
+            'primary-lighten-1': '#E5EAFF',
+            'primary-lighten-2': '#F0F3FF',
+            'primary-lighten-3': '#F8FAFF',
+            'primary-darken': '#3D5CE5',
+            'primary-darken-2': '#2B4AD3',
             secondary: '#F3F4F6',
             'primary-lighten': '#EEF2FF',
             'primary-hover': '#6B84F8',
@@ -80,7 +85,11 @@ export default defineNuxtPlugin((nuxtApp) => {
         variant: 'flat',
         class: 'text-none rounded-lg font-weight-medium',
         elevation: 0,
-        height: '48px'
+        height: '44px',
+        ripple: true,
+        hover: {
+          color: 'primary-darken'
+        }
       },
       VChip: {
         variant: 'flat',
@@ -93,7 +102,14 @@ export default defineNuxtPlugin((nuxtApp) => {
       },
       VCardText: {
         class: 'pa-6'
-      }
+      },
+      VSelect: {
+        variant: 'outlined',
+        density: 'comfortable',
+        hideDetails: true,
+        class: 'rounded-lg',
+        color: 'primary',
+      },
     }
   })
 

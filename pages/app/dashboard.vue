@@ -2,42 +2,47 @@
   <v-container>
     <!-- Statistics Section -->
     <v-card class="mb-6">
-      <v-card-title class="text-subtitle-1 text-md-h6">Statistics</v-card-title>
+      <v-card-title class="d-flex align-center justify-space-between">
+        <span class="text-subtitle-1 text-md-h6">Statistics</span>
+        <v-select
+          v-model="timeFilter"
+          :items="timeFilterOptions"
+          density="compact"
+          variant="outlined"
+          hide-details
+          class="stats-filter"
+        />
+      </v-card-title>
+      
       <v-card-text>
         <v-row>
-          <!-- Time Filter -->
-          <v-col cols="12" class="d-flex justify-end mb-4">
-            <v-select
-              v-model="timeFilter"
-              :items="timeFilterOptions"
-              density="compact"
-              variant="outlined"
-              hide-details
-              class="stats-filter"
-            />
-          </v-col>
-
           <!-- Stats Grid -->
           <v-col cols="12" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
               <div class="text-subtitle-1 text-medium-emphasis mb-2">New Leads</div>
-              <div class="text-h3 font-weight-bold primary--text">{{ stats.newLeads }}</div>
+              <div class="text-h3 font-weight-bold">{{ stats.newLeads }}</div>
             </div>
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
-            <div class="text-subtitle-1 text-medium-emphasis">Replies Generated</div>
-            <div class="text-h4 font-weight-bold">{{ stats.repliesGenerated }}</div>
+            <div class="stat-card pa-4 rounded-lg">
+              <div class="text-subtitle-1 text-medium-emphasis mb-2">Replies Generated</div>
+              <div class="text-h3 font-weight-bold">{{ stats.repliesGenerated }}</div>
+            </div>
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
-            <div class="text-subtitle-1 text-medium-emphasis">Emails You Sent</div>
-            <div class="text-h4 font-weight-bold">{{ stats.emailsSent }}</div>
+            <div class="stat-card pa-4 rounded-lg">
+              <div class="text-subtitle-1 text-medium-emphasis mb-2">Emails You Sent</div>
+              <div class="text-h3 font-weight-bold">{{ stats.emailsSent }}</div>
+            </div>
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
-            <div class="text-subtitle-1 text-medium-emphasis">Email Open Rate</div>
-            <div class="text-h4 font-weight-bold">{{ stats.openRate }}%</div>
+            <div class="stat-card pa-4 rounded-lg">
+              <div class="text-subtitle-1 text-medium-emphasis mb-2">Email Open Rate</div>
+              <div class="text-h3 font-weight-bold">{{ stats.openRate }}%</div>
+            </div>
           </v-col>
         </v-row>
       </v-card-text>
@@ -58,11 +63,10 @@
           >
             <!-- Left side with icons -->
             <template v-slot:prepend>
-              <div class="d-flex align-center">
+              <div class="d-flex align-center gap-3">
                 <v-avatar 
                   color="primary-lighten"
                   size="42"
-                  class="mr-3"
                 >
                   <v-icon color="primary">mdi-account</v-icon>
                 </v-avatar>
@@ -80,7 +84,6 @@
               <v-btn
                 color="primary"
                 variant="flat"
-                class="integration-action-btn"
                 @click="viewLead(lead)"
               >
                 View Details
@@ -126,7 +129,6 @@
               <v-btn
                 color="primary"
                 variant="flat"
-                class="integration-action-btn"
                 @click="viewReply(reply)"
               >
                 View Reply
@@ -139,7 +141,7 @@
 
     <!-- Follow Up Email Opens -->
     <v-card>
-      <v-card-title>Follow Up Email Opens</v-card-title>
+      <v-card-title class="text-subtitle-1 text-md-h6">Follow Up Email Opens</v-card-title>
       <v-card-text>
         <v-list class="integration-list">
           <v-list-item
@@ -151,11 +153,10 @@
             rounded="lg"
           >
             <template v-slot:prepend>
-              <div class="d-flex align-center">
+              <div class="d-flex align-center gap-3">
                 <v-avatar 
                   color="primary-lighten"
                   size="42"
-                  class="mr-3"
                 >
                   <v-icon color="primary">mdi-account</v-icon>
                 </v-avatar>
@@ -163,7 +164,7 @@
                   color="primary-lighten"
                   size="42"
                 >
-                  <v-icon color="primary">mdi-eye-outline</v-icon>
+                  <v-icon color="primary">mdi-email-outline</v-icon>
                 </v-avatar>
               </div>
             </template>
@@ -172,7 +173,6 @@
               <v-btn
                 color="primary"
                 variant="flat"
-                class="integration-action-btn"
                 @click="viewFollowUp(followUp)"
               >
                 Follow Up
@@ -304,73 +304,17 @@ const handleEmailSubmit = async (emailData: any) => {
 
 <style scoped>
 .stats-filter {
-  max-width: 150px;
+  max-width: 180px;
   background-color: white;
 }
 
-.stat-card {
-  background: linear-gradient(135deg, var(--v-primary-lighten) 0%, white 100%);
-  border: 1px solid var(--v-section-border);
-  transition: all 0.2s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px -4px rgba(79, 110, 247, 0.1);
-}
-
-.integration-action-btn {
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: 0;
-  border-radius: 6px;
-  height: 40px;
-}
-
-:deep(.dashboard-card) {
-  border: 1px solid var(--v-card-border);
-  background: white;
-  transition: all 0.2s ease;
-}
-
-:deep(.card-header) {
-  background: linear-gradient(to bottom, white, #f8fafc);
-  border-bottom: 1px solid var(--v-card-border);
-}
-
-:deep(.hover-elevate:hover) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 20px -10px rgba(79, 110, 247, 0.15);
-}
-
-:deep(.dashboard-list-item) {
-  border: 1px solid var(--v-card-border);
-  background: white;
-  transition: all 0.2s ease;
-  padding: 12px 16px;
-  min-height: 72px;
-}
-
-:deep(.dashboard-list-item:hover) {
-  border-color: var(--v-primary-base);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
+/* Component specific overrides only */
 :deep(.v-card-title) {
   border-bottom: 1px solid var(--v-card-border);
   background-color: white;
   color: var(--v-text-medium);
   font-size: 1rem;
   padding: 16px 20px;
-}
-
-:deep(.v-card-text) {
-  padding: 24px;
-}
-
-:deep(.v-list-item__content) {
-  padding: 12px 0;
 }
 
 :deep(.v-list-item-title) {
@@ -384,33 +328,8 @@ const handleEmailSubmit = async (emailData: any) => {
   font-size: 0.75rem;
 }
 
-/* Remove any transform effects from buttons */
-:deep(.v-btn:hover) {
-  background-color: var(--v-primary-hover) !important;
-}
-
-/* Clean up transitions to exclude transforms */
-:deep(.v-btn), :deep(.v-list-item) {
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-@media (hover: hover) {
-  .hover-effect {
-    transition: all 0.2s ease;
-  }
-}
-
+/* Media query overrides */
 @media (min-width: 960px) {
-  :deep(.dashboard-list-item) {
-    min-height: 84px;
-    padding: 16px 24px;
-  }
-
-  :deep(.v-avatar) {
-    width: 48px !important;
-    height: 48px !important;
-  }
-
   :deep(.v-card-title) {
     font-size: 1.25rem;
     padding: 20px 24px;
@@ -424,18 +343,9 @@ const handleEmailSubmit = async (emailData: any) => {
   :deep(.v-list-item-subtitle) {
     font-size: 0.875rem;
   }
+}
 
-  .stat-card .text-h3 {
-    font-size: 2.5rem !important;
-  }
-
-  .stat-card .text-subtitle-1 {
-    font-size: 1rem;
-  }
-
-  :deep(.integration-action-btn) {
-    height: 44px;
-    padding: 0 24px;
-  }
+:deep(.v-list-item) {
+  column-gap: var(--space-4);
 }
 </style> 
