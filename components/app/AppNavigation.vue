@@ -19,7 +19,7 @@
             :class="{ active: activeRoute === item.id }"
           >
             <v-icon size="20">{{ item.icon }}</v-icon>
-            <span>{{ item.label }}</span>
+            <span class="nav-label">{{ item.label }}</span>
           </nuxt-link>
 
           <!-- Settings with Menu -->
@@ -37,7 +37,7 @@
                   v-bind="props"
                 >
                   <v-icon size="20">mdi-cog</v-icon>
-                  <span>Settings</span>
+                  <span class="nav-label">Settings</span>
                 </button>
               </template>
 
@@ -82,9 +82,9 @@ const navigationItems: NavigationItem[] = [
     icon: 'mdi-view-dashboard'
   },
   {
-    id: 'people',
-    path: '/app/people',
-    label: 'People',
+    id: 'entrepreneurs',
+    path: '/app/entrepreneurs',
+    label: 'Entrepreneurs',
     icon: 'mdi-account-group'
   }
 ]
@@ -133,7 +133,7 @@ const handleLogout = async () => {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 520px;
+  max-width: 600px;
   height: 72px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
@@ -183,6 +183,7 @@ const handleLogout = async () => {
   font-weight: 500;
   white-space: nowrap;
   flex-shrink: 0;
+  min-width: max-content;
 }
 
 .nav-link:hover {
@@ -245,28 +246,34 @@ const handleLogout = async () => {
   }
 
   .navigation-wrapper {
-    max-width: 420px;
+    max-width: 480px;
     height: 64px;
     padding: 6px;
+    justify-content: space-between;
   }
 
   .navigation-logo {
     width: 24px;
     height: 24px;
-    margin: 0 16px;
+    margin: 0;
+    padding: 0 12px;
   }
 
   .navigation-scroll {
-    margin: 0 -16px;
-    padding: 0 16px;
+    margin: 0;
+    padding: 0;
+    flex: 1;
   }
 
   .navigation-links {
-    gap: 8px;
+    gap: 0;
+    padding: 0;
+    width: 100%;
+    justify-content: space-around;
   }
 
   .nav-link {
-    padding: 10px 16px;
+    padding: 10px 18px;
   }
 
   .nav-link span {
@@ -280,6 +287,46 @@ const handleLogout = async () => {
   .menu-item {
     padding: 10px 14px;
     font-size: 13px;
+  }
+}
+
+/* Add new media query for very small screens */
+@media (max-width: 400px) {
+  .navigation-wrapper {
+    max-width: 280px;
+    padding: 6px;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    padding: 10px;
+    justify-content: center;
+    width: 40px;
+    min-width: 40px;
+  }
+
+  .nav-label {
+    display: none;
+  }
+
+  .navigation-links {
+    gap: 0;
+    padding: 0 4px;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .navigation-logo {
+    width: 24px;
+    padding: 0 8px;
+  }
+
+  .navigation-scroll {
+    flex: 1;
+  }
+
+  .navigation-links {
+    justify-content: space-around;
   }
 }
 </style> 

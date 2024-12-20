@@ -19,7 +19,7 @@
           <!-- Stats Grid -->
           <v-col cols="12" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
-              <div class="text-subtitle-1 text-medium-emphasis mb-2">New Leads</div>
+              <div class="text-subtitle-1 text-medium-emphasis mb-2">New Entrepreneurs</div>
               <div class="text-h3 font-weight-bold">{{ stats.newLeads }}</div>
             </div>
           </v-col>
@@ -50,7 +50,7 @@
 
     <!-- Approve Emails for New Leads -->
     <v-card class="mb-6">
-      <v-card-title class="text-subtitle-1 text-md-h6">Approve Emails for New Leads</v-card-title>
+      <v-card-title class="text-subtitle-1 text-md-h6">Approve Emails for New Entrepreneurs</v-card-title>
       <v-card-text>
         <v-list class="integration-list">
           <v-list-item

@@ -3,11 +3,11 @@
     <v-card class="email-composer">
       <!-- Header -->
       <v-toolbar
-        class="px-6 py-4"
+        class="email-composer-header"
         color="white"
         density="comfortable"
       >
-        <v-toolbar-title class="text-h6 font-weight-medium">
+        <v-toolbar-title class="text-subtitle-1 text-md-h6 font-weight-medium">
           {{ dialogTitle }}
         </v-toolbar-title>
         <v-spacer />
@@ -36,11 +36,12 @@
               <div class="text-h6 font-weight-medium mb-1">{{ props.lead?.name }}</div>
               <div class="d-flex align-center">
                 <v-chip
-                  color="primary"
+                  color="primary-lighten-1"
                   size="small"
                   variant="flat"
-                  class="font-weight-medium mr-2"
+                  class="font-weight-medium mr-2 d-flex align-center"
                 >
+                  <v-icon size="16" start class="mr-1">mdi-target</v-icon>
                   {{ props.lead?.discProfile }}
                 </v-chip>
                 <v-chip
@@ -49,8 +50,9 @@
                   color="secondary"
                   size="small"
                   variant="flat"
-                  class="font-weight-medium mr-2"
+                  class="font-weight-medium mr-2 d-flex align-center"
                 >
+                  <v-icon size="16" start class="mr-1">mdi-pin</v-icon>
                   {{ tag }}
                 </v-chip>
               </div>
@@ -133,7 +135,7 @@
         <v-btn
           variant="tonal"
           size="large"
-          class="px-6"
+          class="px-6 text-medium-emphasis"
           @click="closeDialog"
         >
           Cancel
@@ -142,6 +144,7 @@
           color="primary"
           size="large"
           class="ml-3 px-6"
+          variant="flat"
           @click="handleSubmit"
         >
           {{ submitButtonText }}
@@ -266,6 +269,7 @@ const submitButtonText = computed(() => {
 .formatting-tools {
   background-color: white;
   border: 1px solid #E2E8F0;
+  border-radius: 8px;
 }
 
 .actions-border {
@@ -276,25 +280,20 @@ const submitButtonText = computed(() => {
 :deep(.v-field) {
   border-radius: 8px;
   background-color: white !important;
+  border: 1px solid #E2E8F0;
 }
 
 :deep(.v-field__input) {
   padding: 12px 16px;
   min-height: 48px;
+  font-size: 0.875rem;
 }
 
 :deep(.v-label) {
   font-size: 0.875rem;
   font-weight: 500;
   color: #64748B;
-}
-
-:deep(.v-btn--size-small) {
-  height: 36px;
-  min-width: 36px;
-  padding: 0 12px;
-  letter-spacing: 0.5px;
-  font-weight: 500;
+  margin-bottom: 4px;
 }
 
 :deep(.v-btn--size-large) {
@@ -304,24 +303,77 @@ const submitButtonText = computed(() => {
   letter-spacing: 0.5px;
 }
 
-:deep(.v-toolbar) {
-  border-bottom: 1px solid #E2E8F0;
+:deep(.v-btn--variant-tonal) {
+  background-color: #F1F5F9;
+  color: #64748B;
+}
+
+:deep(.v-btn--variant-tonal:hover) {
+  background-color: #E2E8F0;
+}
+
+:deep(.v-btn--variant-flat.v-btn--color-primary) {
+  background-color: rgb(var(--v-theme-primary));
+  color: white;
+}
+
+:deep(.v-btn--variant-flat.v-btn--color-primary:hover) {
+  background-color: rgb(var(--v-theme-primary-darken));
+}
+
+:deep(.v-field--focused) {
+  border-color: rgb(var(--v-theme-primary)) !important;
+  border-width: 1px !important;
+}
+
+:deep(.v-field:hover:not(.v-field--focused)) {
+  border-color: #CBD5E1;
+}
+
+:deep(.email-composer-header) {
+  border-bottom: 1px solid var(--v-section-border-color);
+  background: linear-gradient(to bottom, white, #f8fafc) !important;
+  padding: 20px 24px !important;
+}
+
+:deep(.email-composer-header .v-toolbar-title) {
+  color: var(--v-text-medium);
+  font-size: 1rem;
+}
+
+/* Media query for larger screens */
+@media (min-width: 960px) {
+  :deep(.email-composer-header .v-toolbar-title) {
+    font-size: 1.25rem;
+  }
+}
+
+:deep(.formatting-tools .v-btn) {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+:deep(.formatting-tools .v-btn--variant-tonal) {
+  background-color: #F8FAFC;
+}
+
+:deep(.formatting-tools .v-btn--variant-tonal:hover) {
+  background-color: #F1F5F9;
+}
+
+:deep(.v-chip.v-chip--variant-flat.v-theme--light.text-primary) {
+  color: rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary-lighten-1));
 }
 
 :deep(.v-chip) {
   font-size: 0.75rem;
-  font-weight: 500;
-}
-
-:deep(.v-chip--size-small) {
+  height: 24px;
   --v-chip-size: 24px;
 }
 
-:deep(.v-field--focused) {
-  border-color: #4F6EF7 !important;
-}
-
-:deep(.v-field:hover) {
-  border-color: #CBD5E1;
+:deep(.v-chip .v-icon) {
+  font-size: 14px;
+  margin-right: 4px;
 }
 </style> 
