@@ -1,9 +1,105 @@
 <template>
-  <div 
-    class="onboarding-form"
-    :class="{ 'onboarding-form--expanded': isExpanded }"
-  >
-    <!-- Success Dialog -->
+  <div class="onboarding-form">
+    <!-- Initial Question -->
+    <v-card 
+      class="question-card pa-6"
+      v-if="currentStep === 1"
+    >
+      <h2 class="text-h5 font-weight-bold mb-4">
+        What's the main thing holding you back in your business right now?
+      </h2>
+      <v-radio-group
+        v-model="form.mainChallenge"
+        class="option-group"
+      >
+        <v-radio
+          v-for="option in challengeOptions"
+          :key="option.value"
+          :value="option.value"
+          :label="option.label"
+          color="primary"
+          class="option-item mb-4"
+        />
+      </v-radio-group>
+
+      <v-expand-transition>
+        <v-textarea
+          v-if="form.mainChallenge === 'other'"
+          v-model="form.mainChallengeOther"
+          placeholder="Tell us more..."
+          variant="outlined"
+          rows="3"
+          auto-grow
+          hide-details
+          class="mt-4 other-input"
+        />
+      </v-expand-transition>
+    </v-card>
+
+    <!-- Full Screen Dialog -->
+    <v-dialog
+      v-model="showFormDialog"
+      fullscreen
+      :scrim="false"
+      transition="dialog-bottom-transition"
+      class="form-dialog"
+    >
+      <v-card>
+        <!-- Dialog Header -->
+        <v-toolbar
+          color="white"
+          density="comfortable"
+        >
+          <v-btn
+            icon
+            variant="text"
+            @click="handleDialogClose"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          
+          <v-toolbar-title class="text-subtitle-1 text-md-h6 font-weight-medium">
+            Unlock The Next Level of Your Journey
+          </v-toolbar-title>
+        </v-toolbar>
+
+        <!-- Progress Bar -->
+        <div class="progress-wrapper">
+          <div class="progress-container">
+            <div class="d-flex align-center justify-space-between text-medium-emphasis mb-2">
+              <span>{{ Math.round(progress) }}% Complete</span>
+            </div>
+            <v-progress-linear
+              v-model="progress"
+              color="primary"
+              height="8"
+              rounded
+              class="progress-bar"
+            >
+              <template v-slot:default="{ value }">
+                <div
+                  class="progress-overlay"
+                  :style="{ width: `${value}%` }"
+                />
+              </template>
+            </v-progress-linear>
+          </div>
+        </div>
+
+        <!-- Form Content -->
+        <div class="form-content pa-4 pa-sm-6">
+          <v-window
+            v-model="currentStep"
+            class="fill-height"
+          >
+            <!-- Rest of your window items here, starting from step 2 -->
+            <!-- ... -->
+          </v-window>
+        </div>
+      </v-card>
+    </v-dialog>
+
+    <!-- Success Dialog - keep as is -->
     <v-dialog
       v-model="showSuccess"
       persistent
@@ -44,499 +140,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <!-- Header - Only show when expanded -->
-    <div 
-      v-if="isExpanded"
-      class="expanded-header-wrapper"
-    >
-      <v-toolbar
-        class="email-composer-header"
-        color="white"
-        density="comfortable"
-        flat
-      >
-        <div class="expanded-header">
-          <v-toolbar-title class="text-subtitle-1 text-md-h6 font-weight-medium">
-            Unlock The Next Level of Your Journey With Tailored AI
-          </v-toolbar-title>
-        </div>
-        <v-spacer />
-        <v-btn
-          icon="mdi-close"
-          variant="text"
-          size="small"
-          color="medium-emphasis"
-          @click="handleClose"
-        />
-      </v-toolbar>
-    </div>
-
-    <!-- Progress Bar -->
-    <div 
-      class="progress-wrapper"
-      v-if="isExpanded"
-      v-show="isExpanded"
-    >
-      <div class="progress-container">
-        <div
-          class="d-flex align-center justify-space-between text-medium-emphasis mb-2"
-        >
-          <span>{{ Math.round(progress) }}% Complete</span>
-        </div>
-        <v-progress-linear
-          v-model="progress"
-          color="primary"
-          height="8"
-          rounded
-          class="progress-bar"
-        >
-          <template v-slot:default="{ value }">
-            <div
-              class="progress-overlay"
-              :style="{ width: `${value}%` }"
-            />
-          </template>
-        </v-progress-linear>
-      </div>
-    </div>
-
-    <!-- Question Container -->
-    <v-card 
-      class="question-card"
-      :class="{
-        'pa-4 pa-sm-6 pa-md-8': isExpanded,
-        'pa-6': !isExpanded
-      }"
-    >
-      <v-window
-        v-model="currentStep"
-        class="fill-height"
-      >
-        <!-- Step 1: Hook Question -->
-        <v-window-item :value="1">
-          <transition
-            name="fade-slide"
-            mode="out-in"
-          >
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-6">
-                What's the main thing holding you back in your business right
-                now?
-              </h2>
-              <v-radio-group
-                v-model="form.mainChallenge"
-                class="option-group"
-              >
-                <v-radio
-                  v-for="option in challengeOptions"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-4"
-                />
-              </v-radio-group>
-
-              <v-expand-transition>
-                <v-textarea
-                  v-if="form.mainChallenge === 'other'"
-                  v-model="form.mainChallengeOther"
-                  placeholder="Tell us more..."
-                  variant="outlined"
-                  rows="3"
-                  auto-grow
-                  hide-details
-                  class="mt-4 other-input"
-                />
-              </v-expand-transition>
-            </div>
-          </transition>
-        </v-window-item>
-
-        <!-- Step 2: Business Stage -->
-        <v-window-item :value="2">
-          <transition
-            name="fade-slide"
-            mode="out-in"
-          >
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-6">
-                Which best describes where you're at?
-              </h2>
-              <v-radio-group
-                v-model="form.businessStage"
-                class="option-group"
-              >
-                <v-radio
-                  v-for="option in businessStageOptions"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-4"
-                />
-              </v-radio-group>
-            </div>
-          </transition>
-        </v-window-item>
-
-        <!-- Step 3: Business Type -->
-        <v-window-item :value="3">
-          <transition
-            name="fade-slide"
-            mode="out-in"
-          >
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-6">
-                What type of business are you building?
-              </h2>
-              <v-radio-group
-                v-model="form.businessType"
-                class="option-group"
-              >
-                <v-radio
-                  v-for="option in businessTypeOptions"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-4"
-                />
-              </v-radio-group>
-
-              <v-expand-transition>
-                <v-textarea
-                  v-if="form.businessType === 'other'"
-                  v-model="form.businessTypeOther"
-                  placeholder="Tell us more about your business..."
-                  variant="outlined"
-                  rows="3"
-                  auto-grow
-                  hide-details
-                  class="mt-4 other-input"
-                />
-              </v-expand-transition>
-            </div>
-          </transition>
-        </v-window-item>
-
-        <!-- Step 4: Goals & Vision -->
-        <v-window-item :value="4">
-          <transition
-            name="fade-slide"
-            mode="out-in"
-          >
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-6">
-                What's your biggest goal for the next 12 months?
-              </h2>
-              <v-radio-group
-                v-model="form.goal"
-                class="option-group"
-              >
-                <v-radio
-                  v-for="option in goalOptions"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-4"
-                />
-              </v-radio-group>
-
-              <v-expand-transition>
-                <v-textarea
-                  v-if="form.goal === 'other'"
-                  v-model="form.goalOther"
-                  placeholder="Tell us about your goal..."
-                  variant="outlined"
-                  rows="3"
-                  auto-grow
-                  hide-details
-                  class="mt-4 other-input"
-                />
-              </v-expand-transition>
-
-              <div class="mt-8">
-                <h3 class="text-h6 font-weight-medium mb-4">
-                  What would achieving this goal mean for you?
-                </h3>
-                <v-textarea
-                  v-model="form.goalMeaning"
-                  placeholder="Share how achieving this goal would impact your life and business..."
-                  variant="outlined"
-                  rows="4"
-                  auto-grow
-                  hide-details
-                  class="meaning-input"
-                />
-              </div>
-            </div>
-          </transition>
-        </v-window-item>
-
-        <!-- Step 5: Contact Info -->
-        <v-window-item :value="5">
-          <transition
-            name="fade-slide"
-            mode="out-in"
-          >
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-6">
-                Let's create your personalized action plan.
-              </h2>
-              <div class="d-flex flex-column gap-4">
-                <v-text-field
-                  v-model="form.name"
-                  placeholder="First Name"
-                  variant="outlined"
-                  hide-details
-                  required
-                  class="mb-4"
-                  autocomplete="given-name"
-                />
-                <v-text-field
-                  v-model="form.email"
-                  placeholder="Email Address"
-                  variant="outlined"
-                  hide-details
-                  required
-                  type="email"
-                  autocomplete="email"
-                />
-              </div>
-            </div>
-          </transition>
-        </v-window-item>
-
-        <!-- After contact info step -->
-        <!-- Step 6: DISC Profile Knowledge -->
-        <v-window-item :value="6">
-          <transition name="fade-slide" mode="out-in">
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-4">
-                Do you know your DISC profile?
-              </h2>
-              <v-radio-group
-                v-model="form.discProfile"
-                class="option-group"
-              >
-                <v-radio
-                  v-for="option in discKnowledgeOptions"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-2"
-                />
-              </v-radio-group>
-
-              <v-expand-transition>
-                <div v-if="form.discProfile === 'yes'" class="mt-4">
-                  <h3 class="text-h6 font-weight-medium mb-3">
-                    What's your profile?
-                  </h3>
-
-                  <!-- Primary Style -->
-                  <div class="mb-3">
-                    <div class="text-subtitle-1 mb-2">Primary Style</div>
-                    <v-radio-group
-                      v-model="form.discPrimary"
-                      class="option-group"
-                    >
-                      <v-radio
-                        v-for="option in discStyleOptions"
-                        :key="option.value"
-                        :value="option.value"
-                        :label="option.label"
-                        color="primary"
-                        class="option-item mb-2"
-                      />
-                    </v-radio-group>
-                  </div>
-
-                  <!-- Secondary Style -->
-                  <div>
-                    <div class="text-subtitle-1 mb-2">Secondary Style</div>
-                    <v-radio-group
-                      v-model="form.discSecondary"
-                      class="option-group"
-                    >
-                      <v-radio
-                        v-for="option in discStyleOptions"
-                        :key="option.value"
-                        :value="option.value"
-                        :label="option.label"
-                        color="primary"
-                        class="option-item mb-2"
-                      />
-                    </v-radio-group>
-                  </div>
-                </div>
-              </v-expand-transition>
-            </div>
-          </transition>
-        </v-window-item>
-
-        <!-- DISC Assessment Questions - Only show if doesn't know DISC -->
-        <v-window-item
-          v-for="(q, index) in discAssessmentQuestions"
-          :key="index"
-          :value="index + 7"
-          v-if="form.discProfile === 'no' || form.discProfile === 'not_sure'"
-        >
-          <transition
-            name="fade-slide"
-            mode="out-in"
-          >
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-4">
-                {{ q.question }}
-              </h2>
-              <v-radio-group
-                v-model="form.discQuestions[`q${index + 1}`]"
-                class="option-group"
-              >
-                <v-radio
-                  v-for="option in q.options"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-2"
-                />
-              </v-radio-group>
-            </div>
-          </transition>
-        </v-window-item>
-
-        <!-- Summary Step -->
-        <v-window-item :value="totalSteps">
-          <transition name="fade-slide" mode="out-in">
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-6">
-                Here's a summary of your responses
-              </h2>
-              
-              <div class="summary-list">
-                <!-- Main Challenge -->
-                <div class="summary-item">
-                  <div class="summary-label">Main Challenge:</div>
-                  <div class="summary-value">
-                    {{ challengeOptions.find(o => o.value === form.mainChallenge)?.label }}
-                    {{ form.mainChallenge === 'other' ? `- ${form.mainChallengeOther}` : '' }}
-                  </div>
-                </div>
-
-                <!-- Business Stage -->
-                <div class="summary-item">
-                  <div class="summary-label">Business Stage:</div>
-                  <div class="summary-value">
-                    {{ businessStageOptions.find(o => o.value === form.businessStage)?.label }}
-                  </div>
-                </div>
-
-                <!-- Business Type -->
-                <div class="summary-item">
-                  <div class="summary-label">Business Type:</div>
-                  <div class="summary-value">
-                    {{ businessTypeOptions.find(o => o.value === form.businessType)?.label }}
-                    {{ form.businessType === 'other' ? `- ${form.businessTypeOther}` : '' }}
-                  </div>
-                </div>
-
-                <!-- Goal -->
-                <div class="summary-item">
-                  <div class="summary-label">12-Month Goal:</div>
-                  <div class="summary-value">
-                    {{ goalOptions.find(o => o.value === form.goal)?.label }}
-                    {{ form.goal === 'other' ? `- ${form.goalOther}` : '' }}
-                  </div>
-                </div>
-
-                <!-- Goal Meaning -->
-                <div class="summary-item">
-                  <div class="summary-label">Goal Impact:</div>
-                  <div class="summary-value">{{ form.goalMeaning }}</div>
-                </div>
-
-                <!-- DISC Profile -->
-                <div class="summary-item">
-                  <div class="summary-label">DISC Profile:</div>
-                  <div class="summary-value">
-                    <template v-if="form.discProfile === 'yes'">
-                      Primary: {{ form.discPrimary }}, Secondary: {{ form.discSecondary }}
-                    </template>
-                    <template v-else-if="form.discProfile === 'no' || form.discProfile === 'not_sure'">
-                      <div class="disc-profile-result">
-                        <div class="mb-2">Based on your answers:</div>
-                        <div class="d-flex align-center gap-2">
-                          <v-chip color="primary" size="small" variant="flat">
-                            Primary: {{ discProfile.primary }}
-                          </v-chip>
-                          <v-chip color="secondary" size="small" variant="flat">
-                            Secondary: {{ discProfile.secondary }}
-                          </v-chip>
-                        </div>
-                      </div>
-                    </template>
-                  </div>
-                </div>
-
-                <!-- Contact Info -->
-                <div class="summary-item">
-                  <div class="summary-label">Contact:</div>
-                  <div class="summary-value">{{ form.name }} ({{ form.email }})</div>
-                </div>
-              </div>
-
-              <v-alert
-                color="primary"
-                variant="tonal"
-                class="mt-6"
-                border="start"
-                density="comfortable"
-              >
-                Click Complete to submit your responses and receive your personalized action plan.
-              </v-alert>
-            </div>
-          </transition>
-        </v-window-item>
-
-        <!-- Navigation -->
-        <div class="navigation-buttons d-flex gap-4 mt-8">
-          <v-btn
-            v-if="isExpanded && currentStep > 1"
-            variant="outlined"
-            size="large"
-            @click="previousStep"
-            :disabled="loading"
-            class="back-button"
-          >
-            <v-icon start>mdi-arrow-left</v-icon>
-            Back
-          </v-btn>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            size="large"
-            @click="handleContinue"
-            :loading="loading"
-            :disabled="!canProgress"
-            class="next-button"
-            v-if="shouldShowContinueButton"
-          >
-            {{ continueButtonText }}
-            <v-icon
-              end
-              v-if="currentStep !== totalSteps"
-              >mdi-arrow-right</v-icon
-            >
-          </v-btn>
-        </div>
-      </v-window>
-    </v-card>
   </div>
 </template>
 
@@ -732,12 +335,12 @@ const handleOptionSelect = () => {
   // Handle any radio button selection updates here if needed
 };
 
+const showFormDialog = ref(false);
+
 const handleContinue = () => {
   if (currentStep.value === 1 && !isExpanded.value) {
-    isExpanded.value = true;
-    currentStep.value++;
+    showFormDialog.value = true;
   } else if (currentStep.value === 6 && form.value.discProfile === 'yes') {
-    // If user knows their DISC profile and has selected both primary and secondary
     if (form.value.discPrimary && form.value.discSecondary) {
       if (!loading.value) {
         handleSubmit();
@@ -1092,6 +695,29 @@ const formattedSummary = computed(() => {
 
   return summary;
 });
+
+// Add method to handle dialog close
+const handleDialogClose = () => {
+  showFormDialog.value = false;
+  currentStep.value = 1;
+  // Reset form data to initial state
+  form.value = {
+    mainChallenge: '',
+    mainChallengeOther: '',
+    businessStage: '',
+    businessType: '',
+    businessTypeOther: '',
+    discProfile: '',
+    discPrimary: '',
+    discSecondary: '',
+    discQuestions: {},
+    goal: '',
+    goalOther: '',
+    goalMeaning: '',
+    name: '',
+    email: '',
+  };
+};
 
 // Update the success dialog template
 </script>
@@ -1457,5 +1083,31 @@ const formattedSummary = computed(() => {
 .summary-value {
   font-size: 1rem;
   font-weight: 500;
+}
+
+/* Add these new styles */
+.form-dialog {
+  .v-card {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-content {
+    flex: 1;
+    overflow-y: auto;
+    background: #f8fafc;
+  }
+}
+
+/* Update dialog transition */
+:deep(.dialog-bottom-transition-enter-active),
+:deep(.dialog-bottom-transition-leave-active) {
+  transition: transform 0.3s ease-in-out;
+}
+
+:deep(.dialog-bottom-transition-enter-from),
+:deep(.dialog-bottom-transition-leave-to) {
+  transform: translateY(100%);
 }
 </style>
