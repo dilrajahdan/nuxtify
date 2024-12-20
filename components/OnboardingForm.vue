@@ -422,7 +422,7 @@
                     <template v-if="form.discProfile === 'yes'">
                       Primary: {{ form.discPrimary }}, Secondary: {{ form.discSecondary }}
                     </template>
-                    <template v-else>
+                    <template v-else-if="form.discProfile === 'no' || form.discProfile === 'not_sure'">
                       <div class="disc-profile-result">
                         <div class="mb-2">Based on your answers:</div>
                         <div class="d-flex align-center gap-2">
@@ -689,6 +689,7 @@ const handleOptionSelect = () => {
 const handleContinue = () => {
   if (currentStep.value === 1 && !isExpanded.value) {
     isExpanded.value = true;
+    currentStep.value++;
   } else {
     nextStep();
   }
@@ -709,6 +710,20 @@ const nextStep = () => {
       }
     } else {
       currentStep.value++;
+    }
+  } else if (currentStep.value >= 7 && currentStep.value <= 10) {
+    // If we're in DISC assessment questions
+    const currentQuestionIndex = currentStep.value - 7;
+    if (form.value.discQuestions[`q${currentQuestionIndex + 1}`]) {
+      if (currentStep.value === 10) {
+        // If it's the last question, calculate profile and go to summary
+        const result = calculateDiscProfile(form.value.discQuestions);
+        form.value.discPrimary = result.primary;
+        form.value.discSecondary = result.secondary;
+        currentStep.value = totalSteps.value;
+      } else {
+        currentStep.value++;
+      }
     }
   } else if (currentStep.value < totalSteps.value) {
     currentStep.value++;
@@ -838,7 +853,18 @@ const discProfile = computed(() => {
       secondary: form.value.discSecondary,
     };
   }
-  return calculateDiscProfile(form.value.discQuestions);
+  // For assessment path, calculate from questions if we have answers
+  if (Object.keys(form.value.discQuestions).length > 0) {
+    const result = calculateDiscProfile(form.value.discQuestions);
+    return {
+      primary: result.primary,
+      secondary: result.secondary,
+    };
+  }
+  return {
+    primary: '',
+    secondary: '',
+  };
 });
 
 const handleDISCComplete = (result: DISCResult) => {
@@ -847,8 +873,13 @@ const handleDISCComplete = (result: DISCResult) => {
     form.value.discPrimary = result.profile.primary;
     form.value.discSecondary = result.profile.secondary;
   } else {
-    form.value.discProfile = 'assessment';
-    form.value.discQuestions = result.answers || {};
+    form.value = {
+      ...form.value,
+      discProfile: 'assessment',
+      discQuestions: result.answers || {},
+      discPrimary: result.profile.primary,
+      discSecondary: result.profile.secondary,
+    };
   }
   currentStep.value = totalSteps.value;
 };
