@@ -12,10 +12,11 @@
     "test:e2e": "cypress open",
     "e2e": "cypress open",
     "e2e:headless": "cypress run",
-    "e2e:dev": "start-server-and-test dev http://localhost:3000 cypress:open",
-    "e2e:run": "start-server-and-test dev http://localhost:3000 cypress:run",
+    "e2e:dev": "start-server-and-test 'npm run dev' http://localhost:3001 'cypress open'",
+    "e2e:run": "start-server-and-test 'npm run dev' http://localhost:3001 'cypress run'",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "cypress:install": "cypress install"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
