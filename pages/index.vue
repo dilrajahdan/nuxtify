@@ -51,8 +51,12 @@
             cols="12"
             md="6"
             class="px-0 px-sm-6"
+            :class="{ 'd-none': isFormExpanded }"
           >
-            <OnboardingForm class="mt-8 mt-md-0" />
+            <OnboardingForm 
+              class="mt-8 mt-md-0" 
+              @expand="handleFormExpand"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -106,8 +110,8 @@
           <div class="text-body-1">
             <p>--</p>
             <p>Dane Maxwell</p>
-            <p>Co founder - Arena</p>
-            <p>dane@arena.co</p>
+            <p>Co founder - ActionMo.de</p>
+            <p>dane@actionmo.de</p>
           </div>
         </v-card>
       </v-container>
@@ -356,6 +360,12 @@ useHead({
     },
   ],
 });
+
+const isFormExpanded = ref(false);
+
+const handleFormExpand = () => {
+  isFormExpanded.value = true;
+};
 </script>
 
 <style scoped>
@@ -372,5 +382,14 @@ useHead({
   .section-y {
     padding: 16px 0;
   }
+}
+
+.v-col {
+  transition: opacity 0.3s ease;
+}
+
+.d-none {
+  opacity: 0;
+  pointer-events: none;
 }
 </style>
