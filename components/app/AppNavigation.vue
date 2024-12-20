@@ -237,7 +237,7 @@ const handleLogout = async () => {
 }
 
 /* Mobile styles */
-@media (max-width: 959px) {
+@media (max-width: 768px) {
   .navigation-container {
     top: unset;
     bottom: 16px;

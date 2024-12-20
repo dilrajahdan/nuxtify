@@ -2,7 +2,7 @@
   <v-container>
     <!-- Statistics Section -->
     <v-card class="mb-6">
-      <v-card-title>Statistics</v-card-title>
+      <v-card-title class="text-subtitle-1 text-md-h6">Statistics</v-card-title>
       <v-card-text>
         <v-row>
           <!-- Time Filter -->
@@ -45,7 +45,7 @@
 
     <!-- Approve Emails for New Leads -->
     <v-card class="mb-6">
-      <v-card-title>Approve Emails for New Leads</v-card-title>
+      <v-card-title class="text-subtitle-1 text-md-h6">Approve Emails for New Leads</v-card-title>
       <v-card-text>
         <v-list class="integration-list">
           <v-list-item
@@ -53,7 +53,7 @@
             :key="lead.id"
             :title="`${lead.name} | ${lead.discProfile}`"
             :subtitle="lead.details"
-            class="hover-effect"
+            class="text-caption text-md-subtitle-1"
             rounded="lg"
           >
             <!-- Left side with icons -->
@@ -93,7 +93,7 @@
 
     <!-- Approve Email Replies -->
     <v-card class="mb-6">
-      <v-card-title>Approve Email Replies</v-card-title>
+      <v-card-title class="text-subtitle-1 text-md-h6">Approve Email Replies</v-card-title>
       <v-card-text>
         <v-list class="integration-list">
           <v-list-item
@@ -101,7 +101,7 @@
             :key="reply.id"
             :title="`${reply.name} | ${reply.discProfile}`"
             :subtitle="reply.details"
-            class="hover-effect"
+            class="text-caption text-md-subtitle-1"
             rounded="lg"
           >
             <template v-slot:prepend>
@@ -361,8 +361,8 @@ const handleEmailSubmit = async (emailData: any) => {
   border-bottom: 1px solid var(--v-card-border);
   background-color: white;
   color: var(--v-text-medium);
-  font-size: 1.25rem;
-  padding: 20px 24px;
+  font-size: 1rem;
+  padding: 16px 20px;
 }
 
 :deep(.v-card-text) {
@@ -375,13 +375,13 @@ const handleEmailSubmit = async (emailData: any) => {
 
 :deep(.v-list-item-title) {
   font-weight: 500;
-  font-size: 1rem;
-  margin-bottom: 4px;
+  font-size: 0.875rem;
+  margin-bottom: 2px;
 }
 
 :deep(.v-list-item-subtitle) {
   color: var(--v-text-medium);
-  font-size: 0.875rem;
+  font-size: 0.75rem;
 }
 
 /* Remove any transform effects from buttons */
@@ -411,9 +411,26 @@ const handleEmailSubmit = async (emailData: any) => {
     height: 48px !important;
   }
 
+  :deep(.v-card-title) {
+    font-size: 1.25rem;
+    padding: 20px 24px;
+  }
+
   :deep(.v-list-item-title) {
     font-size: 1.1rem;
     margin-bottom: 6px;
+  }
+
+  :deep(.v-list-item-subtitle) {
+    font-size: 0.875rem;
+  }
+
+  .stat-card .text-h3 {
+    font-size: 2.5rem !important;
+  }
+
+  .stat-card .text-subtitle-1 {
+    font-size: 1rem;
   }
 
   :deep(.integration-action-btn) {
