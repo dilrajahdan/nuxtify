@@ -6,10 +6,10 @@
         <v-col cols="12" md="4" class="pr-md-12">
           <div class="d-flex align-center mb-6">
             <img src="/logo.png" alt="Logo" height="24" class="mr-2" />
-            <span class="text-body-1 font-weight-medium">Nuxtify</span>
+            <span class="text-body-1 font-weight-medium">Action Mo.de</span>
           </div>
           <p class="text-body-2 text-medium-emphasis mb-6">
-            A modern Nuxt.js starter template for building production-ready SaaS applications.
+            Stop fucking around. Get into Action Mo.de.
           </p>
           <div class="d-flex gap-4">
             <v-btn icon variant="text" href="https://github.com" target="_blank">

@@ -246,19 +246,24 @@
         </v-window-item>
 
         <!-- DISC Assessment Questions -->
-        <v-window-item :value="6" v-if="form.discProfile !== 'yes'">
+        <v-window-item 
+          v-for="(q, index) in discAssessmentQuestions"
+          :key="index"
+          :value="index + 6"
+          v-if="form.discProfile !== 'yes'"
+        >
           <transition name="fade-slide" mode="out-in">
             <div class="question-content">
               <h2 class="text-h5 font-weight-bold mb-4">
-                When making decisions, you typically...
+                {{ q.question }}
               </h2>
               <v-radio-group
-                v-model="form.discQuestions.q1"
+                v-model="form.discQuestions[`q${index + 1}`]"
                 class="option-group"
                 @update:model-value="handleOptionSelect"
               >
                 <v-radio
-                  v-for="option in discQ1Options"
+                  v-for="option in q.options"
                   :key="option.value"
                   :value="option.value"
                   :label="option.label"
@@ -270,106 +275,89 @@
           </transition>
         </v-window-item>
 
-        <v-window-item :value="7" v-if="form.discProfile !== 'yes'">
+        <!-- Add before the final contact step -->
+        <v-window-item :value="form.discProfile === 'yes' ? 6 : 16">
           <transition name="fade-slide" mode="out-in">
             <div class="question-content">
               <h2 class="text-h5 font-weight-bold mb-4">
-                In group settings, you tend to...
+                Here's a summary of your responses
               </h2>
-              <v-radio-group
-                v-model="form.discQuestions.q2"
-                class="option-group"
-                @update:model-value="handleOptionSelect"
-              >
-                <v-radio
-                  v-for="option in discQ2Options"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-2"
-                />
-              </v-radio-group>
-            </div>
-          </transition>
-        </v-window-item>
+              
+              <div class="summary-list">
+                <!-- Main Challenge -->
+                <div class="summary-item">
+                  <div class="summary-label">Main Challenge:</div>
+                  <div class="summary-value">
+                    {{ challengeOptions.find(o => o.value === form.mainChallenge)?.label }}
+                    {{ form.mainChallenge === 'other' ? `- ${form.mainChallengeOther}` : '' }}
+                  </div>
+                </div>
 
-        <v-window-item :value="8" v-if="form.discProfile !== 'yes'">
-          <transition name="fade-slide" mode="out-in">
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-4">
-                When starting a new project, you prefer to...
-              </h2>
-              <v-radio-group
-                v-model="form.discQuestions.q3"
-                class="option-group"
-                @update:model-value="handleOptionSelect"
-              >
-                <v-radio
-                  v-for="option in discQ3Options"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-2"
-                />
-              </v-radio-group>
-            </div>
-          </transition>
-        </v-window-item>
+                <!-- Business Stage -->
+                <div class="summary-item">
+                  <div class="summary-label">Business Stage:</div>
+                  <div class="summary-value">
+                    {{ businessStageOptions.find(o => o.value === form.businessStage)?.label }}
+                  </div>
+                </div>
 
-        <v-window-item :value="9" v-if="form.discProfile !== 'yes'">
-          <transition name="fade-slide" mode="out-in">
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-4">
-                Under pressure, you're most likely to...
-              </h2>
-              <v-radio-group
-                v-model="form.discQuestions.q4"
-                class="option-group"
-                @update:model-value="handleOptionSelect"
-              >
-                <v-radio
-                  v-for="option in discQ4Options"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-2"
-                />
-              </v-radio-group>
-            </div>
-          </transition>
-        </v-window-item>
+                <!-- Business Type -->
+                <div class="summary-item">
+                  <div class="summary-label">Business Type:</div>
+                  <div class="summary-value">
+                    {{ businessTypeOptions.find(o => o.value === form.businessType)?.label }}
+                    {{ form.businessType === 'other' ? `- ${form.businessTypeOther}` : '' }}
+                  </div>
+                </div>
 
-        <v-window-item :value="10" v-if="form.discProfile !== 'yes'">
-          <transition name="fade-slide" mode="out-in">
-            <div class="question-content">
-              <h2 class="text-h5 font-weight-bold mb-4">
-                Your ideal work environment is one that...
-              </h2>
-              <v-radio-group
-                v-model="form.discQuestions.q5"
-                class="option-group"
-                @update:model-value="handleOptionSelect"
+                <!-- DISC Profile -->
+                <div class="summary-item">
+                  <div class="summary-label">DISC Profile:</div>
+                  <div class="summary-value">
+                    <template v-if="form.discProfile === 'yes'">
+                      Primary: {{ form.discPrimary }}, Secondary: {{ form.discSecondary }}
+                    </template>
+                    <template v-else>
+                      <div class="disc-profile-result">
+                        <div class="mb-2">Based on your answers:</div>
+                        <div class="d-flex align-center gap-2">
+                          <v-chip
+                            color="primary"
+                            size="small"
+                          >
+                            Primary: {{ discProfile.primary }}
+                          </v-chip>
+                          <v-chip
+                            color="secondary"
+                            size="small"
+                          >
+                            Secondary: {{ discProfile.secondary }}
+                          </v-chip>
+                        </div>
+                        <div class="text-caption mt-2">
+                          This reflects your natural working style
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+
+              <v-alert
+                color="primary"
+                variant="tonal"
+                class="mt-6"
+                border="start"
+                density="comfortable"
               >
-                <v-radio
-                  v-for="option in discQ5Options"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  color="primary"
-                  class="option-item mb-2"
-                />
-              </v-radio-group>
+                Great! Now let's get your contact details to create your personalized action plan.
+              </v-alert>
             </div>
           </transition>
         </v-window-item>
 
         <!-- Final Contact Step -->
-        <v-window-item 
-          :value="form.discProfile === 'yes' ? 6 : 10"
-        >
+        <v-window-item :value="form.discProfile === 'yes' ? 7 : 17">
           <transition name="fade-slide" mode="out-in">
             <div class="question-content">
               <h2 class="text-h5 font-weight-bold mb-6">
@@ -413,7 +401,7 @@
         </v-window-item>
 
         <!-- Navigation -->
-        <div class="navigation-buttons d-flex gap-4 mt-8">
+        <div class="navigation-buttons d-flex gap-4">
           <v-btn
             v-if="currentStep > 1"
             variant="outlined"
@@ -467,9 +455,9 @@ interface OnboardingForm {
 const currentStep = ref(1)
 const totalSteps = computed(() => {
   if (form.value.discProfile === 'yes') {
-    return 6
+    return 7
   }
-  return 10
+  return 17
 })
 const loading = ref(false)
 
@@ -615,19 +603,24 @@ const canProgress = computed(() => {
       if (form.value.discProfile === 'yes') {
         return !!form.value.discPrimary && !!form.value.discSecondary
       }
-      return !!form.value.discQuestions.q1
+      return true
     case 6:
-      if (form.value.discProfile === 'yes') {
-        return !!form.value.name && !!form.value.email
-      }
-      return !!form.value.discQuestions.q2
     case 7:
-      return !!form.value.discQuestions.q3
     case 8:
-      return !!form.value.discQuestions.q4
     case 9:
-      return !!form.value.discQuestions.q5
     case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+      if (form.value.discProfile !== 'yes') {
+        return !!form.value.discQuestions[`q${currentStep.value - 5}`]
+      }
+      return true
+    case 16:
+      return true
+    case 17:
       return !!form.value.name && !!form.value.email
     default:
       return true
@@ -639,10 +632,18 @@ const handleOptionSelect = () => {
 }
 
 const nextStep = () => {
-  if (currentStep.value === 4 && form.value.discProfile === 'yes') {
-    currentStep.value++
+  if (currentStep.value === 4) {
+    if (form.value.discProfile === 'yes') {
+      currentStep.value = 5
+    } else {
+      currentStep.value = 6
+    }
   } else if (currentStep.value === 5 && form.value.discProfile === 'yes') {
-    currentStep.value = 6
+    currentStep.value = 15
+  } else if (currentStep.value >= 6 && currentStep.value <= 14 && form.value.discProfile !== 'yes') {
+    currentStep.value++
+  } else if (currentStep.value === 15) {
+    currentStep.value = 16
   } else if (currentStep.value < totalSteps.value) {
     currentStep.value++
   } else {
@@ -687,6 +688,136 @@ const handleSubmit = async () => {
     loading.value = false
   }
 }
+
+// Update the DISC assessment questions array with all 10 questions
+const discAssessmentQuestions = [
+  {
+    question: "When tackling a new business challenge, you typically:",
+    options: [
+      { label: "Take charge and make quick decisions", value: "D" },
+      { label: "Get others excited and involved in solutions", value: "I" },
+      { label: "Take time to analyze all options carefully", value: "C" },
+      { label: "Work steadily and maintain harmony", value: "S" }
+    ]
+  },
+  {
+    question: "In meetings or group situations, you tend to:",
+    options: [
+      { label: "Drive the conversation and outcomes", value: "D" },
+      { label: "Keep things upbeat and entertaining", value: "I" },
+      { label: "Focus on accuracy and getting details right", value: "C" },
+      { label: "Listen and ensure everyone is heard", value: "S" }
+    ]
+  },
+  {
+    question: "When explaining something to team members:",
+    options: [
+      { label: "Get straight to the point and focus on results", value: "D" },
+      { label: "Use stories and share experiences enthusiastically", value: "I" },
+      { label: "Provide detailed, step-by-step instructions", value: "C" },
+      { label: "Take time to ensure everyone's understanding", value: "S" }
+    ]
+  },
+  {
+    question: "Your ideal work environment is:",
+    options: [
+      { label: "Fast-paced with lots of autonomy", value: "D" },
+      { label: "Social and collaborative with recognition", value: "I" },
+      { label: "Structured with time to ensure quality", value: "C" },
+      { label: "Stable and supportive with clear expectations", value: "S" }
+    ]
+  },
+  {
+    question: "When dealing with business setbacks:",
+    options: [
+      { label: "Take immediate action to fix the situation", value: "D" },
+      { label: "Stay optimistic and rally people together", value: "I" },
+      { label: "Analyze what went wrong to prevent future issues", value: "C" },
+      { label: "Remain patient and maintain steady progress", value: "S" }
+    ]
+  },
+  {
+    question: "Your preferred way of getting things done is:",
+    options: [
+      { label: "Taking control and pushing for results", value: "D" },
+      { label: "Inspiring others and making it fun", value: "I" },
+      { label: "Following established processes precisely", value: "C" },
+      { label: "Being consistent and supporting the team", value: "S" }
+    ]
+  },
+  {
+    question: "When making important decisions:",
+    options: [
+      { label: "Trust your gut and decide quickly", value: "D" },
+      { label: "Discuss with others and consider possibilities", value: "I" },
+      { label: "Research thoroughly and weigh all options", value: "C" },
+      { label: "Consider the impact on everyone involved", value: "S" }
+    ]
+  },
+  {
+    question: "Under pressure, you typically:",
+    options: [
+      { label: "Become more direct and take charge", value: "D" },
+      { label: "Talk things through with others", value: "I" },
+      { label: "Focus harder on getting details right", value: "C" },
+      { label: "Maintain calm and seek harmony", value: "S" }
+    ]
+  },
+  {
+    question: "Your communication style could be described as:",
+    options: [
+      { label: "Brief, direct, and focused on results", value: "D" },
+      { label: "Energetic, optimistic, and persuasive", value: "I" },
+      { label: "Precise, systematic, and logical", value: "C" },
+      { label: "Diplomatic, steady, and supportive", value: "S" }
+    ]
+  },
+  {
+    question: "When starting a new project:",
+    options: [
+      { label: "Focus on the goal and push forward", value: "D" },
+      { label: "Generate excitement and possibilities", value: "I" },
+      { label: "Create detailed plans and systems", value: "C" },
+      { label: "Establish a steady, comfortable pace", value: "S" }
+    ]
+  }
+]
+
+// Add DISC profile calculation
+const calculateDiscProfile = (answers: Record<string, string>) => {
+  const counts = {
+    D: 0,
+    I: 0,
+    S: 0,
+    C: 0
+  }
+  
+  // Count responses
+  Object.values(answers).forEach(answer => {
+    counts[answer as keyof typeof counts]++
+  })
+  
+  // Sort by count to get primary and secondary
+  const sorted = Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+  
+  return {
+    primary: sorted[0][0],
+    secondary: sorted[1][0],
+    scores: counts
+  }
+}
+
+// Add computed property for DISC profile
+const discProfile = computed(() => {
+  if (form.value.discProfile === 'yes') {
+    return {
+      primary: form.value.discPrimary,
+      secondary: form.value.discSecondary
+    }
+  }
+  return calculateDiscProfile(form.value.discQuestions)
+})
 </script>
 
 <style scoped>
@@ -705,15 +836,15 @@ const handleSubmit = async () => {
 }
 
 .option-group {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .option-item {
   position: relative;
   transition: all 0.2s ease;
-  padding: 8px 16px;
+  padding: 4px 16px;
   border-radius: 12px;
-  margin-bottom: 8px !important;
+  margin-bottom: 4px !important;
 }
 
 .option-item:hover {
@@ -820,5 +951,50 @@ const handleSubmit = async () => {
 
 .meaning-input:deep(.v-field) {
   background: white !important;
+}
+
+/* Add new summary styles */
+.summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--v-primary-lighten-4);
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 0.875rem;
+  color: var(--v-medium-emphasis);
+  font-weight: 500;
+}
+
+.summary-value {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+@media (min-width: 600px) {
+  .summary-item {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .summary-label {
+    min-width: 140px;
+  }
+}
+
+.disc-profile-result {
+  background: var(--v-primary-lighten-4);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--v-primary-lighten-1);
 }
 </style> 
