@@ -40,6 +40,27 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 2px 4px -1px rgb(0 0 0 / 0.06);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* List Item Styles */
+  --list-item-padding: var(--space-4);
+  --list-item-border: 1px solid var(--v-border-color);
+  --list-item-radius: var(--radius-lg);
+  --list-item-gap: var(--space-2);
+  --list-item-hover-transform: translateY(-1px);
+  --list-item-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  
+  /* Text Sizes */
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+
+  /* Typography Scale */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 2rem;      /* 32px */
 }
 
 /* Container width overrides */
@@ -147,3 +168,53 @@
     padding: 0 24px !important;
   }
 } 
+
+/* Add these utility classes */
+.hover-effect {
+  transition: all 0.2s ease;
+  background-color: white;
+  border: var(--list-item-border);
+}
+
+.hover-effect:hover {
+  transform: var(--list-item-hover-transform);
+  box-shadow: var(--list-item-hover-shadow);
+}
+
+/* List styles */
+.dashboard-list-item {
+  padding: var(--list-item-padding);
+  background: white;
+  border-bottom: var(--list-item-border);
+  margin-bottom: var(--space-3);
+}
+
+.dashboard-list-item:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 600px) {
+  .dashboard-list-item {
+    padding: var(--space-3);
+  }
+  
+  .text-body-2 {
+    font-size: var(--text-sm);
+  }
+} 
+
+/* Stats Card Responsive Styles */
+.stats-grid {
+  margin: 0 calc(-1 * var(--space-2));
+}
+
+.stats-grid > [class^="col-"] {
+  padding: var(--space-2);
+}
+
+.stat-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

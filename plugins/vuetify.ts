@@ -31,7 +31,8 @@ export default defineNuxtPlugin((nuxtApp) => {
             'on-surface-variant': '#94A3B8',
             'grey-lighten': '#F8FAFC',
             'section-border': '#E2E8F0',
-            'text-medium': '#64748B'
+            'text-medium': '#64748B',
+            'border-color': '#E2E8F0',
           }
         }
       }
@@ -57,13 +58,13 @@ export default defineNuxtPlugin((nuxtApp) => {
         hover: true,
       },
       VList: {
-        class: 'pa-0 bg-transparent',
+        class: ['pa-0', 'bg-transparent'],
         elevation: 0
       },
       VListItem: {
-        class: 'mb-3 rounded-lg dashboard-list-item',
+        class: ['dashboard-list-item', 'hover-effect'],
         elevation: 0,
-        rounded: true,
+        rounded: 'lg'
       },
       VTextField: {
         variant: 'outlined',

@@ -15,33 +15,36 @@
       </v-card-title>
       
       <v-card-text>
-        <v-row>
-          <!-- Stats Grid -->
-          <v-col cols="12" sm="6" md="3">
+        <v-row class="stats-grid">
+          <!-- New Entrepreneurs -->
+          <v-col cols="6" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
-              <div class="text-subtitle-1 text-medium-emphasis mb-2">New Entrepreneurs</div>
-              <div class="text-h3 font-weight-bold">{{ stats.newLeads }}</div>
+              <div class="stat-label text-medium-emphasis mb-2">New Entrepreneurs</div>
+              <div class="stat-value font-weight-bold">{{ stats.newLeads }}</div>
             </div>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <!-- Replies Generated -->
+          <v-col cols="6" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
-              <div class="text-subtitle-1 text-medium-emphasis mb-2">Replies Generated</div>
-              <div class="text-h3 font-weight-bold">{{ stats.repliesGenerated }}</div>
+              <div class="stat-label text-medium-emphasis mb-2">Replies Generated</div>
+              <div class="stat-value font-weight-bold">{{ stats.repliesGenerated }}</div>
             </div>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <!-- Emails Sent -->
+          <v-col cols="6" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
-              <div class="text-subtitle-1 text-medium-emphasis mb-2">Emails You Sent</div>
-              <div class="text-h3 font-weight-bold">{{ stats.emailsSent }}</div>
+              <div class="stat-label text-medium-emphasis mb-2">Emails You Sent</div>
+              <div class="stat-value font-weight-bold">{{ stats.emailsSent }}</div>
             </div>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <!-- Email Open Rate -->
+          <v-col cols="6" sm="6" md="3">
             <div class="stat-card pa-4 rounded-lg">
-              <div class="text-subtitle-1 text-medium-emphasis mb-2">Email Open Rate</div>
-              <div class="text-h3 font-weight-bold">{{ stats.openRate }}%</div>
+              <div class="stat-label text-medium-emphasis mb-2">Email Open Rate</div>
+              <div class="stat-value font-weight-bold">{{ stats.openRate }}%</div>
             </div>
           </v-col>
         </v-row>
@@ -52,43 +55,72 @@
     <v-card class="mb-6">
       <v-card-title class="text-subtitle-1 text-md-h6">Approve Emails for New Entrepreneurs</v-card-title>
       <v-card-text>
-        <v-list class="integration-list">
+        <v-list class="integration-list pa-0">
           <v-list-item
             v-for="lead in newLeads"
             :key="lead.id"
-            :title="`${lead.name} | ${lead.discProfile}`"
-            :subtitle="lead.details"
-            class="text-caption text-md-subtitle-1"
+            class="hover-effect mb-3"
             rounded="lg"
           >
-            <!-- Left side with icons -->
+            <!-- Desktop Layout -->
             <template v-slot:prepend>
-              <div class="d-flex align-center gap-3">
-                <v-avatar 
-                  color="primary-lighten"
-                  size="42"
-                >
+              <div class="d-none d-sm-flex align-center gap-3">
+                <v-avatar color="primary-lighten" size="42">
                   <v-icon color="primary">mdi-account</v-icon>
                 </v-avatar>
-                <v-avatar 
-                  color="primary-lighten"
-                  size="42"
-                >
+                <v-avatar color="primary-lighten" size="42">
                   <v-icon color="primary">mdi-email-outline</v-icon>
                 </v-avatar>
               </div>
             </template>
-            
-            <!-- Right side with action button -->
-            <template v-slot:append>
-              <v-btn
-                color="primary"
-                variant="flat"
-                @click="viewLead(lead)"
-              >
-                View Details
-              </v-btn>
-            </template>
+
+            <!-- Content -->
+            <div class="d-flex flex-column flex-sm-row align-sm-center">
+              <!-- Left side info -->
+              <div class="flex-grow-1">
+                <!-- Name and DISC row -->
+                <div class="d-flex align-center mb-1">
+                  <div class="font-weight-medium">{{ lead.name }}</div>
+                  <v-chip
+                    size="x-small"
+                    color="primary-lighten-1"
+                    variant="flat"
+                    class="ml-2"
+                  >
+                    {{ lead.discProfile }}
+                  </v-chip>
+                </div>
+
+                <!-- Email and Goal row -->
+                <div class="d-flex flex-column flex-sm-row align-sm-center gap-2">
+                  <div class="text-body-2 text-medium-emphasis">{{ lead.email }}</div>
+                  <div class="d-flex align-center text-body-2">
+                    <v-icon size="16" color="success" class="mr-1">mdi-target</v-icon>
+                    {{ lead.goal }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right side - Tags and Button -->
+              <div class="d-flex flex-column flex-sm-row align-sm-center gap-sm-4 mt-2 mt-sm-0">
+                <div class="d-flex flex-wrap gap-1">
+                  <v-chip
+                    v-for="tag in lead.tags"
+                    :key="tag"
+                    size="x-small"
+                    color="secondary"
+                    variant="flat"
+                  >
+                    {{ tag }}
+                  </v-chip>
+                </div>
+                <div class="d-flex justify-end mt-2 mt-sm-0">
+                  <v-btn color="primary" variant="flat" size="small" @click="viewLead(lead)">
+                    View Details
+                  </v-btn>
+                </div>
+              </div>
+            </div>
           </v-list-item>
         </v-list>
       </v-card-text>
@@ -98,42 +130,72 @@
     <v-card class="mb-6">
       <v-card-title class="text-subtitle-1 text-md-h6">Approve Email Replies</v-card-title>
       <v-card-text>
-        <v-list class="integration-list">
+        <v-list class="integration-list pa-0">
           <v-list-item
             v-for="reply in emailReplies"
             :key="reply.id"
-            :title="`${reply.name} | ${reply.discProfile}`"
-            :subtitle="reply.details"
-            class="text-caption text-md-subtitle-1"
+            class="hover-effect mb-3"
             rounded="lg"
           >
+            <!-- Desktop Layout -->
             <template v-slot:prepend>
-              <div class="d-flex align-center">
-                <v-avatar 
-                  color="primary-lighten"
-                  size="42"
-                  class="mr-3"
-                >
+              <div class="d-none d-sm-flex align-center gap-3">
+                <v-avatar color="primary-lighten" size="42">
                   <v-icon color="primary">mdi-account</v-icon>
                 </v-avatar>
-                <v-avatar 
-                  color="primary-lighten"
-                  size="42"
-                >
+                <v-avatar color="primary-lighten" size="42">
                   <v-icon color="primary">mdi-reply</v-icon>
                 </v-avatar>
               </div>
             </template>
-            
-            <template v-slot:append>
-              <v-btn
-                color="primary"
-                variant="flat"
-                @click="viewReply(reply)"
-              >
-                View Reply
-              </v-btn>
-            </template>
+
+            <!-- Content -->
+            <div class="d-flex flex-column flex-sm-row align-sm-center">
+              <!-- Left side info -->
+              <div class="flex-grow-1">
+                <!-- Name and DISC row -->
+                <div class="d-flex align-center mb-1">
+                  <div class="font-weight-medium">{{ reply.name }}</div>
+                  <v-chip
+                    size="x-small"
+                    color="primary-lighten-1"
+                    variant="flat"
+                    class="ml-2"
+                  >
+                    {{ reply.discProfile }}
+                  </v-chip>
+                </div>
+
+                <!-- Email and Goal row -->
+                <div class="d-flex flex-column flex-sm-row align-sm-center gap-2">
+                  <div class="text-body-2 text-medium-emphasis">{{ reply.email }}</div>
+                  <div class="d-flex align-center text-body-2">
+                    <v-icon size="16" color="success" class="mr-1">mdi-target</v-icon>
+                    {{ reply.goal }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right side - Tags and Button -->
+              <div class="d-flex flex-column flex-sm-row align-sm-center gap-sm-4 mt-2 mt-sm-0">
+                <div class="d-flex flex-wrap gap-1">
+                  <v-chip
+                    v-for="tag in reply.tags"
+                    :key="tag"
+                    size="x-small"
+                    color="secondary"
+                    variant="flat"
+                  >
+                    {{ tag }}
+                  </v-chip>
+                </div>
+                <div class="d-flex justify-end mt-2 mt-sm-0">
+                  <v-btn color="primary" variant="flat" size="small" @click="viewReply(reply)">
+                    View Reply
+                  </v-btn>
+                </div>
+              </div>
+            </div>
           </v-list-item>
         </v-list>
       </v-card-text>
@@ -143,17 +205,16 @@
     <v-card>
       <v-card-title class="text-subtitle-1 text-md-h6">Follow Up Email Opens</v-card-title>
       <v-card-text>
-        <v-list class="integration-list">
+        <v-list class="integration-list pa-0">
           <v-list-item
             v-for="followUp in followUps"
             :key="followUp.id"
-            :title="`${followUp.name} | ${followUp.discProfile}`"
-            :subtitle="followUp.details"
-            class="hover-effect"
+            class="hover-effect mb-3"
             rounded="lg"
           >
+            <!-- Desktop Layout (hidden on mobile) -->
             <template v-slot:prepend>
-              <div class="d-flex align-center gap-3">
+              <div class="d-none d-sm-flex align-center gap-3">
                 <v-avatar 
                   color="primary-lighten"
                   size="42"
@@ -168,16 +229,59 @@
                 </v-avatar>
               </div>
             </template>
-            
-            <template v-slot:append>
-              <v-btn
-                color="primary"
-                variant="flat"
-                @click="viewFollowUp(followUp)"
-              >
-                Follow Up
-              </v-btn>
-            </template>
+
+            <!-- Content -->
+            <div class="d-flex flex-column flex-sm-row align-sm-center">
+              <!-- Left side info -->
+              <div class="flex-grow-1">
+                <!-- Name and DISC row -->
+                <div class="d-flex align-center mb-1">
+                  <div class="font-weight-medium">{{ followUp.name }}</div>
+                  <v-chip
+                    size="x-small"
+                    color="primary-lighten-1"
+                    variant="flat"
+                    class="ml-2"
+                  >
+                    {{ followUp.discProfile }}
+                  </v-chip>
+                </div>
+
+                <!-- Email and Goal row -->
+                <div class="d-flex flex-column flex-sm-row align-sm-center gap-2">
+                  <div class="text-body-2 text-medium-emphasis">{{ followUp.email }}</div>
+                  <div class="d-flex align-center text-body-2">
+                    <v-icon size="16" color="success" class="mr-1">mdi-target</v-icon>
+                    {{ followUp.goal }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right side - Tags and Button -->
+              <div class="d-flex flex-column flex-sm-row align-sm-center gap-sm-4 mt-2 mt-sm-0">
+                <div class="d-flex flex-wrap gap-1">
+                  <v-chip
+                    v-for="tag in followUp.tags"
+                    :key="tag"
+                    size="x-small"
+                    color="secondary"
+                    variant="flat"
+                  >
+                    {{ tag }}
+                  </v-chip>
+                </div>
+                <div class="d-flex justify-end mt-2 mt-sm-0">
+                  <v-btn
+                    color="primary"
+                    variant="flat"
+                    size="small"
+                    @click="viewFollowUp(followUp)"
+                  >
+                    Follow Up
+                  </v-btn>
+                </div>
+              </div>
+            </div>
           </v-list-item>
         </v-list>
       </v-card-text>
@@ -377,5 +481,88 @@ const handleEmailSubmit = async (emailData: any) => {
 
 :deep(.v-list-item) {
   column-gap: var(--space-4);
+}
+
+/* Add these styles */
+.hover-effect {
+  transition: all 0.2s ease;
+  background-color: white;
+  border: 1px solid var(--v-border-color);
+}
+
+.hover-effect:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+:deep(.v-list-item) {
+  padding: 16px;
+  background: white;
+  border-bottom: 1px solid var(--v-border-color);
+  margin-bottom: 12px;
+}
+
+:deep(.v-list-item:last-child) {
+  border-bottom: none;
+}
+
+@media (max-width: 600px) {
+  :deep(.v-list-item) {
+    padding: 12px;
+  }
+
+  .text-body-2 {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Update the list-item styles */
+:deep(.v-list) {
+  background: transparent;
+}
+
+:deep(.v-list-item) {
+  padding: 16px;
+  background: white;
+}
+
+/* Add these styles */
+.gap-2 {
+  gap: 8px;
+}
+
+.gap-sm-4 {
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  :deep(.v-list-item) {
+    padding: 12px 16px;
+  }
+}
+
+/* Update your existing styles */
+.stat-label {
+  font-size: var(--text-sm);
+  line-height: 1.2;
+}
+
+.stat-value {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  
+  .stat-label {
+    font-size: var(--text-xs);
+  }
+  
+  .stat-card {
+    padding: var(--space-3) !important;
+  }
 }
 </style> 
