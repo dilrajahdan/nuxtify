@@ -56,42 +56,11 @@
 
       <!-- Authenticated Navigation -->
       <template v-else>
-        <!-- Global Search -->
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          placeholder="Search..."
-          variant="solo-filled"
-          density="compact"
-          hide-details
-          class="mx-4 search-field"
-          bg-color="surface"
-        />
-
-        <!-- Quick Actions -->
-        <div class="d-flex align-center gap-2">
-          <!-- New Funnel Button -->
-          <v-btn
-            color="primary"
-            prepend-icon="mdi-plus"
-            variant="flat"
-            class="hidden-sm-and-down"
-            to="/app/funnels/new"
-          >
-            New Funnel
+       
+          <!-- Dashboard -->
+          <v-btn to="/app/dashboard" prepend-icon="mdi-view-dashboard" variant="text" class="text-body-1 font-weight-medium">
+            Dashboard
           </v-btn>
-
-          <!-- Notifications -->
-          <v-btn icon variant="text" class="mr-2">
-            <v-badge
-              :content="unreadNotifications"
-              :model-value="unreadNotifications > 0"
-              color="error"
-            >
-              <v-icon>mdi-bell-outline</v-icon>
-            </v-badge>
-          </v-btn>
-
           <!-- User Menu -->
           <v-menu location="bottom end" transition="slide-y-transition">
             <template v-slot:activator="{ props }">
@@ -128,7 +97,7 @@
               </v-list-item>
             </v-list>
           </v-menu>
-        </div>
+       
       </template>
 
       <!-- Mobile Menu Button -->
