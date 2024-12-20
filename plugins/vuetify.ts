@@ -12,7 +12,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       themes: {
         light: {
           colors: {
-            primary: '#0066FF',
+            primary: '#4F6EF7',
             secondary: '#F3F4F6',
             surface: '#FFFFFF',
             error: '#FF5252',
@@ -20,7 +20,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             success: '#4CAF50',
             warning: '#FFC107',
             background: '#F9FAFB',
-            'on-surface-variant': '#6B7280'
+            'on-surface-variant': '#94A3B8'
           }
         }
       }
@@ -29,29 +29,46 @@ export default defineNuxtPlugin((nuxtApp) => {
       VBtn: {
         variant: 'flat',
         color: 'primary',
-        class: 'text-body-1 font-weight-medium text-none rounded-lg',
+        class: 'text-body-1 font-weight-regular text-none rounded-lg',
         elevation: 0,
-        height: '48px',
+        height: '56px',
         minWidth: '120px'
       },
-      VBtnGroup: {
-        rounded: 'lg',
-        elevation: 0,
-        class: 'border-thin'
+      VTextField: {
+        variant: 'outlined',
+        density: 'comfortable',
+        color: 'primary',
+        bgColor: '#F8FAFC',
+        class: 'rounded-lg input-field',
+        hideDetails: 'auto',
+        persistentPlaceholder: true
+      },
+      VTextarea: {
+        variant: 'outlined',
+        density: 'comfortable',
+        color: 'primary',
+        bgColor: '#F8FAFC',
+        class: 'rounded-lg input-field',
+        hideDetails: 'auto',
+        persistentPlaceholder: true
+      },
+      VSelect: {
+        variant: 'outlined',
+        density: 'comfortable',
+        color: 'primary',
+        bgColor: '#F8FAFC',
+        class: 'rounded-lg input-field',
+        hideDetails: 'auto',
+        persistentPlaceholder: true
       },
       VCard: {
         variant: 'flat',
         color: 'surface',
-        class: 'pa-8 rounded-lg',
+        class: 'pa-8 rounded-xl',
         elevation: 0
       },
       VContainer: {
         class: 'px-6 container-width'
-      },
-      VAppBar: {
-        elevation: 0,
-        class: 'px-0 border-b',
-        height: '72px'
       },
       VRow: {
         class: 'mx-0 gap-y-8'

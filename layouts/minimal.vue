@@ -7,9 +7,9 @@
     >
       <v-container class="px-4">
         <NuxtLink to="/" class="text-decoration-none">
-          <div class="d-flex align-center">
+          <div class="d-flex align-center flex-column">
             <img src="/logo.png" alt="Logo" height="32" class="mr-2" />
-            <!-- <span class="text-h6 font-weight-medium">Nuxtify</span> -->
+            <span class="text-body-2 font-weight-bold text-black">Action Mo.de</span>
           </div>
         </NuxtLink>
       </v-container>

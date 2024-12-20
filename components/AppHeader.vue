@@ -3,9 +3,9 @@
     <v-container class="d-flex align-center py-2">
       <!-- Logo/Brand -->
       <NuxtLink to="/" class="logo-link text-decoration-none">
-        <div class="d-flex align-center">
+        <div class="d-flex align-center flex-column">
           <img src="/logo.png" alt="Logo" height="32" class="mr-2" />
-          <span class="text-body-1 font-weight-medium">Nuxtify</span>
+          <span class="text-body-2 font-weight-bold">Action Mo.de</span>
         </div>
       </NuxtLink>
 
@@ -13,7 +13,7 @@
 
       <!-- Public Navigation (shown when not logged in) -->
       <template v-if="!user">
-        <div class="d-none d-md-flex gap-6">
+        <!-- <div class="d-none d-md-flex gap-6">
           <v-btn 
             variant="text" 
             class="text-body-1 font-weight-medium" 
@@ -30,15 +30,8 @@
           >
             Pricing
           </v-btn>
-          <v-btn 
-            variant="text" 
-            class="text-body-1 font-weight-medium" 
-            to="/templates"
-            color="medium-emphasis"
-          >
-            Templates
-          </v-btn>
-        </div>
+
+        </div> -->
 
         <!-- Auth Buttons -->
         <div class="d-flex align-center gap-3 ml-6">

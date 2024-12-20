@@ -1,21 +1,22 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="section-y">
-      <v-container>
-        <v-row class="align-center">
-          <v-col cols="12" md="6">
+    <section class="">
+      <v-container class="pa-0 pa-sm-2 pa-md-6">
+        <v-row class="align-start align-md-center">
+          <!-- Text Column -->
+          <v-col cols="12" md="6" class="px-4 px-sm-6">
             <div class="stack-space-large">
-              <h1 class="text-h2 font-weight-bold">{{ title }}</h1>
-              <p class="text-body-1 text-medium-emphasis max-w-lg">
+              <h1 class="text-h6 text-bold-emphasis">{{ title }}</h1>
+              <p class="text-h3 text-md-h2 font-weight-bold max-w-lg">
                 {{ description }}
               </p>
-              <div class="d-flex inline-space">
+              <!-- <div class="d-flex flex-column flex-sm-row gap-4">
                 <v-btn
                   color="primary"
                   size="x-large"
                   rounded="pill"
-                  class="px-8"
+                  class="px-8 flex-grow-1 flex-sm-grow-0"
                 >
                   Get Started
                 </v-btn>
@@ -23,41 +24,69 @@
                   variant="outlined"
                   size="x-large"
                   rounded="pill"
-                  class="px-8 py-3"
+                  class="px-8 py-3 flex-grow-1 flex-sm-grow-0"
                 >
                   View Demo
                 </v-btn>
-              </div>
+              </div> -->
             </div>
             
-            <!-- Trusted By Section -->
-            <div class="mt-20">
-              <p class="text-caption text-medium-emphasis mb-6">
-                Built with modern tools
-              </p>
-              <div class="d-flex inline-space">
-                <v-img src="https://placehold.co/80x24/e9ecef/495057?text=Vue" width="80" height="24" />
-                <v-img src="https://placehold.co/80x24/e9ecef/495057?text=Nuxt" width="80" height="24" />
-                <v-img src="https://placehold.co/80x24/e9ecef/495057?text=Supabase" width="80" height="24" />
-                <v-img src="https://placehold.co/80x24/e9ecef/495057?text=Vuetify" width="80" height="24" />
-              </div>
-            </div>
           </v-col>
-          <v-col cols="12" md="6">
-            <div class="position-relative">
-              <v-img
-                src="https://placehold.co/800x600/e9ecef/495057?text=App+Preview"
-                alt="App Preview"
-                class="mt-8 mt-md-0 rounded-lg"
-              />
-            </div>
+
+          <!-- Form Column -->
+          <v-col cols="12" md="6" class="px-0 px-sm-6">
+            <OnboardingForm class="mt-8 mt-md-0" />
           </v-col>
         </v-row>
       </v-container>
     </section>
 
-    <!-- Features Section -->
+    <!-- After the Hero Section and before Features Section -->
     <section class="section-y bg-surface">
+      <v-container>
+        <h2 class="text-h3 text-center font-weight-bold mb-8">A Letter From The Founder</h2>
+        <v-card class="pa-8 mx-auto" max-width="800">
+          <p class="text-body-1 mb-4">Dear Founder,</p>
+          <p class="text-body-1 mb-4">From the Caribbean somewhere south of Miami</p>
+          <p class="text-body-1 mb-4">
+            The greatest cost for any entrepreneur isn't your team, your advertising budget, or the courses or programs you buy. 
+            The greatest cost comes from not knowing where to put your focus.
+          </p>
+          <p class="text-body-1 mb-4">
+            I've had the privilege of teaching over 2,000 students how to become successful founders and those students have gone 
+            on to sell over $1,000,000,000 in revenue by understanding this;
+          </p>
+          <p class="text-body-1 font-weight-bold mb-4">
+            How to focus on the right thing at the right time (even with ADHD).
+          </p>
+          <p class="text-body-1 mb-4">
+            Here's how this free service works. You'll tell us our DISC profile and email. We will ask you a few more questions 
+            about what your goals are, and then send you a simple three line email tailored to your personality type to keep you 
+            focused each day.
+          </p>
+          <p class="text-body-1 mb-4">That's it.</p>
+          <p class="text-body-1 mb-4">
+            You'll be able to reply to each email telling us if it helped or it didn't so we can get better at serving you in 
+            the next messages.
+          </p>
+          <p class="text-body-1 mb-4">
+            If you'd like to go deeper, you can invest in a full 26 factor assessment that will diagnose what's blocking your potential.
+          </p>
+          <p class="text-body-1 mb-8">
+            If you have any questions, email me personally,
+          </p>
+          <div class="text-body-1">
+            <p>--</p>
+            <p>Dane Maxwell</p>
+            <p>Co founder - Arena</p>
+            <p>dane@arena.co</p>
+          </div>
+        </v-card>
+      </v-container>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section-y bg-surface mt-16">
       <v-container>
         <div class="text-center stack-space mb-16">
           <h2 class="text-h3 font-weight-bold">
@@ -82,7 +111,7 @@
     </section>
 
     <!-- Steps with Screenshots -->
-    <div class="py-24">
+    <div class="py-24  mt-16">
       <v-row v-for="(step, i) in steps" :key="i" class="align-center mb-16">
         <v-col cols="12" md="5" :order="i % 2 === 0 ? 1 : 2">
           <div class="d-flex align-center mb-4">
@@ -117,223 +146,68 @@
       </v-row>
     </div>
 
-    <!-- Testimonials -->
-    <div class="py-24 bg-surface">
-      <h2 class="text-h3 text-center font-weight-bold mb-4">What developers say</h2>
-      <p class="text-body-1 text-center text-medium-emphasis mb-16 max-w-lg mx-auto">
-        Join thousands of developers who are already building amazing apps with our template
-      </p>
-      <v-row class="justify-center">
-        <v-col cols="12" md="4" v-for="review in testimonials" :key="review.author">
-          <v-card class="h-100 pa-6">
-            <div class="d-flex mb-4">
-              <v-rating
-                :model-value="5"
-                color="warning"
-                density="compact"
-                readonly
-              />
-            </div>
-            <p class="text-body-1 mb-6">"{{ review.text }}"</p>
-            <div class="d-flex align-center">
-              <v-avatar size="40" class="mr-4">
-                <v-img :src="review.avatar" />
-              </v-avatar>
-              <div>
-                <div class="text-body-1 font-weight-medium">{{ review.author }}</div>
-                <div class="text-caption text-medium-emphasis">{{ review.role }}</div>
-              </div>
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
 
-    <!-- Resources Section -->
-    <div class="py-24">
-      <h2 class="text-h3 text-center font-weight-bold mb-4">Not sure where to start?</h2>
-      <p class="text-body-1 text-center text-medium-emphasis mb-16">
-        Check out our comprehensive guides and documentation
-      </p>
-      <v-row class="justify-center">
-        <v-col cols="12" md="4" v-for="resource in resources" :key="resource.title">
-          <v-card
-            class="h-100 pa-6"
-            :color="resource.color"
-            variant="flat"
-            @click="resource.action"
-          >
-            <h3 class="text-h6 font-weight-bold mb-2">{{ resource.title }}</h3>
-            <p class="text-body-2 mb-4">{{ resource.description }}</p>
-            <v-btn
-              variant="tonal"
-              size="small"
-              :color="resource.buttonColor"
-              class="text-none"
-            >
-              Learn more
-            </v-btn>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
 
-    <!-- Stats Section -->
-    <section class="section-y text-center">
-      <h2 class="text-h4 font-weight-bold mb-16">
-        Why Choose This Template?
-      </h2>
-      <v-row class="justify-center">
-        <v-col 
-          cols="12" 
-          md="4" 
-          v-for="stat in stats" 
-          :key="stat.value"
-          class="px-8"
-        >
-          <div class="text-center">
-            <div class="text-h2 font-weight-black primary--text mb-6">
-              {{ stat.value }}
-            </div>
-            <div class="text-body-1 text-medium-emphasis">
-              {{ stat.label }}
-            </div>
-          </div>
-        </v-col>
-      </v-row>
-    </section>
 
-    <!-- Pricing Section -->
-    <div class="py-24 bg-surface">
-      <h2 class="text-h3 text-center font-weight-bold mb-4">Simple, Transparent Pricing</h2>
-      <p class="text-body-1 text-center text-medium-emphasis mb-16">Start building for free, upgrade when you need to</p>
-      
-      <v-row class="justify-center">
-        <v-col cols="12" md="4" v-for="plan in plans" :key="plan.name">
-          <v-card class="h-100" :elevation="plan.popular ? 4 : 1">
-            <v-card-item>
-              <div class="d-flex flex-column align-center text-center">
-                <div v-if="plan.popular" class="text-primary text-caption font-weight-bold mb-4">MOST POPULAR</div>
-                <h3 class="text-h5 font-weight-bold mb-2">{{ plan.name }}</h3>
-                <div class="d-flex align-baseline mb-4">
-                  <span class="text-h3 font-weight-bold">${{ plan.price }}</span>
-                  <span class="text-body-1 text-medium-emphasis">/month</span>
-                </div>
-                <p class="text-medium-emphasis mb-6">{{ plan.description }}</p>
-                <v-btn
-                  block
-                  :color="plan.popular ? 'primary' : undefined"
-                  :variant="plan.popular ? undefined : 'outlined'"
-                  class="mb-6"
-                >
-                  Get Started
-                </v-btn>
-                <div class="text-left">
-                  <div v-for="feature in plan.features" :key="feature" class="d-flex align-center mb-2">
-                    <v-icon color="success" size="small" class="mr-2">mdi-check-circle</v-icon>
-                    <span class="text-body-2">{{ feature }}</span>
-                  </div>
-                </div>
-              </div>
-            </v-card-item>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
 
-    <!-- About Section -->
-    <div class="py-24">
-      <v-row class="align-center">
-        <v-col cols="12" md="6">
-          <h2 class="text-h3 font-weight-bold mb-4">Built by Developers, for Developers</h2>
-          <p class="text-body-1 text-medium-emphasis mb-6">
-            We understand the challenges of modern web development. That's why we've created a starter template
-            that follows best practices and includes everything you need to build production-ready applications.
-          </p>
-          <v-row>
-            <v-col v-for="stat in aboutStats" :key="stat.label" cols="6">
-              <div class="mb-2">
-                <v-icon :color="stat.color" size="32" class="mb-2">{{ stat.icon }}</v-icon>
-              </div>
-              <div class="text-h6 font-weight-bold mb-1">{{ stat.value }}</div>
-              <div class="text-body-2 text-medium-emphasis">{{ stat.label }}</div>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-img src="https://placehold.co/800x600/e9ecef/495057?text=About+Illustration" class="rounded-lg" />
-        </v-col>
-      </v-row>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const title = 'Create high-converting funnels in just 60 minutes'
-const description = 'Build, launch, and optimize your mobile funnels with our intuitive platform. No coding required.'
-const featuresDescription = 'Everything you need to create successful mobile funnels, from drag-and-drop building to advanced analytics.'
+import OnboardingForm from '~/components/OnboardingForm.vue'
+
+const title = 'New Service For Entrepreneurs & Founders!'
+const description = 'Unlock The Next Level of Your Journey With Tailored AI.'
+const featuresDescription = 'Personalized guidance based on your DISC profile and entrepreneurial goals.'
 
 const stats = [
-  { value: '100%', label: 'TypeScript Coverage' },
-  { value: '50+', label: 'Built-in Components' },
-  { value: '10x', label: 'Faster Development' }
+  { value: '2000+', label: 'Students Taught' },
+  { value: '$1B+', label: 'Student Revenue' },
+  { value: '26', label: 'Diagnostic Factors' }
 ]
 
 const steps = [
   {
-    title: 'Create your first funnel in 60 minutes. Headache-free.',
-    description: 'Our drag-and-drop builder makes it simple to create professional funnels without any technical knowledge.',
-    image: 'https://placehold.co/800x600/e9ecef/495057?text=Step+1'
+    title: "Let's Start With Your DISC Profile",
+    description: 'Take the first step towards personalized guidance by sharing your DISC profile.',
+    image: 'https://placehold.co/800x600/e9ecef/495057?text=DISC+Profile'
   },
   {
-    title: 'Integrate your favorite tools and share your funnel with the world.',
-    description: 'Connect with your existing tools and publish your funnel with one click.',
-    image: 'https://placehold.co/800x600/e9ecef/495057?text=Step+2'
+    title: 'Receive Daily Tailored Focus Emails',
+    description: 'Get simple three-line emails customized to your personality type to keep you focused each day.',
+    image: 'https://placehold.co/800x600/e9ecef/495057?text=Daily+Emails'
   },
   {
-    title: 'Analyze your target audience and achieve record results.',
-    description: 'Get detailed analytics and insights to optimize your funnel performance.',
-    image: 'https://placehold.co/800x600/e9ecef/495057?text=Step+3'
+    title: 'Improve Through Feedback',
+    description: 'Reply to each email to help us better serve you with future messages.',
+    image: 'https://placehold.co/800x600/e9ecef/495057?text=Feedback'
   }
 ]
 
 const plans = [
   {
-    name: 'Hobby',
+    name: 'Free Focus Service',
     price: '0',
-    description: 'Perfect for side projects and learning',
+    description: 'Daily personalized focus guidance',
     features: [
-      'Up to 3 projects',
-      'Basic components',
-      'Community support',
-      'Basic analytics'
+      'DISC profile analysis',
+      'Daily focus emails',
+      'Email response tracking',
+      'Basic guidance'
     ]
   },
   {
-    name: 'Pro',
-    price: '29',
+    name: '26 Factor Diagnostic',
+    price: '97',
     popular: true,
-    description: 'Everything you need for a growing business',
+    description: 'Complete entrepreneurial assessment',
     features: [
-      'Unlimited projects',
-      'Advanced components',
+      'Everything in Free tier',
+      '26 factor analysis',
+      'Detailed diagnostic report',
+      'Personalized roadmap',
       'Priority support',
-      'Advanced analytics',
-      'Custom domains',
-      'Team collaboration'
-    ]
-  },
-  {
-    name: 'Enterprise',
-    price: '99',
-    description: 'Advanced features for large teams',
-    features: [
-      'Everything in Pro',
-      'Custom integrations',
-      'Dedicated support',
-      'SLA guarantee',
-      'Advanced security',
-      'Custom branding'
+      'Advanced recommendations'
     ]
   }
 ]
@@ -367,61 +241,31 @@ const aboutStats = [
 
 const features = [
   {
-    title: 'Vue 3 & Nuxt 3',
-    description: 'Latest Vue and Nuxt with Composition API and auto-imports',
-    icon: 'mdi-vuejs',
+    title: 'DISC Profile Integration',
+    description: 'Personalized guidance based on your unique personality type',
+    icon: 'mdi-account-check',
     color: 'success'
   },
   {
-    title: 'TypeScript & Vuetify',
-    description: 'Type-safe development with beautiful UI components',
-    icon: 'mdi-language-typescript',
+    title: 'Daily Focus Emails',
+    description: 'Three-line actionable emails tailored to your goals',
+    icon: 'mdi-email-outline',
     color: 'primary'
   },
   {
-    title: 'Authentication Ready',
-    description: 'Built-in Supabase authentication and user management',
-    icon: 'mdi-shield-check',
+    title: 'Interactive Feedback',
+    description: 'Continuous improvement through your responses',
+    icon: 'mdi-message-reply',
     color: 'info'
-  },
-  {
-    title: 'State Management',
-    description: 'Pinia store with persistence and type safety',
-    icon: 'mdi-database',
-    color: 'warning'
-  },
-  {
-    title: 'Testing Setup',
-    description: 'Vitest and Cypress configured for unit and E2E testing',
-    icon: 'mdi-test-tube',
-    color: 'error'
-  },
-  {
-    title: 'CI/CD Ready',
-    description: 'Github Actions workflow for automated deployment',
-    icon: 'mdi-rocket-launch',
-    color: 'success'
   }
 ]
 
 const testimonials = [
   {
-    author: 'Sarah Chen',
-    role: 'Senior Developer',
-    avatar: 'https://placehold.co/100x100/e9ecef/495057?text=SC',
-    text: 'This template saved us weeks of setup time. The architecture is clean and the documentation is excellent.'
-  },
-  {
-    author: 'Michael Rodriguez',
-    role: 'Tech Lead',
-    avatar: 'https://placehold.co/100x100/e9ecef/495057?text=MR',
-    text: 'Perfect balance of features and simplicity. TypeScript setup is particularly well done.'
-  },
-  {
-    author: 'Emily Johnson',
-    role: 'Full Stack Developer',
-    avatar: 'https://placehold.co/100x100/e9ecef/495057?text=EJ',
-    text: 'The best Nuxt starter template I\'ve used. Great attention to detail and best practices.'
+    author: 'Dane Maxwell',
+    role: 'Co-founder - Arena',
+    avatar: 'https://placehold.co/100x100/e9ecef/495057?text=DM',
+    text: 'The greatest cost for any entrepreneur isn\'t your team, your advertising budget, or the courses or programs you buy. The greatest cost comes from not knowing where to put your focus.'
   }
 ]
 
@@ -463,5 +307,16 @@ useHead({
 <style scoped>
 .border {
   border: 1px solid #E5E7EB;
+}
+
+@media (max-width: 600px) {
+  .text-h3 {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .section-y {
+    padding: 16px 0;
+  }
 }
 </style>

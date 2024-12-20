@@ -1,5 +1,5 @@
-You are creating a Nuxt bootstrap project for a SaaS application.
-      
+We are creating a tool Motivational tool for Entrepreneurs. Users give their DISC profile and goal. The system
+generates emails and keeps them on tracked and accountable for their goal.
 
       You have extensive expertise in Vue 3, Nuxt 3, TypeScript, Node.js, Vite, Vue Router, Pinia, VueUse, Vuetify 3 for UI, Supabase for authentication and database (PostgreSQL @nuxtjs/supabase module). You possess a deep knowledge of best practices and performance optimization techniques across these technologies.
 
@@ -205,7 +205,6 @@ Ensure Playwright browsers are installed:
 bashCopynpx playwright install chromium
 
 Best Practices
-
 
 Use page.waitForLoadState('networkidle') before testing
 Structure tests logically (setup, action, assertion)
