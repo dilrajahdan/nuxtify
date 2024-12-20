@@ -13,7 +13,7 @@
         </div>
 
         <!-- Form Content -->
-        <v-form @submit.prevent="handleLogin">
+        <v-form @submit.prevent="handleLogin" data-test="login-form">
           <!-- Social Login Buttons -->
           <div class="d-flex gap-4 mb-8">
             <v-btn
@@ -47,7 +47,9 @@
 
           <v-text-field
             v-model="form.email"
-            label="Email address"
+            label="Email"
+            type="email"
+            data-test="email-input"
             :rules="[rules.required, rules.email]"
             prepend-inner-icon="mdi-email"
             variant="outlined"
@@ -57,9 +59,10 @@
           <v-text-field
             v-model="form.password"
             label="Password"
+            :type="showPassword ? 'text' : 'password'"
+            data-test="password-input"
             :rules="[rules.required]"
             prepend-inner-icon="mdi-lock"
-            :type="showPassword ? 'text' : 'password'"
             :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append-inner="showPassword = !showPassword"
             variant="outlined"
@@ -90,6 +93,7 @@
             type="submit"
             :loading="loading"
             class="mb-6"
+            data-test="login-button"
           >
             Sign in to your account
           </v-btn>

@@ -1,105 +1,77 @@
 <template>
-  <v-container class="fill-height">
-    <v-row justify="center">
+  <v-container class="fill-height auth-container">
+    <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
-        <!-- Progress Steps -->
-        <div class="d-flex align-center justify-space-between mb-12">
-          <div class="step-item">
-            <div class="step-number active">1</div>
-            <div class="step-label active">Register</div>
-          </div>
-          <v-divider class="mx-4"></v-divider>
-          <div class="step-item">
-            <div class="step-number">2</div>
-            <div class="step-label">Confirm</div>
-          </div>
-          <v-divider class="mx-4"></v-divider>
-          <div class="step-item">
-            <div class="step-number">3</div>
-            <div class="step-label">Build Funnel</div>
-          </div>
-        </div>
-
-        <!-- Title and Description -->
-        <div class="text-center mb-8">
-          <h1 class="text-h4 font-weight-bold mb-2">
-            Create your free account in 30 seconds
+        <v-card class="pa-8" elevation="8">
+          <h1 class="text-h4 font-weight-bold mb-4 text-center">
+            Create an account
           </h1>
-          <p class="text-body-1 text-medium-emphasis">
-            Join thousands of businesses who are easily acquiring qualified appointments, employees and leads every day.
-          </p>
-        </div>
-
-        <!-- Form Content -->
-        <v-form @submit.prevent="handleRegister">
-          <v-text-field
-            v-model="form.fullName"
-            label="First and last name"
-            :rules="[rules.required]"
-            prepend-inner-icon="mdi-account"
-            variant="outlined"
-            class="mb-4"
-            density="comfortable"
-            bg-color="surface"
-          />
-
-          <v-text-field
-            v-model="form.email"
-            label="Business email address"
-            :rules="[rules.required, rules.email]"
-            prepend-inner-icon="mdi-email"
-            variant="outlined"
-            class="mb-4"
-            density="comfortable"
-            bg-color="surface"
-          />
-
-          <v-text-field
-            v-model="form.password"
-            label="Password"
-            :rules="[rules.required, rules.password]"
-            prepend-inner-icon="mdi-lock"
-            :type="showPassword ? 'text' : 'password'"
-            :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append-inner="showPassword = !showPassword"
-            variant="outlined"
-            class="mb-6"
-            density="comfortable"
-            bg-color="surface"
-          />
-
-          <v-checkbox
-            v-model="form.terms"
-            :rules="[rules.required]"
-            class="mb-6"
-            density="comfortable"
+          
+          <v-form 
+            @submit.prevent="handleRegister" 
+            data-test="register-form"
           >
-            <template #label>
-              <span class="text-body-2">
-                By creating an account you accept our
-                <v-btn variant="text" to="/terms" class="px-1 text-primary text-decoration-underline">terms & conditions</v-btn>
-                and our
-                <v-btn variant="text" to="/privacy" class="px-1 text-primary text-decoration-underline">privacy policies</v-btn>
-              </span>
-            </template>
-          </v-checkbox>
+            <v-text-field
+              v-model="form.fullName"
+              label="Full Name"
+              :rules="[rules.required]"
+              data-test="fullname-input"
+              class="mb-4"
+            />
 
-          <v-btn
-            block
-            color="primary"
-            size="large"
-            type="submit"
-            :loading="loading"
-            class="mb-6"
-          >
-            Next step
-          </v-btn>
+            <v-text-field
+              v-model="form.email"
+              label="Email"
+              type="email"
+              :rules="[rules.required, rules.email]"
+              data-test="email-input"
+              class="mb-4"
+            />
 
-          <div class="text-center">
-            <span class="text-body-2 text-medium-emphasis">Already have an account?</span>
-            <v-btn variant="text" to="/auth/login" class="text-none px-2">Login</v-btn>
-          </div>
-        </v-form>
+            <v-text-field
+              v-model="form.password"
+              label="Password"
+              :type="showPassword ? 'text' : 'password'"
+              :rules="[rules.required, rules.password]"
+              :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append-inner="showPassword = !showPassword"
+              data-test="password-input"
+              class="mb-4"
+            />
+
+            <v-checkbox
+              v-model="form.terms"
+              :rules="[rules.required]"
+              label="I agree to the Terms and Privacy Policy"
+              data-test="terms-checkbox"
+              class="mb-4"
+            />
+
+            <v-btn
+              block
+              color="primary"
+              size="large"
+              type="submit"
+              :loading="loading"
+              data-test="register-button"
+              class="mb-6"
+            >
+              Create Account
+            </v-btn>
+
+            <div class="text-center">
+              <span class="text-body-2 text-medium-emphasis">Already have an account?</span>
+              <v-btn 
+                variant="text" 
+                to="/auth/login" 
+                class="text-none px-2"
+                data-test="login-link"
+              >
+                Login
+              </v-btn>
+            </div>
+          </v-form>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>

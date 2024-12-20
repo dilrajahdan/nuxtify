@@ -129,3 +129,85 @@ You are creating a Nuxt bootstrap project for a SaaS application.
       - Implement automated testing in pipeline
       - Use staging environment for testing
       - Monitor application performance
+
+
+Here's a step-by-step summary of how to implement E2E testing for Vue/Nuxt applications based on the transcript:
+
+Initial Setup
+
+bashCopy# Install required packages
+npm install -D @nuxt/test-utils vitest @vue/test-utils happy-dom @playwright/core
+
+Create Test Directory Structure
+
+
+Create an e2e folder
+Add test files with .test.ts extension (e.g., app.test.ts)
+
+
+Basic HTML Testing Approach
+
+typescriptCopyimport { setup, $fetch } from '@nuxt/test-utils/e2e'
+
+describe('App', async () => {
+  await setup()
+  
+  it('contains number as string', async () => {
+    const html = await $fetch('/')
+    expect(html).toContain('number')
+  })
+})
+
+Advanced Browser Testing with Playwright
+
+typescriptCopyimport { setup, createPage, url } from '@nuxt/test-utils/e2e'
+
+describe('App', async () => {
+  await setup()
+
+  it('tests number generation', async () => {
+    // Create a page instance
+    const page = await createPage()
+    
+    // Navigate to the app
+    await page.goto(url('/'))
+    
+    // Wait for hydration
+    await page.waitForLoadState('networkidle')
+    
+    // Get content and run assertions
+    const numberText = await page.textContent('span')
+    const number = Number(numberText)
+    expect(number).toBeGreaterThan(0)
+    
+    // Test interactions
+    await page.click('button')
+    const newNumberText = await page.textContent('span')
+    expect(newNumberText).not.toBe(numberText)
+  })
+})
+
+Important Testing Considerations
+
+
+Use await setup() to properly initialize the Nuxt instance
+Always wait for page hydration before testing
+Use meaningful selectors (preferably data-test-ids)
+Verify both positive and negative test cases
+Ensure tests can fail appropriately
+
+
+Additional Setup Requirements
+
+
+Ensure Playwright browsers are installed:
+
+bashCopynpx playwright install chromium
+
+Best Practices
+
+
+Use page.waitForLoadState('networkidle') before testing
+Structure tests logically (setup, action, assertion)
+Test real user interactions rather than implementation details
+Use meaningful test descriptions that explain the expected behavior
