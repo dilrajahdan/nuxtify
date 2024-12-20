@@ -2,7 +2,7 @@
   <v-container>
     <!-- Statistics Section -->
     <v-card class="mb-6">
-      <v-card-title class="text-h6">Statistics</v-card-title>
+      <v-card-title>Statistics</v-card-title>
       <v-card-text>
         <v-row>
           <!-- Time Filter -->
@@ -13,14 +13,16 @@
               density="compact"
               variant="outlined"
               hide-details
-              style="max-width: 150px"
+              class="stats-filter"
             />
           </v-col>
 
           <!-- Stats Grid -->
           <v-col cols="12" sm="6" md="3">
-            <div class="text-subtitle-1 text-medium-emphasis">New Leads</div>
-            <div class="text-h4 font-weight-bold">{{ stats.newLeads }}</div>
+            <div class="stat-card pa-4 rounded-lg">
+              <div class="text-subtitle-1 text-medium-emphasis mb-2">New Leads</div>
+              <div class="text-h3 font-weight-bold primary--text">{{ stats.newLeads }}</div>
+            </div>
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
@@ -43,7 +45,7 @@
 
     <!-- Approve Emails for New Leads -->
     <v-card class="mb-6">
-      <v-card-title class="text-h6">Approve Emails for New Leads</v-card-title>
+      <v-card-title>Approve Emails for New Leads</v-card-title>
       <v-card-text>
         <v-list class="integration-list">
           <v-list-item
@@ -51,24 +53,24 @@
             :key="lead.id"
             :title="`${lead.name} | ${lead.discProfile}`"
             :subtitle="lead.details"
-            class="integration-list-item mb-3"
+            class="hover-effect"
             rounded="lg"
           >
             <!-- Left side with icons -->
             <template v-slot:prepend>
               <div class="d-flex align-center">
                 <v-avatar 
-                  color="grey-lighten-4" 
+                  color="primary-lighten"
                   size="42"
                   class="mr-3"
                 >
-                  <v-icon color="grey-darken-2">mdi-account</v-icon>
+                  <v-icon color="primary">mdi-account</v-icon>
                 </v-avatar>
                 <v-avatar 
-                  color="grey-lighten-4" 
+                  color="primary-lighten"
                   size="42"
                 >
-                  <v-icon color="grey-darken-2">mdi-email-outline</v-icon>
+                  <v-icon color="primary">mdi-email-outline</v-icon>
                 </v-avatar>
               </div>
             </template>
@@ -76,7 +78,7 @@
             <!-- Right side with action button -->
             <template v-slot:append>
               <v-btn
-                color="black"
+                color="primary"
                 variant="flat"
                 class="integration-action-btn"
                 @click="viewLead(lead)"
@@ -91,7 +93,7 @@
 
     <!-- Approve Email Replies -->
     <v-card class="mb-6">
-      <v-card-title class="text-h6">Approve Email Replies</v-card-title>
+      <v-card-title>Approve Email Replies</v-card-title>
       <v-card-text>
         <v-list class="integration-list">
           <v-list-item
@@ -99,30 +101,30 @@
             :key="reply.id"
             :title="`${reply.name} | ${reply.discProfile}`"
             :subtitle="reply.details"
-            class="integration-list-item mb-3"
+            class="hover-effect"
             rounded="lg"
           >
             <template v-slot:prepend>
               <div class="d-flex align-center">
                 <v-avatar 
-                  color="grey-lighten-4" 
+                  color="primary-lighten"
                   size="42"
                   class="mr-3"
                 >
-                  <v-icon color="grey-darken-2">mdi-account</v-icon>
+                  <v-icon color="primary">mdi-account</v-icon>
                 </v-avatar>
                 <v-avatar 
-                  color="grey-lighten-4" 
+                  color="primary-lighten"
                   size="42"
                 >
-                  <v-icon color="grey-darken-2">mdi-reply</v-icon>
+                  <v-icon color="primary">mdi-reply</v-icon>
                 </v-avatar>
               </div>
             </template>
             
             <template v-slot:append>
               <v-btn
-                color="black"
+                color="primary"
                 variant="flat"
                 class="integration-action-btn"
                 @click="viewReply(reply)"
@@ -137,7 +139,7 @@
 
     <!-- Follow Up Email Opens -->
     <v-card>
-      <v-card-title class="text-h6">Follow Up Email Opens</v-card-title>
+      <v-card-title>Follow Up Email Opens</v-card-title>
       <v-card-text>
         <v-list class="integration-list">
           <v-list-item
@@ -145,30 +147,30 @@
             :key="followUp.id"
             :title="`${followUp.name} | ${followUp.discProfile}`"
             :subtitle="followUp.details"
-            class="integration-list-item mb-3"
+            class="hover-effect"
             rounded="lg"
           >
             <template v-slot:prepend>
               <div class="d-flex align-center">
                 <v-avatar 
-                  color="grey-lighten-4" 
+                  color="primary-lighten"
                   size="42"
                   class="mr-3"
                 >
-                  <v-icon color="grey-darken-2">mdi-account</v-icon>
+                  <v-icon color="primary">mdi-account</v-icon>
                 </v-avatar>
                 <v-avatar 
-                  color="grey-lighten-4" 
+                  color="primary-lighten"
                   size="42"
                 >
-                  <v-icon color="grey-darken-2">mdi-eye-outline</v-icon>
+                  <v-icon color="primary">mdi-eye-outline</v-icon>
                 </v-avatar>
               </div>
             </template>
             
             <template v-slot:append>
               <v-btn
-                color="black"
+                color="primary"
                 variant="flat"
                 class="integration-action-btn"
                 @click="viewFollowUp(followUp)"
@@ -301,20 +303,20 @@ const handleEmailSubmit = async (emailData: any) => {
 </script>
 
 <style scoped>
-.integration-list {
-  background: transparent;
+.stats-filter {
+  max-width: 150px;
+  background-color: white;
 }
 
-.integration-list-item {
-  border: 1px solid #E2E8F0;
-  background: white;
+.stat-card {
+  background: linear-gradient(135deg, var(--v-primary-lighten) 0%, white 100%);
+  border: 1px solid var(--v-section-border);
   transition: all 0.2s ease;
-  margin-bottom: 12px;
 }
 
-.integration-list-item:hover {
-  border-color: #CBD5E1;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -4px rgba(79, 110, 247, 0.1);
 }
 
 .integration-action-btn {
@@ -323,6 +325,48 @@ const handleEmailSubmit = async (emailData: any) => {
   letter-spacing: 0;
   border-radius: 6px;
   height: 40px;
+}
+
+:deep(.dashboard-card) {
+  border: 1px solid var(--v-card-border);
+  background: white;
+  transition: all 0.2s ease;
+}
+
+:deep(.card-header) {
+  background: linear-gradient(to bottom, white, #f8fafc);
+  border-bottom: 1px solid var(--v-card-border);
+}
+
+:deep(.hover-elevate:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 20px -10px rgba(79, 110, 247, 0.15);
+}
+
+:deep(.dashboard-list-item) {
+  border: 1px solid var(--v-card-border);
+  background: white;
+  transition: all 0.2s ease;
+  padding: 12px 16px;
+  min-height: 72px;
+}
+
+:deep(.dashboard-list-item:hover) {
+  border-color: var(--v-primary-base);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+:deep(.v-card-title) {
+  border-bottom: 1px solid var(--v-card-border);
+  background-color: white;
+  color: var(--v-text-medium);
+  font-size: 1.25rem;
+  padding: 20px 24px;
+}
+
+:deep(.v-card-text) {
+  padding: 24px;
 }
 
 :deep(.v-list-item__content) {
@@ -336,7 +380,45 @@ const handleEmailSubmit = async (emailData: any) => {
 }
 
 :deep(.v-list-item-subtitle) {
-  color: #64748B;
+  color: var(--v-text-medium);
   font-size: 0.875rem;
+}
+
+/* Remove any transform effects from buttons */
+:deep(.v-btn:hover) {
+  background-color: var(--v-primary-hover) !important;
+}
+
+/* Clean up transitions to exclude transforms */
+:deep(.v-btn), :deep(.v-list-item) {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .hover-effect {
+    transition: all 0.2s ease;
+  }
+}
+
+@media (min-width: 960px) {
+  :deep(.dashboard-list-item) {
+    min-height: 84px;
+    padding: 16px 24px;
+  }
+
+  :deep(.v-avatar) {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  :deep(.v-list-item-title) {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  :deep(.integration-action-btn) {
+    height: 44px;
+    padding: 0 24px;
+  }
 }
 </style> 
