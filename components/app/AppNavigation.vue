@@ -93,7 +93,7 @@ const navigationItems: NavigationItem[] = [
 const activeRoute = computed(() => {
   const path = route.path
   if (path.includes('/dashboard')) return 'dashboard'
-  if (path.includes('/people')) return 'people'
+  if (path.includes('/entrepreneurs')) return 'entrepreneurs'
   if (path.includes('/settings')) return 'settings'
   return 'dashboard'
 })

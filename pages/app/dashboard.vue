@@ -221,13 +221,23 @@ const newLeads = ref<Lead[]>([
   {
     id: 1,
     name: 'Dil Ahdan',
+    email: 'dil@example.com',
     discProfile: 'DISC',
+    goal: 'Reach $20k MRR',
+    goalStatus: 'active',
+    tags: ['Security'],
+    lastContactDate: new Date(),
     details: '$20k MRR, Security',
   },
   {
     id: 2,
     name: 'Dil Ahdan',
+    email: 'dil@example.com',
     discProfile: 'DISC',
+    goal: 'Reach $20k MRR',
+    goalStatus: 'active',
+    tags: ['Security'],
+    lastContactDate: new Date(),
     details: '$20k MRR, Security',
   }
 ])
@@ -237,13 +247,23 @@ const emailReplies = ref<Lead[]>([
   {
     id: 1,
     name: 'Dil Ahdan',
+    email: 'dil@example.com',
     discProfile: 'DISC',
+    goal: 'Reach $20k MRR',
+    goalStatus: 'active',
+    tags: ['Security'],
+    lastContactDate: new Date(),
     details: '$20k MRR, Security',
   },
   {
     id: 2,
     name: 'Dil Ahdan',
+    email: 'dil@example.com',
     discProfile: 'DISC',
+    goal: 'Reach $20k MRR',
+    goalStatus: 'active',
+    tags: ['Security'],
+    lastContactDate: new Date(),
     details: '$20k MRR, Security',
   }
 ])
@@ -253,13 +273,23 @@ const followUps = ref<Lead[]>([
   {
     id: 1,
     name: 'Dil Ahdan',
+    email: 'dil@example.com',
     discProfile: 'DISC',
+    goal: 'Reach $20k MRR',
+    goalStatus: 'active',
+    tags: ['Security'],
+    lastContactDate: new Date(),
     details: '$20k MRR, Security',
   },
   {
     id: 2,
     name: 'Dil Ahdan',
+    email: 'dil@example.com',
     discProfile: 'DISC',
+    goal: 'Reach $20k MRR',
+    goalStatus: 'active',
+    tags: ['Security'],
+    lastContactDate: new Date(),
     details: '$20k MRR, Security',
   }
 ])
