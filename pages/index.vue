@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="">
+    <section class="section-y">
       <v-container class="pa-0 pa-sm-2 pa-md-6">
         <v-row class="align-start align-md-center">
           <!-- Text Column -->

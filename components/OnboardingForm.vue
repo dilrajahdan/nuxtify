@@ -598,7 +598,11 @@
       persistent
       max-width="600"
     >
-      <v-card>
+      <v-card
+        class="success-dialog"
+        elevation="0"
+        rounded="lg"
+      >
         <!-- Remove padding from header section -->
         <v-toolbar
           color="primary"
@@ -759,6 +763,12 @@
   .summary-list {
     gap: 16px;
   }
+}
+
+.success-dialog {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
+  overflow: hidden;
 }
 </style>
 
@@ -1073,38 +1083,74 @@ const handleSubmit = async () => {
   }
 };
 
-const handleSuccessClose = () => {
+// Add this near the top of the script, with other refs
+const isResetting = ref(false);
+
+const handleSuccessClose = async () => {
+  console.log('Starting handleSuccessClose');
+  
+  // Set isResetting flag (don't create a new ref)
+  isResetting.value = true;
+  
   // First close the success dialog
   showSuccess.value = false;
   
-  // Use nextTick to ensure the success dialog is closed before closing the main dialog
-  nextTick(() => {
-    // Then close the main dialog
-    isExpanded.value = false;
-    
-    // Reset form and navigation
-    form.value = {
-      mainChallenge: '',
-      mainChallengeOther: '',
-      businessStage: '',
-      businessType: '',
-      businessTypeOther: '',
-      discProfile: '',
-      discPrimary: '',
-      discSecondary: '',
-      discQuestions: {},
-      goal: '',
-      goalOther: '',
-      goalMeaning: '',
-      name: '',
-      email: '',
-    };
-    currentStep.value = 1;
-
-    // Optional: Scroll to top of page
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  // Wait for the success dialog animation to complete
+  await nextTick();
+  
+  // Reset form data first
+  form.value = {
+    mainChallenge: '',
+    mainChallengeOther: '',
+    businessStage: '',
+    businessType: '',
+    businessTypeOther: '',
+    discProfile: '',
+    discPrimary: '',
+    discSecondary: '',
+    discQuestions: {},
+    goal: '',
+    goalOther: '',
+    goalMeaning: '',
+    name: '',
+    email: '',
+  };
+  
+  // Reset step counter to 1
+  currentStep.value = 1;
+  
+  // Close the expanded dialog view
+  isExpanded.value = false;
+  
+  // Wait for all state changes to complete
+  await nextTick();
+  
+  // Re-enable auto-advance
+  isResetting.value = false;
+  
+  // Optional: Scroll to top of page
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
+
+// Add watchers to track state changes
+watch(isExpanded, (newVal, oldVal) => {
+  console.log('isExpanded changed:', { from: oldVal, to: newVal });
+});
+
+watch(showSuccess, (newVal, oldVal) => {
+  console.log('showSuccess changed:', { from: oldVal, to: newVal });
+});
+
+watch(currentStep, (newVal, oldVal) => {
+  console.log('currentStep changed:', { from: oldVal, to: newVal });
+});
+
+watch(form, (newVal, oldVal) => {
+  console.log('form data changed:', { 
+    newData: { ...newVal },
+    oldData: { ...oldVal }
+  });
+}, { deep: true });
 
 // Placeholder for actual server submission
 const submitToServer = async (data: OnboardingForm) => {
@@ -1242,12 +1288,12 @@ watch(currentStep, (newValue, oldValue) => {
 
 // Add watch for form values to handle auto-advance
 const handleAutoAdvance = () => {
+  if (isResetting?.value) return; // Skip auto-advance if resetting
+  
   if (!isExpanded.value && currentStep.value === 1) {
-    // First step: expand and go to next step
     isExpanded.value = true;
     currentStep.value++;
   } else if (canProgress.value && currentStep.value < totalSteps.value - 1) {
-    // Auto advance for radio selections, but stop before summary page
     nextStep();
   }
 };
@@ -1379,6 +1425,8 @@ const formattedSummary = computed(() => {
 
 // Add a reset function
 const resetForm = () => {
+  isResetting.value = true;
+  
   isExpanded.value = false;
   currentStep.value = 1;
   form.value = {
@@ -1397,5 +1445,9 @@ const resetForm = () => {
     name: '',
     email: '',
   };
+  
+  nextTick(() => {
+    isResetting.value = false;
+  });
 };
 </script>
