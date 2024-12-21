@@ -1245,6 +1245,12 @@ const handleOptionSelect = () => {
 
 const handleContinue = () => {
   if (currentStep.value === 1 && !isExpanded.value) {
+    // If we're on step 1 and "other" is selected, just expand but don't advance
+    if (form.value.mainChallenge === 'other') {
+      isExpanded.value = true;
+      return;
+    }
+    // Otherwise proceed as normal
     isExpanded.value = true;
     currentStep.value++;
   } else if (currentStep.value === 7 && form.value.discProfile === 'yes') {
@@ -1564,13 +1570,12 @@ const handleAutoAdvance = () => {
       return;
     }
     
-    console.log('Auto-advance check:', {
-      currentStep: currentStep.value,
-      isExpanded: isExpanded.value,
-      canProgress: canProgress.value
-    });
-    
     if (!isExpanded.value && currentStep.value === 1) {
+      // If "other" is selected, just expand but don't advance
+      if (form.value.mainChallenge === 'other') {
+        isExpanded.value = true;
+        return;
+      }
       isExpanded.value = true;
       currentStep.value++;
     } else if (canProgress.value) {
