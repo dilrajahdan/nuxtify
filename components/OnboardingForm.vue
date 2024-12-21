@@ -200,7 +200,7 @@
                 </transition>
               </v-window-item>
 
-              <!-- Step 4: Goals & Vision -->
+              <!-- Step 4: Goals -->
               <v-window-item :value="4">
                 <transition
                   name="fade-slide"
@@ -236,27 +236,35 @@
                         class="mt-4 other-input"
                       />
                     </v-expand-transition>
-
-                    <div class="mt-8">
-                      <h3 class="text-h6 font-weight-medium mb-4">
-                        What would achieving this goal mean for you?
-                      </h3>
-                      <v-textarea
-                        v-model="form.goalMeaning"
-                        placeholder="Share how achieving this goal would impact your life and business..."
-                        variant="outlined"
-                        rows="4"
-                        auto-grow
-                        hide-details
-                        class="meaning-input"
-                      />
-                    </div>
                   </div>
                 </transition>
               </v-window-item>
 
-              <!-- Step 5: Contact Info -->
+              <!-- New Step: Goal Meaning -->
               <v-window-item :value="5">
+                <transition
+                  name="fade-slide"
+                  mode="out-in"
+                >
+                  <div class="question-content">
+                    <h2 class="text-h5 font-weight-bold mb-6">
+                      What would achieving this goal mean for you?
+                    </h2>
+                    <v-textarea
+                      v-model="form.goalMeaning"
+                      placeholder="Share how achieving this goal would impact your life and business..."
+                      variant="outlined"
+                      rows="4"
+                      auto-grow
+                      hide-details
+                      class="meaning-input"
+                    />
+                  </div>
+                </transition>
+              </v-window-item>
+
+              <!-- Contact Info -->
+              <v-window-item :value="6">
                 <transition
                   name="fade-slide"
                   mode="out-in"
@@ -291,7 +299,7 @@
 
               <!-- After contact info step -->
               <!-- Step 6: DISC Profile Knowledge -->
-              <v-window-item :value="6">
+              <v-window-item :value="7">
                 <transition
                   name="fade-slide"
                   mode="out-in"
@@ -370,7 +378,7 @@
               <v-window-item
                 v-for="(q, index) in discAssessmentQuestions"
                 :key="index"
-                :value="index + 7"
+                :value="index + 8"
                 v-if="
                   form.discProfile === 'no' || form.discProfile === 'not_sure'
                 "
@@ -847,7 +855,7 @@ interface OnboardingForm {
 
 const currentStep = ref(1);
 const totalSteps = computed(() => {
-  return form.value.discProfile === 'yes' ? 7 : 11;
+  return form.value.discProfile === 'yes' ? 8 : 12;
 });
 const loading = ref(false);
 
@@ -996,20 +1004,22 @@ const canProgress = computed(() => {
         (form.value.goal !== 'other' || !!form.value.goalOther)
       );
     case 5:
-      return !!form.value.name && !!form.value.email;
+      return !!form.value.goalMeaning;
     case 6:
+      return !!form.value.name && !!form.value.email;
+    case 7:
       if (form.value.discProfile === 'yes') {
         return !!form.value.discPrimary && !!form.value.discSecondary;
       }
       return !!form.value.discProfile;
-    case 7:
     case 8:
     case 9:
     case 10:
+    case 11:
       if (form.value.discProfile === 'yes') {
         return true; // Skip DISC assessment questions if they know their profile
       }
-      return !!form.value.discQuestions[`q${currentStep.value - 6}`];
+      return !!form.value.discQuestions[`q${currentStep.value - 7}`];
     default:
       return true;
   }
@@ -1025,10 +1035,10 @@ const handleContinue = () => {
   if (currentStep.value === 1 && !isExpanded.value) {
     isExpanded.value = true;
     currentStep.value++;
-  } else if (currentStep.value === 6 && form.value.discProfile === 'yes') {
+  } else if (currentStep.value === 7 && form.value.discProfile === 'yes') {
     // If they know their DISC profile and have selected both primary and secondary
     if (form.value.discPrimary && form.value.discSecondary) {
-      // Instead of going to summary, submit directly
+      // Submit directly instead of going to summary
       handleSubmit();
     }
   } else if (currentStep.value === totalSteps.value) {
@@ -1055,59 +1065,55 @@ const handleClose = () => {
 };
 
 const nextStep = () => {
-  console.log('Starting nextStep with form data:', { ...form.value });
-  console.log('Current step:', currentStep.value);
+  try {
+    console.log('Starting nextStep with form data:', { ...form.value });
+    console.log('Current step:', currentStep.value);
 
-  // Store current form data
-  const currentFormData = { ...form.value };
+    // Store current form data
+    const currentFormData = { ...form.value };
 
-  if (currentStep.value === 6) {
-    if (form.value.discProfile === 'yes') {
-      if (form.value.discPrimary && form.value.discSecondary) {
-        // Instead of going to summary, submit directly
-        handleSubmit();
-        return;
-      }
-    } else {
-      console.log('Starting DISC assessment questions');
-      currentStep.value++;
-    }
-  } else if (currentStep.value >= 7 && currentStep.value <= 10) {
-    // If we're in DISC assessment questions
-    const currentQuestionIndex = currentStep.value - 7;
-    console.log('Processing DISC question', currentQuestionIndex + 1);
-    console.log('Current answers:', form.value.discQuestions);
-
-    if (form.value.discQuestions[`q${currentQuestionIndex + 1}`]) {
-      if (currentStep.value === 10) {
-        // If it's the last question, calculate profile and submit
-        console.log('Last DISC question answered, calculating profile');
-        const result = calculateDiscProfile(form.value.discQuestions);
-        console.log('Calculated DISC profile:', result);
-
-        // Update DISC-related fields while preserving other data
-        form.value = {
-          ...currentFormData,
-          discPrimary: result.primary,
-          discSecondary: result.secondary,
-        };
-
-        console.log('Form data after DISC calculation:', { ...form.value });
-        // Submit directly
-        handleSubmit();
-        return;
+    if (currentStep.value === 7) {
+      if (form.value.discProfile === 'yes') {
+        if (form.value.discPrimary && form.value.discSecondary) {
+          // Submit directly instead of going to summary
+          handleSubmit();
+          return;
+        }
       } else {
+        console.log('Starting DISC assessment questions');
         currentStep.value++;
       }
+    } else if (currentStep.value >= 8 && currentStep.value <= 11) {
+      // If we're in DISC assessment questions
+      const currentQuestionIndex = currentStep.value - 8;
+      console.log('Processing DISC question', currentQuestionIndex + 1);
+      console.log('Current answers:', form.value.discQuestions);
+
+      if (form.value.discQuestions[`q${currentQuestionIndex + 1}`]) {
+        if (currentStep.value === 11) {
+          const result = calculateDiscProfile(form.value.discQuestions);
+          form.value = {
+            ...currentFormData,
+            discPrimary: result.primary,
+            discSecondary: result.secondary,
+          };
+          // Go to summary step only for assessment path
+          currentStep.value = totalSteps.value;
+          return;
+        } else {
+          currentStep.value++;
+        }
+      }
+    } else {
+      currentStep.value++;
     }
-  } else {
-    currentStep.value++;
+
+    // Restore form data after step change
+    form.value = { ...currentFormData, ...form.value };
+
+  } catch (error) {
+    console.error('Error in nextStep:', error);
   }
-
-  // Restore form data after step change
-  form.value = { ...currentFormData, ...form.value };
-
-  console.log('Ending nextStep with form data:', { ...form.value });
 };
 
 const previousStep = () => {
@@ -1340,13 +1346,34 @@ watch(currentStep, (newValue, oldValue) => {
 
 // Add watch for form values to handle auto-advance
 const handleAutoAdvance = () => {
-  if (isResetting?.value) return; // Skip auto-advance if resetting
-  
-  if (!isExpanded.value && currentStep.value === 1) {
-    isExpanded.value = true;
-    currentStep.value++;
-  } else if (canProgress.value && currentStep.value < totalSteps.value - 1) {
-    nextStep();
+  try {
+    if (isResetting?.value) {
+      console.log('Skipping auto-advance - reset in progress');
+      return;
+    }
+    
+    console.log('Auto-advance check:', {
+      currentStep: currentStep.value,
+      isExpanded: isExpanded.value,
+      canProgress: canProgress.value
+    });
+    
+    if (!isExpanded.value && currentStep.value === 1) {
+      isExpanded.value = true;
+      currentStep.value++;
+    } else if (canProgress.value) {
+      // Don't auto-advance on DISC profile selection if they chose 'yes'
+      if (currentStep.value === 7 && form.value.discProfile === 'yes') {
+        console.log('Skipping auto-advance for DISC profile "yes" selection');
+        return;
+      }
+      // Don't auto-advance on the final step
+      if (currentStep.value < totalSteps.value) {
+        nextStep();
+      }
+    }
+  } catch (error) {
+    console.error('Error in handleAutoAdvance:', error);
   }
 };
 
@@ -1369,7 +1396,33 @@ watch(
 );
 watch(
   () => form.value.discProfile,
-  () => handleAutoAdvance()
+  (newValue, oldValue) => {
+    try {
+      console.log('DISC profile changed:', { from: oldValue, to: newValue });
+      
+      // Create a new form object to avoid mutation issues
+      const updatedForm = { ...form.value };
+      
+      // Reset DISC-related fields when changing profile knowledge
+      if (newValue !== 'yes') {
+        updatedForm.discPrimary = '';
+        updatedForm.discSecondary = '';
+      }
+      if (newValue !== 'no' && newValue !== 'not_sure') {
+        updatedForm.discQuestions = {};
+      }
+      
+      // Update the form with the new values
+      form.value = updatedForm;
+      
+      // Only auto-advance if not changing to 'yes'
+      if (newValue !== 'yes') {
+        handleAutoAdvance();
+      }
+    } catch (error) {
+      console.error('Error in DISC profile watcher:', error);
+    }
+  }
 );
 watch(
   () => form.value.discPrimary,
@@ -1385,7 +1438,15 @@ watch(
 );
 watch(
   () => form.value.discQuestions,
-  () => handleAutoAdvance(),
+  (newVal) => {
+    // Check if we're on a DISC assessment question
+    if (currentStep.value >= 8 && currentStep.value <= 11) {
+      const currentQuestionIndex = currentStep.value - 8;
+      if (newVal[`q${currentQuestionIndex + 1}`]) {
+        handleAutoAdvance();
+      }
+    }
+  },
   { deep: true }
 );
 
