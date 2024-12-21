@@ -73,29 +73,12 @@
         </v-toolbar>
 
         <!-- Progress Bar -->
-        <div class="progress-wrapper">
-          <div class="progress-container">
-            <div
-              class="d-flex align-center justify-space-between text-medium-emphasis mb-2"
-            >
-              <span>{{ Math.round(progress) }}% Complete</span>
-            </div>
-            <v-progress-linear
-              v-model="progress"
-              color="primary"
-              height="8"
-              rounded
-              class="progress-bar"
-            >
-              <template v-slot:default="{ value }">
-                <div
-                  class="progress-overlay"
-                  :style="{ width: `${value}%` }"
-                />
-              </template>
-            </v-progress-linear>
-          </div>
-        </div>
+        <v-progress-linear
+          v-model="progress"
+          color="primary"
+          height="3"
+          class="progress-bar"
+        />
 
         <!-- Main Content -->
         <div class="dialog-content">
@@ -596,44 +579,49 @@
     <v-dialog
       v-model="showSuccess"
       persistent
-      max-width="600"
+      :max-width="$vuetify.display.smAndDown ? '100%' : '600'"
+      :fullscreen="$vuetify.display.smAndDown"
+      class="success-dialog-wrapper"
     >
       <v-card
         class="success-dialog"
         elevation="0"
         rounded="lg"
       >
-        <!-- Remove padding from header section -->
+        <!-- Header -->
         <v-toolbar
           color="primary"
           class="success-header"
+          :density="$vuetify.display.smAndDown ? 'compact' : undefined"
         >
-          <v-toolbar-title class="text-h5 font-weight-bold text-white">
+          <v-toolbar-title 
+            class="text-h6 text-md-h5 font-weight-bold text-white"
+          >
             Your Personal Champion Has Arrived! ✨
           </v-toolbar-title>
         </v-toolbar>
 
-        <div class="pa-6">
-          <p class="text-body-1 mb-6">
+        <div class="success-content pa-4 pa-sm-6">
+          <p class="text-body-2 text-md-body-1 mb-4 mb-sm-6">
             Guess what? You just took the first step that most entrepreneurs
             never take – investing in yourself. That deserves celebration.
           </p>
-          <p class="text-body-1 mb-6">
+          <p class="text-body-2 text-md-body-1 mb-4 mb-sm-6">
             Your personalized daily doses of motivation are about to hit your
             inbox. These aren't generic pep talks – they're tailored messages
             designed specifically for your entrepreneurial journey.
           </p>
-          <p class="text-body-1 mb-6">
+          <p class="text-body-2 text-md-body-1 mb-4 mb-sm-6">
             First message incoming... get ready to be inspired!
           </p>
-          <p class="text-body-1 mb-6">
+          <p class="text-body-2 text-md-body-1 mb-4 mb-sm-6">
             Rooting for your success,<br />
             Team ActionMo.de
           </p>
 
           <!-- Summary Section -->
           <div class="summary-container">
-            <h3 class="text-h6 font-weight-medium mb-4">
+            <h3 class="text-subtitle-1 text-md-h6 font-weight-medium mb-3 mb-sm-4">
               Your Profile Summary
             </h3>
             <div class="summary-list">
@@ -645,16 +633,19 @@
                 <div class="summary-label text-caption text-medium-emphasis">
                   {{ item.label }}
                 </div>
-                <div class="summary-value text-body-1">{{ item.value }}</div>
+                <div class="summary-value text-body-2 text-md-body-1">
+                  {{ item.value }}
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="d-flex justify-end mt-8">
+          <div class="d-flex justify-end mt-6 mt-sm-8">
             <v-btn
               color="primary"
-              size="large"
+              :size="$vuetify.display.smAndDown ? 'large' : 'x-large'"
               @click="handleSuccessClose"
+              :block="$vuetify.display.smAndDown"
             >
               Done
               <v-icon end>mdi-check</v-icon>
@@ -692,27 +683,14 @@
   border-radius: 24px;
 }
 
-.progress-wrapper {
-  width: 100%;
-  padding: 16px 0;
-  background: white;
-  border-bottom: 1px solid var(--v-border-color);
+.email-composer-header {
+  border-bottom: none !important;
 }
 
-.progress-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-@media (max-width: 600px) {
-  .progress-container {
-    padding: 0 16px;
-  }
-
-  .question-card {
-    border-radius: 16px;
-  }
+.progress-bar {
+  margin: 0;
+  position: relative;
+  top: -1px; /* Adjust if needed to remove any gap */
 }
 
 .onboarding-form--expanded {
@@ -769,6 +747,80 @@
   border: 1px solid rgba(0, 0, 0, 0.12);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+}
+
+.success-header {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.success-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.summary-container {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+@media (min-width: 600px) {
+  .summary-container {
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 24px;
+  }
+}
+
+.summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .summary-list {
+    gap: 20px;
+  }
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+@media (min-width: 600px) {
+  .summary-item {
+    gap: 4px;
+  }
+}
+
+.summary-label {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.summary-value {
+  font-weight: 400;
+}
+
+/* Add styles for fullscreen mobile dialog */
+@media (max-width: 599px) {
+  .success-dialog-wrapper :deep(.v-overlay__content) {
+    align-items: stretch;
+  }
+  
+  .success-dialog {
+    border-radius: 0;
+    border: none;
+  }
 }
 </style>
 
