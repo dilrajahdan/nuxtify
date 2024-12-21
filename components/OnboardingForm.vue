@@ -20,7 +20,7 @@
             :value="option.value"
             :label="option.label"
             color="primary"
-            class="option-item mb-4"
+            class="option-item"
             
           />
         </v-radio-group>
@@ -86,6 +86,7 @@
             class="question-card mx-auto"
             :class="{
               'pa-4 pa-sm-6 pa-md-8': true,
+              'question-card--large': $vuetify.display.lgAndUp
             }"
           >
             <v-window
@@ -98,37 +99,53 @@
                   name="fade-slide"
                   mode="out-in"
                 >
-                  <div class="question-content">
-                    <h2 class="text-h5 font-weight-bold mb-6">
-                      What's the main thing holding you back in your business
-                      right now?
-                    </h2>
-                    <v-radio-group
-                      v-model="form.mainChallenge"
-                      class="option-group"
-                    >
-                      <v-radio
-                        v-for="option in challengeOptions"
-                        :key="option.value"
-                        :value="option.value"
-                        :label="option.label"
-                        color="primary"
-                        class="option-item mb-4"
-                      />
-                    </v-radio-group>
+                  <div 
+                    class="question-content"
+                    :class="{
+                      'question-content--large': $vuetify.display.lgAndUp
+                    }"
+                  >
+                    <div class="question-section">
+                      <h2 
+                        class="font-weight-bold mb-6"
+                        :class="{
+                          'text-h5': !$vuetify.display.lgAndUp,
+                          'text-h3': $vuetify.display.lgAndUp
+                        }"
+                      >
+                        What's the main thing holding you back in your business
+                        right now?
+                      </h2>
+                    </div>
+                    
+                    <div class="answers-section">
+                      <v-radio-group
+                        v-model="form.mainChallenge"
+                        class="option-group"
+                      >
+                        <v-radio
+                          v-for="option in challengeOptions"
+                          :key="option.value"
+                          :value="option.value"
+                          :label="option.label"
+                          color="primary"
+                          class="option-item"
+                        />
+                      </v-radio-group>
 
-                    <v-expand-transition>
-                      <v-textarea
-                        v-if="form.mainChallenge === 'other'"
-                        v-model="form.mainChallengeOther"
-                        placeholder="Tell us more..."
-                        variant="outlined"
-                        rows="3"
-                        auto-grow
-                        hide-details
-                        class="mt-4 other-input"
-                      />
-                    </v-expand-transition>
+                      <v-expand-transition>
+                        <v-textarea
+                          v-if="form.mainChallenge === 'other'"
+                          v-model="form.mainChallengeOther"
+                          placeholder="Tell us more..."
+                          variant="outlined"
+                          rows="3"
+                          auto-grow
+                          hide-details
+                          class="mt-4 other-input"
+                        />
+                      </v-expand-transition>
+                    </div>
                   </div>
                 </transition>
               </v-window-item>
@@ -139,23 +156,39 @@
                   name="fade-slide"
                   mode="out-in"
                 >
-                  <div class="question-content">
-                    <h2 class="text-h5 font-weight-bold mb-6">
-                      Which best describes where you're at?
-                    </h2>
-                    <v-radio-group
-                      v-model="form.businessStage"
-                      class="option-group"
-                    >
-                      <v-radio
-                        v-for="option in businessStageOptions"
-                        :key="option.value"
-                        :value="option.value"
-                        :label="option.label"
-                        color="primary"
-                        class="option-item mb-4"
-                      />
-                    </v-radio-group>
+                  <div 
+                    class="question-content"
+                    :class="{
+                      'question-content--large': $vuetify.display.lgAndUp
+                    }"
+                  >
+                    <div class="question-section">
+                      <h2 
+                        class="font-weight-bold mb-6"
+                        :class="{
+                          'text-h5': !$vuetify.display.lgAndUp,
+                          'text-h3': $vuetify.display.lgAndUp
+                        }"
+                      >
+                        Which best describes where you're at?
+                      </h2>
+                    </div>
+                    
+                    <div class="answers-section">
+                      <v-radio-group
+                        v-model="form.businessStage"
+                        class="option-group"
+                      >
+                        <v-radio
+                          v-for="option in businessStageOptions"
+                          :key="option.value"
+                          :value="option.value"
+                          :label="option.label"
+                          color="primary"
+                          class="option-item"
+                        />
+                      </v-radio-group>
+                    </div>
                   </div>
                 </transition>
               </v-window-item>
@@ -166,36 +199,52 @@
                   name="fade-slide"
                   mode="out-in"
                 >
-                  <div class="question-content">
-                    <h2 class="text-h5 font-weight-bold mb-6">
-                      What type of business are you building?
-                    </h2>
-                    <v-radio-group
-                      v-model="form.businessType"
-                      class="option-group"
-                    >
-                      <v-radio
-                        v-for="option in businessTypeOptions"
-                        :key="option.value"
-                        :value="option.value"
-                        :label="option.label"
-                        color="primary"
-                        class="option-item mb-4"
-                      />
-                    </v-radio-group>
+                  <div 
+                    class="question-content"
+                    :class="{
+                      'question-content--large': $vuetify.display.lgAndUp
+                    }"
+                  >
+                    <div class="question-section">
+                      <h2 
+                        class="font-weight-bold mb-6"
+                        :class="{
+                          'text-h5': !$vuetify.display.lgAndUp,
+                          'text-h3': $vuetify.display.lgAndUp
+                        }"
+                      >
+                        What type of business are you building?
+                      </h2>
+                    </div>
+                    
+                    <div class="answers-section">
+                      <v-radio-group
+                        v-model="form.businessType"
+                        class="option-group"
+                      >
+                        <v-radio
+                          v-for="option in businessTypeOptions"
+                          :key="option.value"
+                          :value="option.value"
+                          :label="option.label"
+                          color="primary"
+                          class="option-item"
+                        />
+                      </v-radio-group>
 
-                    <v-expand-transition>
-                      <v-textarea
-                        v-if="form.businessType === 'other'"
-                        v-model="form.businessTypeOther"
-                        placeholder="Tell us more about your business..."
-                        variant="outlined"
-                        rows="3"
-                        auto-grow
-                        hide-details
-                        class="mt-4 other-input"
-                      />
-                    </v-expand-transition>
+                      <v-expand-transition>
+                        <v-textarea
+                          v-if="form.businessType === 'other'"
+                          v-model="form.businessTypeOther"
+                          placeholder="Tell us more about your business..."
+                          variant="outlined"
+                          rows="3"
+                          auto-grow
+                          hide-details
+                          class="mt-4 other-input"
+                        />
+                      </v-expand-transition>
+                    </div>
                   </div>
                 </transition>
               </v-window-item>
@@ -206,36 +255,52 @@
                   name="fade-slide"
                   mode="out-in"
                 >
-                  <div class="question-content">
-                    <h2 class="text-h5 font-weight-bold mb-6">
-                      What's your biggest goal for the next 12 months?
-                    </h2>
-                    <v-radio-group
-                      v-model="form.goal"
-                      class="option-group"
-                    >
-                      <v-radio
-                        v-for="option in goalOptions"
-                        :key="option.value"
-                        :value="option.value"
-                        :label="option.label"
-                        color="primary"
-                        class="option-item mb-4"
-                      />
-                    </v-radio-group>
+                  <div 
+                    class="question-content"
+                    :class="{
+                      'question-content--large': $vuetify.display.lgAndUp
+                    }"
+                  >
+                    <div class="question-section">
+                      <h2 
+                        class="font-weight-bold mb-6"
+                        :class="{
+                          'text-h5': !$vuetify.display.lgAndUp,
+                          'text-h3': $vuetify.display.lgAndUp
+                        }"
+                      >
+                        What's your biggest goal for the next 12 months?
+                      </h2>
+                    </div>
+                    
+                    <div class="answers-section">
+                      <v-radio-group
+                        v-model="form.goal"
+                        class="option-group"
+                      >
+                        <v-radio
+                          v-for="option in goalOptions"
+                          :key="option.value"
+                          :value="option.value"
+                          :label="option.label"
+                          color="primary"
+                          class="option-item"
+                        />
+                      </v-radio-group>
 
-                    <v-expand-transition>
-                      <v-textarea
-                        v-if="form.goal === 'other'"
-                        v-model="form.goalOther"
-                        placeholder="Tell us about your goal..."
-                        variant="outlined"
-                        rows="3"
-                        auto-grow
-                        hide-details
-                        class="mt-4 other-input"
-                      />
-                    </v-expand-transition>
+                      <v-expand-transition>
+                        <v-textarea
+                          v-if="form.goal === 'other'"
+                          v-model="form.goalOther"
+                          placeholder="Tell us about your goal..."
+                          variant="outlined"
+                          rows="3"
+                          auto-grow
+                          hide-details
+                          class="mt-4 other-input"
+                        />
+                      </v-expand-transition>
+                    </div>
                   </div>
                 </transition>
               </v-window-item>
@@ -246,19 +311,35 @@
                   name="fade-slide"
                   mode="out-in"
                 >
-                  <div class="question-content">
-                    <h2 class="text-h5 font-weight-bold mb-6">
-                      What would achieving this goal mean for you?
-                    </h2>
-                    <v-textarea
-                      v-model="form.goalMeaning"
-                      placeholder="Share how achieving this goal would impact your life and business..."
-                      variant="outlined"
-                      rows="4"
-                      auto-grow
-                      hide-details
-                      class="meaning-input"
-                    />
+                  <div 
+                    class="question-content"
+                    :class="{
+                      'question-content--large': $vuetify.display.lgAndUp
+                    }"
+                  >
+                    <div class="question-section">
+                      <h2 
+                        class="font-weight-bold mb-6"
+                        :class="{
+                          'text-h5': !$vuetify.display.lgAndUp,
+                          'text-h3': $vuetify.display.lgAndUp
+                        }"
+                      >
+                        What would achieving this goal mean for you?
+                      </h2>
+                    </div>
+                    
+                    <div class="answers-section">
+                      <v-textarea
+                        v-model="form.goalMeaning"
+                        placeholder="Share how achieving this goal would impact your life and business..."
+                        variant="outlined"
+                        rows="4"
+                        auto-grow
+                        hide-details
+                        class="meaning-input"
+                      />
+                    </div>
                   </div>
                 </transition>
               </v-window-item>
@@ -269,29 +350,45 @@
                   name="fade-slide"
                   mode="out-in"
                 >
-                  <div class="question-content">
-                    <h2 class="text-h5 font-weight-bold mb-6">
-                      Let's create your personalized action plan.
-                    </h2>
-                    <div class="d-flex flex-column gap-4">
-                      <v-text-field
-                        v-model="form.name"
-                        placeholder="First Name"
-                        variant="outlined"
-                        hide-details
-                        required
-                        class="mb-4"
-                        autocomplete="given-name"
-                      />
-                      <v-text-field
-                        v-model="form.email"
-                        placeholder="Email Address"
-                        variant="outlined"
-                        hide-details
-                        required
-                        type="email"
-                        autocomplete="email"
-                      />
+                  <div 
+                    class="question-content"
+                    :class="{
+                      'question-content--large': $vuetify.display.lgAndUp
+                    }"
+                  >
+                    <div class="question-section">
+                      <h2 
+                        class="font-weight-bold mb-6"
+                        :class="{
+                          'text-h5': !$vuetify.display.lgAndUp,
+                          'text-h3': $vuetify.display.lgAndUp
+                        }"
+                      >
+                        Let's create your personalized action plan.
+                      </h2>
+                    </div>
+                    
+                    <div class="answers-section">
+                      <div class="d-flex flex-column gap-4">
+                        <v-text-field
+                          v-model="form.name"
+                          placeholder="First Name"
+                          variant="outlined"
+                          hide-details
+                          required
+                          class="mb-4"
+                          autocomplete="given-name"
+                        />
+                        <v-text-field
+                          v-model="form.email"
+                          placeholder="Email Address"
+                          variant="outlined"
+                          hide-details
+                          required
+                          type="email"
+                          autocomplete="email"
+                        />
+                      </div>
                     </div>
                   </div>
                 </transition>
@@ -304,72 +401,88 @@
                   name="fade-slide"
                   mode="out-in"
                 >
-                  <div class="question-content">
-                    <h2 class="text-h5 font-weight-bold mb-4">
-                      Do you know your DISC profile?
-                    </h2>
-                    <v-radio-group
-                      v-model="form.discProfile"
-                      class="option-group"
-                    >
-                      <v-radio
-                        v-for="option in discKnowledgeOptions"
-                        :key="option.value"
-                        :value="option.value"
-                        :label="option.label"
-                        color="primary"
-                        class="option-item mb-2"
-                      />
-                    </v-radio-group>
-
-                    <v-expand-transition>
-                      <div
-                        v-if="form.discProfile === 'yes'"
-                        class="mt-4"
+                  <div 
+                    class="question-content"
+                    :class="{
+                      'question-content--large': $vuetify.display.lgAndUp
+                    }"
+                  >
+                    <div class="question-section">
+                      <h2 
+                        class="font-weight-bold mb-4"
+                        :class="{
+                          'text-h5': !$vuetify.display.lgAndUp,
+                          'text-h3': $vuetify.display.lgAndUp
+                        }"
                       >
-                        <h3 class="text-h6 font-weight-medium mb-3">
-                          What's your profile?
-                        </h3>
+                        Do you know your DISC profile?
+                      </h2>
+                    </div>
+                    
+                    <div class="answers-section">
+                      <v-radio-group
+                        v-model="form.discProfile"
+                        class="option-group"
+                      >
+                        <v-radio
+                          v-for="option in discKnowledgeOptions"
+                          :key="option.value"
+                          :value="option.value"
+                          :label="option.label"
+                          color="primary"
+                          class="option-item"
+                        />
+                      </v-radio-group>
 
-                        <!-- Primary Style -->
-                        <div class="mb-3">
-                          <div class="text-subtitle-1 mb-2">Primary Style</div>
-                          <v-radio-group
-                            v-model="form.discPrimary"
-                            class="option-group"
-                          >
-                            <v-radio
-                              v-for="option in discStyleOptions"
-                              :key="option.value"
-                              :value="option.value"
-                              :label="option.label"
-                              color="primary"
-                              class="option-item mb-2"
-                            />
-                          </v-radio-group>
-                        </div>
+                      <v-expand-transition>
+                        <div
+                          v-if="form.discProfile === 'yes'"
+                          class="mt-4"
+                        >
+                          <h3 class="text-h6 font-weight-medium mb-3">
+                            What's your profile?
+                          </h3>
 
-                        <!-- Secondary Style -->
-                        <div>
-                          <div class="text-subtitle-1 mb-2">
-                            Secondary Style
+                          <!-- Primary Style -->
+                          <div class="mb-3">
+                            <div class="text-subtitle-1 mb-2">Primary Style</div>
+                            <v-radio-group
+                              v-model="form.discPrimary"
+                              class="option-group"
+                            >
+                              <v-radio
+                                v-for="option in discStyleOptions"
+                                :key="option.value"
+                                :value="option.value"
+                                :label="option.label"
+                                color="primary"
+                                class="option-item"
+                              />
+                            </v-radio-group>
                           </div>
-                          <v-radio-group
-                            v-model="form.discSecondary"
-                            class="option-group"
-                          >
-                            <v-radio
-                              v-for="option in discStyleOptions"
-                              :key="option.value"
-                              :value="option.value"
-                              :label="option.label"
-                              color="primary"
-                              class="option-item mb-2"
-                            />
-                          </v-radio-group>
+
+                          <!-- Secondary Style -->
+                          <div>
+                            <div class="text-subtitle-1 mb-2">
+                              Secondary Style
+                            </div>
+                            <v-radio-group
+                              v-model="form.discSecondary"
+                              class="option-group"
+                            >
+                              <v-radio
+                                v-for="option in discStyleOptions"
+                                :key="option.value"
+                                :value="option.value"
+                                :label="option.label"
+                                color="primary"
+                                class="option-item"
+                              />
+                            </v-radio-group>
+                          </div>
                         </div>
-                      </div>
-                    </v-expand-transition>
+                      </v-expand-transition>
+                    </div>
                   </div>
                 </transition>
               </v-window-item>
@@ -387,23 +500,39 @@
                   name="fade-slide"
                   mode="out-in"
                 >
-                  <div class="question-content">
-                    <h2 class="text-h5 font-weight-bold mb-4">
-                      {{ q.question }}
-                    </h2>
-                    <v-radio-group
-                      v-model="form.discQuestions[`q${index + 1}`]"
-                      class="option-group"
-                    >
-                      <v-radio
-                        v-for="option in q.options"
-                        :key="option.value"
-                        :value="option.value"
-                        :label="option.label"
-                        color="primary"
-                        class="option-item mb-2"
-                      />
-                    </v-radio-group>
+                  <div 
+                    class="question-content"
+                    :class="{
+                      'question-content--large': $vuetify.display.lgAndUp
+                    }"
+                  >
+                    <div class="question-section">
+                      <h2 
+                        class="font-weight-bold mb-4"
+                        :class="{
+                          'text-h5': !$vuetify.display.lgAndUp,
+                          'text-h3': $vuetify.display.lgAndUp
+                        }"
+                      >
+                        {{ q.question }}
+                      </h2>
+                    </div>
+                    
+                    <div class="answers-section">
+                      <v-radio-group
+                        v-model="form.discQuestions[`q${index + 1}`]"
+                        class="option-group"
+                      >
+                        <v-radio
+                          v-for="option in q.options"
+                          :key="option.value"
+                          :value="option.value"
+                          :label="option.label"
+                          color="primary"
+                          class="option-item"
+                        />
+                      </v-radio-group>
+                    </div>
                   </div>
                 </transition>
               </v-window-item>
@@ -414,11 +543,24 @@
                   name="fade-slide"
                   mode="out-in"
                 >
-                  <div class="question-content">
-                    <h2 class="text-h5 font-weight-bold mb-6">
-                      Here's a summary of your responses
-                    </h2>
-
+                  <div 
+                    class="question-content"
+                    :class="{
+                      'question-content--large': $vuetify.display.lgAndUp
+                    }"
+                  >
+                    <div class="question-section">
+                      <h2 
+                        class="font-weight-bold mb-6"
+                        :class="{
+                          'text-h5': !$vuetify.display.lgAndUp,
+                          'text-h3': $vuetify.display.lgAndUp
+                        }"
+                      >
+                        Here's a summary of your responses
+                      </h2>
+                    </div>
+                    
                     <div class="summary-list">
                       <!-- Main Challenge -->
                       <div class="summary-item">
@@ -829,6 +971,76 @@
     border-radius: 0;
     border: none;
   }
+}
+
+.question-card--large {
+  max-width: 900px;
+}
+
+.question-content--large {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  min-height: 400px;
+  padding: 0;
+}
+
+.question-content--large .question-section {
+  position: sticky;
+  top: 24px;
+}
+
+.question-content--large .question-section h2 {
+  font-size: 3rem !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.5px;
+  padding-right: 24px;
+}
+
+.question-content--large .answers-section {
+  padding-top: 8px;
+}
+
+.question-content--large .option-item {
+  padding: 10px 20px;
+  margin-bottom: 8px !important;
+}
+
+@media (min-width: 1264px) {
+  .dialog-content {
+    padding: 40px;
+  }
+  
+  .question-content--large .option-item {
+    font-size: 1rem;
+  }
+}
+
+.option-item {
+  position: relative;
+  transition: all 0.2s ease;
+  padding: 8px 20px;
+  margin-bottom: 8px !important;
+  border-radius: 12px;
+}
+
+.option-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.option-item:hover {
+  transform: translateX(8px);
+  background: var(--v-primary-lighten-5);
+}
+
+.question-content--large .option-item {
+  padding: 8px 20px;
+}
+
+.option-group {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 </style>
 
