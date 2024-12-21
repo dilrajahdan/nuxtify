@@ -15,7 +15,7 @@
   --space-32: 8rem;    /* 128px */
 
   /* Section Spacing */
-  --section-spacing-y: var(--space-24);
+  --section-spacing-y: var(--space-20);
   --section-spacing-y-mobile: var(--space-16);
   --section-spacing-top-with-header: var(--space-40);
 
