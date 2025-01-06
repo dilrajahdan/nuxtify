@@ -25,24 +25,6 @@
               <p class="text-h3 text-md-h2 font-weight-bold max-w-lg">
                 {{ description }}
               </p>
-              <!-- <div class="d-flex flex-column flex-sm-row gap-4">
-                <v-btn
-                  color="primary"
-                  size="x-large"
-                  rounded="pill"
-                  class="px-8 flex-grow-1 flex-sm-grow-0"
-                >
-                  Get Started
-                </v-btn>
-                <v-btn
-                  variant="outlined"
-                  size="x-large"
-                  rounded="pill"
-                  class="px-8 py-3 flex-grow-1 flex-sm-grow-0"
-                >
-                  View Demo
-                </v-btn>
-              </div> -->
             </div>
           </v-col>
 
@@ -53,7 +35,7 @@
             class="px-0 px-sm-6"
             :class="{ 'd-none': isFormExpanded }"
           >
-            <OnboardingForm 
+            <DynamicForm 
               class="mt-8 mt-md-0" 
               @expand="handleFormExpand"
             />
@@ -207,18 +189,18 @@
 </template>
 
 <script setup lang="ts">
-import OnboardingForm from '~/components/OnboardingForm.vue';
+import DynamicForm from '~/components/DynamicForm.vue'
 
-const title = 'New Service For Entrepreneurs & Founders!';
-const description = 'Unlock The Next Level of Your Journey With Tailored AI.';
+const title = 'New Service For Entrepreneurs & Founders!'
+const description = 'Unlock The Next Level of Your Journey With Tailored AI.'
 const featuresDescription =
-  'Personalized guidance based on your DISC profile and entrepreneurial goals.';
+  'Personalized guidance based on your DISC profile and entrepreneurial goals.'
 
 const stats = [
   { value: '2000+', label: 'Students Taught' },
   { value: '$1B+', label: 'Student Revenue' },
   { value: '26', label: 'Diagnostic Factors' },
-];
+]
 
 const steps = [
   {
@@ -239,7 +221,7 @@ const steps = [
       'Reply to each email to help us better serve you with future messages.',
     image: 'https://placehold.co/800x600/e9ecef/495057?text=Feedback',
   },
-];
+]
 
 const plans = [
   {
@@ -267,7 +249,7 @@ const plans = [
       'Advanced recommendations',
     ],
   },
-];
+]
 
 const aboutStats = [
   {
@@ -294,7 +276,7 @@ const aboutStats = [
     label: 'Uptime',
     color: 'warning',
   },
-];
+]
 
 const features = [
   {
@@ -315,7 +297,7 @@ const features = [
     icon: 'mdi-message-reply',
     color: 'info',
   },
-];
+]
 
 const testimonials = [
   {
@@ -324,7 +306,7 @@ const testimonials = [
     avatar: 'https://placehold.co/100x100/e9ecef/495057?text=DM',
     text: "The greatest cost for any entrepreneur isn't your team, your advertising budget, or the courses or programs you buy. The greatest cost comes from not knowing where to put your focus.",
   },
-];
+]
 
 const resources = [
   {
@@ -348,7 +330,7 @@ const resources = [
     buttonColor: 'info',
     action: () => navigateTo('/tutorials'),
   },
-];
+]
 
 useHead({
   title: 'Create Mobile Funnels',
@@ -359,13 +341,13 @@ useHead({
         'Create high-converting mobile funnels in minutes with our intuitive platform',
     },
   ],
-});
+})
 
-const isFormExpanded = ref(false);
+const isFormExpanded = ref(false)
 
 const handleFormExpand = () => {
-  isFormExpanded.value = true;
-};
+  isFormExpanded.value = true
+}
 </script>
 
 <style scoped>
