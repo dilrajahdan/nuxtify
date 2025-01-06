@@ -100,6 +100,34 @@ export const formConfig: FormConfig = {
       ],
       required: true
     },
+    skillRatings: {
+      id: 'skillRatings',
+      title: 'Rate Your Entrepreneurial Skills',
+      type: 'rating_block',
+      questions: [
+        {
+          id: 'findingIdeas',
+          title: 'Finding Ideas',
+          required: true
+        },
+        {
+          id: 'sellingIdeas',
+          title: 'Selling Ideas',
+          required: true
+        },
+        {
+          id: 'buildingIdeas',
+          title: 'Building Ideas',
+          required: true
+        },
+        {
+          id: 'growingIdeas',
+          title: 'Growing Ideas',
+          required: true
+        }
+      ],
+      required: true
+    },
     discProfile: {
       id: 'discProfile',
       title: `Do you know your DISC profile?`,
@@ -119,6 +147,7 @@ export const formConfig: FormConfig = {
     'goal',
     'goalMeaning',
     'contactInfo',
+    'skillRatings',
     'discProfile'
   ],
   discAssessment: {

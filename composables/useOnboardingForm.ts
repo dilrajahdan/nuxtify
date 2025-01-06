@@ -29,7 +29,11 @@ export const useOnboardingForm = () => {
     discProfile: '',
     discPrimary: '',
     discSecondary: '',
-    discQuestions: {}
+    discQuestions: {},
+    findingIdeas: '',
+    sellingIdeas: '',
+    buildingIdeas: '',
+    growingIdeas: ''
   })
 
   // Computed properties
@@ -64,15 +68,10 @@ export const useOnboardingForm = () => {
           title: `What's your DISC profile?`,
           type: 'disc' as const,
           required: true,
-          options: formConfig.discAssessment.styles // Use the styles from the config
+          options: formConfig.discAssessment.styles
         } as BaseFormQuestion
       }
 
-      console.log('Current question from flow:', {
-        step: currentStep.value,
-        questionId,
-        question
-      })
       return question
     }
 
@@ -105,6 +104,14 @@ export const useOnboardingForm = () => {
       // Handle DISC profile selection
       if (question.type === 'disc') {
         return !!form.value.discPrimary && !!form.value.discSecondary
+      }
+
+      // Handle rating block
+      if (question.type === 'rating_block') {
+        return question.questions?.every(ratingQuestion => {
+          const value = form.value[ratingQuestion.id as keyof FormData]
+          return !!value && typeof value === 'string' && value.trim() !== ''
+        }) ?? false
       }
 
       const value = form.value[question.id]
@@ -362,7 +369,11 @@ export const useOnboardingForm = () => {
       discProfile: '',
       discPrimary: '',
       discSecondary: '',
-      discQuestions: {}
+      discQuestions: {},
+      findingIdeas: '',
+      sellingIdeas: '',
+      buildingIdeas: '',
+      growingIdeas: ''
     }
     
     nextTick(() => {

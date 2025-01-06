@@ -18,8 +18,14 @@ export interface OtherField {
   rows: number
 }
 
+export interface RatingQuestion {
+  id: string
+  title: string
+  required: boolean
+}
+
 // Question types
-export type FormQuestionType = 'radio' | 'textarea' | 'contact' | 'disc'
+export type FormQuestionType = 'radio' | 'textarea' | 'contact' | 'disc' | 'rating' | 'rating_block'
 
 export interface BaseFormQuestion {
   id: string
@@ -30,6 +36,7 @@ export interface BaseFormQuestion {
   placeholder?: string
   rows?: number
   fields?: FormField[]
+  questions?: RatingQuestion[]
   required: boolean
 }
 
@@ -87,6 +94,10 @@ export interface FormData {
   discPrimary: string
   discSecondary: string
   discQuestions: Record<string, string>
+  findingIdeas: string
+  sellingIdeas: string
+  buildingIdeas: string
+  growingIdeas: string
 }
 
 // Union type for questions

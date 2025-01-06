@@ -99,6 +99,15 @@
                   <div>Secondary Style: {{ form.discSecondary }}</div>
                 </template>
               </div>
+
+              <!-- Self Ratings -->
+              <div v-if="form.findingIdeas" class="mb-3">
+                <div class="font-weight-medium">Self Ratings:</div>
+                <div>Finding Ideas: {{ form.findingIdeas }}/4</div>
+                <div>Selling Ideas: {{ form.sellingIdeas }}/4</div>
+                <div>Building Ideas: {{ form.buildingIdeas }}/4</div>
+                <div>Growing Ideas: {{ form.growingIdeas }}/4</div>
+              </div>
             </div>
           </div>
 
@@ -154,6 +163,72 @@
                   class="mt-2"
                   hide-details
                 />
+              </div>
+
+              <div v-else-if="getQuestionType(currentQuestion) === 'rating_block' && currentQuestion?.questions">
+                <div v-for="question in currentQuestion.questions" :key="question.id" class="mb-8">
+                  <div class="text-subtitle-1 mb-4">{{ question.title }}</div>
+                  <v-radio-group
+                    :model-value="getFormValue(question.id)"
+                    @update:model-value="value => handleRatingUpdate(question.id, value?.toString() || '')"
+                    class="rating-group"
+                    hide-details
+                  >
+                    <div class="d-flex align-center justify-space-between">
+                      <div class="rating-option">
+                        <v-radio
+                          value="1"
+                          label="1"
+                          density="compact"
+                        />
+                        <div class="text-caption text-grey">Beginner</div>
+                      </div>
+                      <div class="rating-option">
+                        <v-radio
+                          value="2"
+                          label="2"
+                          density="compact"
+                        />
+                        <div class="text-caption text-grey">Learning</div>
+                      </div>
+                      <div class="rating-option">
+                        <v-radio
+                          value="3"
+                          label="3"
+                          density="compact"
+                        />
+                        <div class="text-caption text-grey">Skilled</div>
+                      </div>
+                      <div class="rating-option">
+                        <v-radio
+                          value="4"
+                          label="4"
+                          density="compact"
+                        />
+                        <div class="text-caption text-grey">Pro</div>
+                      </div>
+                    </div>
+                  </v-radio-group>
+                </div>
+              </div>
+
+              <div v-else-if="getQuestionType(currentQuestion) === 'rating'">
+                <v-radio-group
+                  :model-value="getFormValue(safeQuestionId)"
+                  @update:model-value="handleOptionUpdate"
+                  class="d-flex flex-row justify-space-between"
+                >
+                  <v-radio
+                    v-for="n in 4"
+                    :key="n"
+                    :label="n.toString()"
+                    :value="n.toString()"
+                  />
+                </v-radio-group>
+                <div class="d-flex justify-space-between px-4 text-caption text-grey">
+                  <span>Needs Improvement</span>
+                  <span>Expert</span>
+                </div>
               </div>
             </template>
 
@@ -371,6 +446,11 @@ const getQuestionRows = (question: Question | null): number => {
   return 'rows' in question ? question.rows || 3 : 3
 }
 
+const handleRatingUpdate = (questionId: string, value: string) => {
+  if (!value) return
+  setFormValue(questionId, value)
+}
+
 // Add watchers for debugging
 watch(currentStep, (newValue) => {
   console.log('Current step changed:', newValue)
@@ -402,5 +482,27 @@ const debugInfo = computed(() => ({
 .dynamic-form {
   max-width: 600px;
   margin: 0 auto;
+}
+
+.rating-group {
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.rating-option {
+  text-align: center;
+  flex: 1;
+}
+
+.rating-option :deep(.v-selection-control) {
+  min-height: unset;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.rating-option :deep(.v-label) {
+  opacity: 0;
+  height: 0;
+  margin: 0;
 }
 </style> 
