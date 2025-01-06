@@ -1,6 +1,15 @@
+// Basic form types
 export interface FormOption {
   label: string
   value: string
+}
+
+export interface FormField {
+  id: string
+  type: string
+  placeholder: string
+  autocomplete?: string
+  required: boolean
 }
 
 export interface OtherField {
@@ -9,46 +18,44 @@ export interface OtherField {
   rows: number
 }
 
-export interface ContactField {
-  id: string
-  type: string
-  placeholder: string
-  autocomplete?: string
-  required: boolean
-}
+// Question types
+export type FormQuestionType = 'radio' | 'textarea' | 'contact' | 'disc'
 
-export interface BaseQuestion {
+export interface BaseFormQuestion {
   id: string
-  options?: FormOption[]
-}
-
-export interface FormQuestion extends BaseQuestion {
   title: string
-  type: 'radio' | 'textarea' | 'contact'
+  type: FormQuestionType
+  options?: FormOption[]
   otherField?: OtherField
   placeholder?: string
   rows?: number
-  fields?: ContactField[]
+  fields?: FormField[]
   required: boolean
 }
 
-export interface DISCQuestion extends BaseQuestion {
+// Alias for BaseFormQuestion to maintain backward compatibility
+export type FormQuestion = BaseFormQuestion
+
+export interface DISCQuestion {
+  id: string
   question: string
   options: FormOption[]
 }
 
+// DISC Assessment types
 export interface DISCAssessment {
   questions: DISCQuestion[]
   styles: FormOption[]
 }
 
+// Form configuration types
 export interface FormConfig {
-  questions: Record<string, FormQuestion>
+  questions: Record<string, BaseFormQuestion>
   flow: string[]
   discAssessment: DISCAssessment
 }
 
-// Define valid form field keys
+// Form data types
 export type FormFields = 
   | 'mainChallenge'
   | 'mainChallengeOther'
@@ -80,4 +87,16 @@ export interface FormData {
   discPrimary: string
   discSecondary: string
   discQuestions: Record<string, string>
+}
+
+// Union type for questions
+export type Question = BaseFormQuestion | DISCQuestion
+
+// Type guards
+export function isFormQuestion(question: Question | null): question is BaseFormQuestion {
+  return question !== null && 'title' in question
+}
+
+export function isDISCQuestion(question: Question | null): question is DISCQuestion {
+  return question !== null && 'question' in question
 } 

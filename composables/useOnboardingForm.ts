@@ -1,48 +1,11 @@
 import { formConfig } from '~/config/form-config'
-import type { FormData, DISCQuestion } from '~/types/form'
-
-// Update the FormQuestion type to include 'disc' type
-type FormQuestionType = 'radio' | 'textarea' | 'contact' | 'disc'
-
-interface FormOption {
-  label: string
-  value: string
-}
-
-interface FormField {
-  id: string
-  type: string
-  placeholder: string
-  autocomplete?: string
-  required: boolean
-}
-
-interface BaseFormQuestion {
-  id: string
-  title: string
-  type: FormQuestionType
-  options?: FormOption[]
-  otherField?: {
-    id: string
-    placeholder: string
-    rows: number
-  }
-  placeholder?: string
-  rows?: number
-  fields?: FormField[]
-  required: boolean
-}
-
-type BaseQuestion = BaseFormQuestion | DISCQuestion
-
-// Type guards
-function isFormQuestion(question: BaseQuestion | null): question is BaseFormQuestion {
-  return question !== null && 'title' in question
-}
-
-function isDISCQuestion(question: BaseQuestion | null): question is DISCQuestion {
-  return question !== null && 'question' in question
-}
+import { isFormQuestion, isDISCQuestion } from '~/types/form'
+import type { 
+  FormData, 
+  DISCQuestion, 
+  Question,
+  BaseFormQuestion
+} from '~/types/form'
 
 export const useOnboardingForm = () => {
   const currentStep = ref(1)

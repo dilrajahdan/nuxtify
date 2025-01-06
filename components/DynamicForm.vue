@@ -257,7 +257,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FormOption, FormData } from '~/types/form'
+import type { FormOption, FormData, Question, BaseFormQuestion, DISCQuestion } from '~/types/form'
 
 const discStyleOptions = [
   { label: 'D (Direct/Decisive)', value: 'D' },
@@ -265,38 +265,6 @@ const discStyleOptions = [
   { label: 'S (Steady/Supportive)', value: 'S' },
   { label: 'C (Cautious/Calculating)', value: 'C' }
 ]
-
-interface FormField {
-  id: string
-  type: string
-  placeholder: string
-  autocomplete?: string
-  required: boolean
-}
-
-interface BaseFormQuestion {
-  id: string
-  title: string
-  type: string
-  options?: FormOption[]
-  otherField?: {
-    id: string
-    placeholder: string
-    rows: number
-  }
-  placeholder?: string
-  rows?: number
-  fields?: FormField[]
-  required: boolean
-}
-
-interface DISCQuestion {
-  id: string
-  question: string
-  options: FormOption[]
-}
-
-type Question = BaseFormQuestion | DISCQuestion
 
 const {
   form,
