@@ -74,7 +74,7 @@ export const formConfig: FormConfig = {
       id: 'goalMeaning',
       title: `What would achieving this goal mean for you?`,
       type: 'textarea',
-      placeholder: `Share how achieving this goal would impact your life and business...`,
+      placeholder: `Share how achieving this goal would impact your life and business... Example: "I'd be able to quit my job and focus on my business full-time."`,
       rows: 4,
       required: true
     },

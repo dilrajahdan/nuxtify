@@ -231,42 +231,28 @@
                         <v-radio-group
                           :model-value="getFormValue(question.id)"
                           @update:model-value="value => handleRatingUpdate(question.id, value?.toString() || '')"
-                          class="rating-group"
+                          class="rating-radio-group"
                           hide-details
                         >
-                          <div class="d-flex align-center justify-space-between">
-                            <div class="rating-option">
+                          <div class="rating-options">
+                            <label
+                              v-for="n in 4"
+                              :key="n"
+                              class="rating-option"
+                            >
                               <v-radio
-                                value="1"
-                                label="1"
-                                density="compact"
+                                :value="n.toString()"
+                                density="comfortable"
+                                color="primary"
+                                hide-details
                               />
-                              <div class="text-caption text-grey">Beginner</div>
-                            </div>
-                            <div class="rating-option">
-                              <v-radio
-                                value="2"
-                                label="2"
-                                density="compact"
-                              />
-                              <div class="text-caption text-grey">Learning</div>
-                            </div>
-                            <div class="rating-option">
-                              <v-radio
-                                value="3"
-                                label="3"
-                                density="compact"
-                              />
-                              <div class="text-caption text-grey">Skilled</div>
-                            </div>
-                            <div class="rating-option">
-                              <v-radio
-                                value="4"
-                                label="4"
-                                density="compact"
-                              />
-                              <div class="text-caption text-grey">Pro</div>
-                            </div>
+                              <div class="rating-content">
+                                <div class="rating-number">{{ n }}</div>
+                                <div class="text-caption text-medium-emphasis">
+                                  {{ n === 1 ? 'Beginner' : n === 2 ? 'Learning' : n === 3 ? 'Skilled' : 'Pro' }}
+                                </div>
+                              </div>
+                            </label>
                           </div>
                         </v-radio-group>
                       </div>
@@ -300,7 +286,7 @@
                           <div class="text-subtitle-1 mb-2">Primary Style</div>
                           <v-radio-group
                             v-model="form.discPrimary"
-                            class="option-group"
+                            class="custom-radio-group"
                           >
                             <v-radio
                               v-for="option in discStyleOptions"
@@ -308,7 +294,7 @@
                               :value="option.value"
                               :label="option.label"
                               color="primary"
-                              class="option-item mb-2"
+                              density="comfortable"
                             />
                           </v-radio-group>
                         </div>
@@ -320,7 +306,7 @@
                           <div class="text-subtitle-1 mb-2">Secondary Style</div>
                           <v-radio-group
                             v-model="form.discSecondary"
-                            class="option-group"
+                            class="custom-radio-group"
                           >
                             <v-radio
                               v-for="option in discStyleOptions.filter(o => o.value !== form.discPrimary)"
@@ -328,7 +314,7 @@
                               :value="option.value"
                               :label="option.label"
                               color="primary"
-                              class="option-item mb-2"
+                              density="comfortable"
                             />
                           </v-radio-group>
                         </div>
@@ -640,41 +626,106 @@ const debugInfo = computed(() => ({
   font-weight: 400;
   opacity: 1;
   width: 100% !important;
-  padding: 15px;
+  padding: 16px 24px;
 }
 
 /* Radio button positioning */
 .custom-radio-group .v-radio .v-selection-control {
   margin-right: 12px;
+  padding: 0;
+}
+
+.custom-radio-group .v-radio {
+  margin-bottom: 12px;
+}
+
+.custom-radio-group .v-radio:last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 600px) {
-  .custom-radio-group .v-radio .v-selection-control-group {
-    padding: 12px;
+  .custom-radio-group .v-radio .v-label {
+    padding: 12px 16px;
   }
 }
 
-/* Rating styles */
-.rating-group {
+/* Rating Styles */
+.rating-radio-group {
   width: 100%;
-  padding: 0 1rem;
+}
+
+.rating-options {
+  display: flex;
+  gap: 12px;
+  width: 100%;
 }
 
 .rating-option {
-  text-align: center;
   flex: 1;
+  position: relative;
+  border: 1px solid rgb(var(--v-theme-card-border));
+  border-radius: 8px;
+  padding: 16px;
+  background: rgb(var(--v-theme-surface));
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.rating-option .v-selection-control {
-  min-height: unset;
-  margin: 0 auto;
-  justify-content: center;
+.rating-option:hover {
+  border-color: rgb(var(--v-theme-primary));
+  background: rgb(var(--v-theme-primary-lighten-3));
 }
 
-.rating-option .v-label {
-  opacity: 0;
-  height: 0;
+.rating-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.rating-number {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.rating-option .v-radio {
   margin: 0;
+  padding: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.rating-option:has(.v-radio--selected) {
+  border-color: rgb(var(--v-theme-primary));
+  background: rgb(var(--v-theme-primary-lighten-2));
+}
+
+.rating-option:has(.v-radio--selected) .rating-number,
+.rating-option:has(.v-radio--selected) .text-caption {
+  color: rgb(var(--v-theme-primary));
+}
+
+@media (max-width: 600px) {
+  .rating-options {
+    gap: 8px;
+  }
+
+  .rating-option {
+    padding: 12px 8px;
+  }
+
+  .rating-number {
+    font-size: 1rem;
+  }
+
+  .text-caption {
+    font-size: 0.75rem;
+  }
 }
 
 /* Footer styles */
