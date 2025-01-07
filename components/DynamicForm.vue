@@ -442,7 +442,7 @@ const {
 
 const emit = defineEmits(['expand'])
 
-const title = 'Assessment Form'
+const title = 'The Age of Generalized Advice is Over. Let\'s Get You Started.'
 const isExpanded = ref(false)
 
 const handleInitialClick = () => {
@@ -640,6 +640,7 @@ const debugInfo = computed(() => ({
   font-weight: 400;
   opacity: 1;
   width: 100% !important;
+  padding: 15px;
 }
 
 /* Radio button positioning */
