@@ -16,12 +16,15 @@
             <v-radio-group
               :model-value="getFormValue(safeQuestionId)"
               @update:model-value="handleOptionSelectAndExpand"
+              class="custom-radio-group"
             >
               <v-radio
                 v-for="option in getQuestionOptions(currentQuestion)"
                 :key="option.value"
                 :label="option.label"
                 :value="option.value"
+                color="primary"
+                density="comfortable"
               />
             </v-radio-group>
           </div>
@@ -187,12 +190,15 @@
                       <v-radio-group
                         :model-value="getFormValue(safeQuestionId)"
                         @update:model-value="handleOptionUpdate"
+                        class="custom-radio-group"
                       >
                         <v-radio
                           v-for="option in getQuestionOptions(currentQuestion)"
                           :key="option.value"
                           :label="option.label"
                           :value="option.value"
+                          color="primary"
+                          density="comfortable"
                         />
                       </v-radio-group>
 
@@ -566,7 +572,7 @@ const debugInfo = computed(() => ({
 }))
 </script>
 
-<style scoped>
+<style>
 .dynamic-form {
   max-width: 600px;
   margin: 0 auto;
@@ -576,12 +582,6 @@ const debugInfo = computed(() => ({
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.sticky-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
 }
 
 .form-content {
@@ -596,28 +596,63 @@ const debugInfo = computed(() => ({
   padding: 24px 16px;
 }
 
-.sticky-footer {
-  position: sticky;
-  bottom: 0;
-  z-index: 100;
+/* Custom Radio Button Styles */
+.custom-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.footer-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 16px;
+/* Target the entire radio button container */
+.custom-radio-group .v-radio {
+  border: 1px solid rgb(var(--v-theme-card-border));
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: rgb(var(--v-theme-surface));
+  transition: all 0.2s ease;
 }
 
-.footer-content :deep(.v-row) {
-  min-height: 48px;
+/* Style the radio button wrapper */
+.custom-radio-group .v-radio .v-selection-control-group {
+  width: 100%;
+  padding: 16px;
+  margin: 0;
 }
 
-/* Ensure buttons in footer are properly sized */
-.sticky-footer .v-btn {
-  height: 36px;
-  min-width: 64px;
+/* Hover state */
+.custom-radio-group .v-radio:hover {
+  border-color: rgb(var(--v-theme-primary));
+  background: rgb(var(--v-theme-primary-lighten-3));
 }
 
+/* Selected state */
+.custom-radio-group .v-radio .v-selection-control--selected {
+  background: rgb(var(--v-theme-primary-lighten-2));
+}
+
+.custom-radio-group .v-radio .v-selection-control--selected ~ .v-label {
+  color: rgb(var(--v-theme-primary));
+}
+
+/* Label styles */
+.custom-radio-group .v-radio .v-label {
+  font-size: 1rem;
+  font-weight: 400;
+  opacity: 1;
+}
+
+/* Radio button positioning */
+.custom-radio-group .v-radio .v-selection-control {
+  margin-right: 12px;
+}
+
+@media (max-width: 600px) {
+  .custom-radio-group .v-radio .v-selection-control-group {
+    padding: 12px;
+  }
+}
+
+/* Rating styles */
 .rating-group {
   width: 100%;
   padding: 0 1rem;
@@ -628,32 +663,40 @@ const debugInfo = computed(() => ({
   flex: 1;
 }
 
-.rating-option :deep(.v-selection-control) {
+.rating-option .v-selection-control {
   min-height: unset;
   margin: 0 auto;
   justify-content: center;
 }
 
-.rating-option :deep(.v-label) {
+.rating-option .v-label {
   opacity: 0;
   height: 0;
   margin: 0;
 }
 
-/* Ensure form elements don't get too wide */
-.form-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* Update footer to prevent growing/shrinking */
-.v-footer {
-  flex: 0 1 auto;
-}
-
+/* Footer styles */
 .footer-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 0 16px;
+}
+
+.footer-content .v-row {
+  min-height: 48px;
+}
+
+.v-footer {
+  flex: 0 1 auto;
+}
+
+@media (max-width: 600px) {
+  .content-wrapper {
+    padding: 16px;
+  }
+  
+  .v-radio.custom-radio .v-selection-control {
+    padding: 12px;
+  }
 }
 </style> 
