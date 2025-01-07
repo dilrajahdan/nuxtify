@@ -85,6 +85,11 @@ export const useOnboardingForm = () => {
   })
 
   const canProgress = computed(() => {
+    // Always allow progress on summary step
+    if (currentStep.value === totalSteps.value) {
+      return true
+    }
+
     const question = currentQuestion.value
     if (!question) return false
 
@@ -237,59 +242,47 @@ export const useOnboardingForm = () => {
           }
           // Otherwise stay on this step to let them select their DISC profile
           return
-        } else {
-          // Start DISC assessment questions
-          currentStep.value++
         }
-      } else if (currentStep.value > discProfileStep && form.value.discProfile !== 'yes') {
-        // Handle DISC assessment questions
+        // For 'no' or 'not_sure', proceed to assessment questions
+        currentStep.value++
+        return
+      } 
+      
+      // Handle DISC assessment questions
+      if (currentStep.value > discProfileStep && (form.value.discProfile === 'no' || form.value.discProfile === 'not_sure')) {
         const currentQuestionIndex = currentStep.value - (discProfileStep + 1)
-        console.log('DISC Assessment:', {
-          currentQuestionIndex,
-          totalQuestions: formConfig.discAssessment.questions.length,
-          currentAnswers: form.value.discQuestions
-        })
         
-        const currentDISCQuestion = formConfig.discAssessment.questions[currentQuestionIndex]
-        
-        if (currentDISCQuestion) {
-          console.log('Current DISC Question:', {
-            question: currentDISCQuestion,
-            answer: form.value.discQuestions[currentDISCQuestion.id]
-          })
-          
+        if (currentQuestionIndex < formConfig.discAssessment.questions.length) {
+          // Still have more DISC questions to answer
+          const currentDISCQuestion = formConfig.discAssessment.questions[currentQuestionIndex]
           const answer = form.value.discQuestions[currentDISCQuestion.id]
+          
           if (answer) {
-            // Check if this is the last question
+            // Check if this is the last DISC question
             if (currentQuestionIndex === formConfig.discAssessment.questions.length - 1) {
-              console.log('Last DISC question answered, calculating profile')
-              // Last question answered, calculate profile
+              // Calculate profile and move to summary
               const result = calculateDiscProfile(form.value.discQuestions)
-              // Update form state once
-              form.value = {
-                ...form.value,
-                discPrimary: result.primary,
-                discSecondary: result.secondary
-              }
-              console.log('Calculated DISC profile:', result)
-              // Go to summary step first
+              form.value.discPrimary = result.primary
+              form.value.discSecondary = result.secondary
               currentStep.value = totalSteps.value
               return
             }
             // Not the last question, move to next
-            console.log('Moving to next DISC question')
             currentStep.value++
+            return
           }
         }
-      } else if (currentStep.value === totalSteps.value) {
-        // Handle submit from summary page
+      }
+
+      // Handle submit from summary page
+      if (currentStep.value === totalSteps.value) {
         handleSubmit()
         return
-      } else {
-        // Normal flow - increment if we haven't reached the total steps
-        if (currentStep.value < totalSteps.value) {
-          currentStep.value++
-        }
+      }
+
+      // Normal flow - increment if we haven't reached the total steps
+      if (currentStep.value < totalSteps.value) {
+        currentStep.value++
       }
 
       // Log state after step change
@@ -346,15 +339,12 @@ export const useOnboardingForm = () => {
       // Replace with actual API call
       await new Promise(resolve => setTimeout(resolve, 1000))
       
-      // Show success state
-      showSuccess.value = true
+      // Reset form
+      resetForm()
       
-      // Reset form after successful submission
-      setTimeout(() => {
-        resetForm()
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }, 2000)
+      // Navigate to LFG page
+      navigateTo('/lfg')
+      
     } catch (error) {
       console.error('Error submitting form:', error)
     } finally {

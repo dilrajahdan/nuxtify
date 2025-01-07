@@ -16,6 +16,9 @@ generates emails and keeps them on tracked and accountable for their goal.
       - Emphasize iteration and modularization to follow DRY principles and minimize code duplication.
       - Prefer Composition API <script setup> style.
       - Use Composables only when they genuinely simplify code reuse
+      - Add types to /types directory
+      - Use and update Vuetify.ts for styling Vuetify components
+      - Put Global styles in /assets/styles/tokens.css
 
       Data Fetching Best Practices:
       - Use useFetch as the primary data fetching tool

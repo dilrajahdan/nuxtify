@@ -6,9 +6,9 @@
       class="pa-4"
       hover
     >
-      <v-card-title class="text-h6">
+      <v-card-text class="text-h5 pb-0">
         {{ getQuestionTitle(currentQuestion) }}
-      </v-card-title>
+      </v-card-text>
       <v-card-text>
         <!-- Show the first question's content -->
         <template v-if="isNonNullString(safeQuestionId) && !isDISCQuestion(currentQuestion)">
@@ -93,9 +93,9 @@
             </v-dialog>
 
             <div class="mt-4">
-              <v-card-title class="text-h6">
+              <v-card-text class="text-h5 pb-0 text-md-h4">
                 {{ currentStep === totalSteps ? 'Summary' : getQuestionTitle(currentQuestion) }}
-              </v-card-title>
+              </v-card-text>
 
               <v-card-text>
                 <!-- Summary Step -->
@@ -591,7 +591,7 @@ const debugInfo = computed(() => ({
 }
 
 .content-wrapper {
-  max-width: 800px;
+  max-width: 550px;
   margin: 0 auto;
   padding: 24px 16px;
 }
