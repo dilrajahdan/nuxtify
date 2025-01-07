@@ -639,6 +639,7 @@ const debugInfo = computed(() => ({
   font-size: 1rem;
   font-weight: 400;
   opacity: 1;
+  width: 100% !important;
 }
 
 /* Radio button positioning */
