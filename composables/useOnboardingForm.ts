@@ -298,13 +298,27 @@ export const useOnboardingForm = () => {
 
   const previousStep = () => {
     if (currentStep.value > 1) {
-      // Store current form data
-      const currentFormData = { ...form.value }
+      // If we're on the summary step and user knows their DISC profile
+      if (currentStep.value === totalSteps.value && form.value.discProfile === 'yes') {
+        // Go back to the DISC profile question
+        currentStep.value = formConfig.flow.indexOf('discProfile') + 1
+        return
+      }
+
+      // If we're on the DISC selection page (after answering 'yes')
+      const discProfileStep = formConfig.flow.indexOf('discProfile') + 1
+      if (currentStep.value === discProfileStep && form.value.discProfile === 'yes') {
+        // Clear the DISC selections when going back
+        form.value.discPrimary = ''
+        form.value.discSecondary = ''
+        // Set the step to the DISC profile question
+        currentStep.value = discProfileStep
+        // Reset the DISC profile answer
+        form.value.discProfile = ''
+        return
+      }
       
       currentStep.value--
-      
-      // Don't restore form data when going back
-      // form.value = { ...currentFormData }
     }
   }
 

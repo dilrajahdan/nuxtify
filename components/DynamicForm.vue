@@ -327,7 +327,7 @@
                     <div class="assessment-question">
                       <v-radio-group
                         v-model="form.discQuestions[currentQuestion.id]"
-                        class="option-group"
+                        class="option-group custom-radio-group"
                         mandatory
                         :name="currentQuestion.id"
                         @update:model-value="value => {
@@ -596,7 +596,9 @@ const debugInfo = computed(() => ({
   margin-bottom: 8px;
   background: rgb(var(--v-theme-surface));
   transition: all 0.2s ease;
+  padding-left: 5px ;
 }
+
 
 /* Style the radio button wrapper */
 .custom-radio-group .v-radio .v-selection-control-group {
@@ -626,7 +628,7 @@ const debugInfo = computed(() => ({
   font-weight: 400;
   opacity: 1;
   width: 100% !important;
-  padding: 16px 24px;
+  padding: 16px 24px 16px 5px;
 }
 
 /* Radio button positioning */
