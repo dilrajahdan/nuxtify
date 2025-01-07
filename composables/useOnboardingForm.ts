@@ -140,6 +140,7 @@ export const useOnboardingForm = () => {
 
   // Methods
   const handleOptionSelect = (questionId: string, value: string) => {
+    if (!value) return
     if (questionId in form.value) {
       (form.value as any)[questionId] = value
       
@@ -156,6 +157,17 @@ export const useOnboardingForm = () => {
         form.value.discPrimary = ''
         form.value.discSecondary = ''
         form.value.discQuestions = {}
+      }
+
+      // Auto expand and advance on first question
+      if (!isExpanded.value && currentStep.value === 1) {
+        if (value === 'other') {
+          isExpanded.value = true
+          return
+        }
+        isExpanded.value = true
+        currentStep.value++
+        return
       }
     } else if (questionId.startsWith('disc')) {
       // Handle DISC assessment questions
